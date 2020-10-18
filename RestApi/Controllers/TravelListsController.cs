@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using AutoMapper;
 using RestApi.Dtos;
-using DataAccessLayerCore.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using DataAccessLayerCore.Data;
+using System.Threading.Tasks;
+using TravelListRepository;
+using TravelListModels;
 
 namespace RestApi.Controllers
 {
@@ -26,18 +27,18 @@ namespace RestApi.Controllers
 
         //api/travellists
         [HttpGet]
-        public ActionResult<IEnumerable<TravelListReadDto>> GetAllTravelLists()
+        public async Task<IActionResult> GetAllTravelLists()
         {
-            var travelListItems = _repo.GetAllTravelLists();
+            var travelListItems = await _repo.GetAllTravelLists();
 
             return Ok(_mapper.Map<IEnumerable<TravelListReadDto>>(travelListItems));
         }
 
         //api/travellists/{id}
         [HttpGet("{id}", Name = "GetTravelListById")]
-        public ActionResult<TravelListReadDto> GetTravelListById(int id)
+        public async Task<IActionResult> GetTravelListById(int id)
         {
-            var travelListItem = _repo.GetTravelListById(id);
+            var travelListItem = await _repo.GetTravelListById(id);
             if (travelListItem != null)
             {
                 return Ok(_mapper.Map<TravelListReadDto>(travelListItem));
@@ -47,10 +48,10 @@ namespace RestApi.Controllers
 
         //api/travellists
         [HttpPost]
-        public ActionResult<TravelListReadDto> CreateTravelList(TravelListCreateDto travelListCreateDto)
+        public async Task<IActionResult> CreateTravelList(TravelListCreateDto travelListCreateDto)
         {
             var travelListModel = _mapper.Map<TravelList>(travelListCreateDto);
-            _repo.CreateTravelList(travelListModel);
+           await _repo.CreateTravelList(travelListModel);
             _repo.SaveChanges();
 
             var travelListReadDto = _mapper.Map<TravelListReadDto>(travelListModel);
@@ -60,9 +61,9 @@ namespace RestApi.Controllers
 
         //api/travellists/{id}
         [HttpPut("{id}")]
-        public ActionResult UpdateTravelList(int id, TravelListCreateDto travelListUpdateDto)
+        public async Task<IActionResult> UpdateTravelList(int id, TravelListCreateDto travelListUpdateDto)
         {
-            var travelListModelFromRepo = _repo.GetTravelListById(id);
+            var travelListModelFromRepo = await _repo.GetTravelListById(id);
             if (travelListModelFromRepo == null)
             {
                 return NotFound();
@@ -70,7 +71,7 @@ namespace RestApi.Controllers
 
             _mapper.Map(travelListUpdateDto, travelListModelFromRepo);
 
-            _repo.UpdateTravelList(travelListModelFromRepo);
+            await _repo.UpdateTravelList(travelListModelFromRepo);
 
             _repo.SaveChanges();
 
@@ -80,9 +81,9 @@ namespace RestApi.Controllers
 
         //PATCH api/travellists/{id}
         [HttpPatch("{id}")]
-        public ActionResult PartialTravelListUpdate(int id, JsonPatchDocument<TravelListUpdateDto> patchDoc)
+        public async Task<IActionResult> PartialTravelListUpdate(int id, JsonPatchDocument<TravelListUpdateDto> patchDoc)
         {
-            var travelListModelFromRepo = _repo.GetTravelListById(id);
+            var travelListModelFromRepo = await _repo.GetTravelListById(id);
             if (travelListModelFromRepo == null)
             {
                 return NotFound();
@@ -97,7 +98,7 @@ namespace RestApi.Controllers
 
             _mapper.Map(travelListToPatch, travelListModelFromRepo);
 
-            _repo.UpdateTravelList(travelListModelFromRepo);
+            await _repo.UpdateTravelList(travelListModelFromRepo);
 
             _repo.SaveChanges();
 
@@ -107,15 +108,15 @@ namespace RestApi.Controllers
 
         //DELETE api/travellists/{id}
         [HttpDelete("{id}")]
-        public ActionResult DeleteTravelList(int id)
+        public async Task<IActionResult> DeleteTravelList(int id)
         {
-            var travelListModelFromRepo = _repo.GetTravelListById(id);
+            var travelListModelFromRepo = await _repo.GetTravelListById(id);
             if (travelListModelFromRepo == null)
             {
                 return NotFound();
             }
 
-            _repo.DeleteTravelList(travelListModelFromRepo);
+            await _repo.DeleteTravelList(travelListModelFromRepo);
 
             _repo.SaveChanges();
 

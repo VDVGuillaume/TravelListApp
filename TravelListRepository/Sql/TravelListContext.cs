@@ -1,7 +1,7 @@
-﻿using DataAccessLayerCore.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using TravelListModels;
 
-namespace DataAccessLayerCore.Data
+namespace TravelListRepository.Sql
 {
     public class TravelListContext : DbContext
     {
