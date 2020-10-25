@@ -11,15 +11,15 @@ using TravelListModels;
 namespace RestApi.Controllers
 {
     //api/travellists
-    //[Route("api/[controller]")]
-    [Route("api/travellists")]
-    [ApiController]
+    [Route("api/[controller]")]
+    //[Route("api/travellists")]
+    //[ApiController]
     public class TravelListsController : ControllerBase
     {
-        private readonly ITravelListRepo _repo;
+        private readonly ITravelListItemRepo _repo;
         private readonly IMapper _mapper;
 
-        public TravelListsController(ITravelListRepo repository, IMapper mapper)
+        public TravelListsController(ITravelListItemRepo repository, IMapper mapper)
         {
             _repo = repository;
             _mapper = mapper;
@@ -29,6 +29,8 @@ namespace RestApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllTravelLists()
         {
+
+
             var travelListItems = await _repo.GetAllTravelLists();
 
             return Ok(_mapper.Map<IEnumerable<TravelListReadDto>>(travelListItems));
@@ -50,13 +52,13 @@ namespace RestApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTravelList(TravelListCreateDto travelListCreateDto)
         {
-            var travelListModel = _mapper.Map<TravelList>(travelListCreateDto);
+            var travelListModel = _mapper.Map<TravelListItem>(travelListCreateDto);
            await _repo.CreateTravelList(travelListModel);
             _repo.SaveChanges();
 
             var travelListReadDto = _mapper.Map<TravelListReadDto>(travelListModel);
 
-            return CreatedAtRoute(nameof(GetTravelListById), new { Id = travelListReadDto.TravelListID }, travelListReadDto);
+            return CreatedAtRoute(nameof(GetTravelListById), new { Id = travelListReadDto.TravelListItemID }, travelListReadDto);
         }
 
         //api/travellists/{id}

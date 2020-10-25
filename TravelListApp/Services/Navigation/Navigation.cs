@@ -29,6 +29,16 @@ namespace TravelListApp.Services.Navigation
             return _frame.Navigate(sourcePageType);
         }
 
+        public static bool Navigate(Type sourcePageType, object objectId)
+        {
+            if (_frame.CurrentSourcePageType == sourcePageType)
+            {
+                return true;
+            }
+
+            return _frame.Navigate(sourcePageType, objectId);
+        }
+
         public static void EnableBackButton()
         {
             var navManager = SystemNavigationManager.GetForCurrentView();

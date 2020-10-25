@@ -6,6 +6,6 @@ namespace TravelListRepository
 {
     public interface ITravelListInstance
     {
-        ITravelListRepo TravelLists { get; }
+        ITravelListItemRepo TravelLists { get; }
     }
 }

@@ -6,7 +6,7 @@ using TravelListModels;
 
 namespace TravelListRepository.Rest
 {
-    class RestTravelListRepository : ITravelListRepo
+    class RestTravelListRepository : ITravelListItemRepo
     {
         private readonly HttpHelper _http;
 
@@ -15,24 +15,24 @@ namespace TravelListRepository.Rest
             _http = new HttpHelper(baseUrl);
         }
 
-        public async Task CreateTravelList(TravelList tl) =>
-            await _http.PostAsync<TravelList, TravelList>("travellist", tl);
+        public async Task CreateTravelList(TravelListItem tl) =>
+            await _http.PostAsync<TravelListItem, TravelListItem>("travellists", tl);
         
-        public async Task DeleteTravelList(TravelList tl) =>
-            await _http.DeleteAsync("travellist", tl.TravelListID);
+        public async Task DeleteTravelList(TravelListItem tl) =>
+            await _http.DeleteAsync("travellist", tl.TravelListItemID);
 
-        public async Task<IEnumerable<TravelList>> GetAllTravelLists() =>
-            await _http.GetAsync<IEnumerable<TravelList>>("travellist");
+        public async Task<IEnumerable<TravelListItem>> GetAllTravelLists() =>
+            await _http.GetAsync<IEnumerable<TravelListItem>>("travellists");
 
-        public async Task<TravelList> GetTravelListById(int id) =>
-            await _http.GetAsync<TravelList>($"travellist/{id}");
+        public async Task<TravelListItem> GetTravelListById(int id) =>
+            await _http.GetAsync<TravelListItem>($"travellists/{id}");
 
         public bool SaveChanges()
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateTravelList(TravelList tl)
+        public Task UpdateTravelList(TravelListItem tl)
         {
             throw new NotImplementedException();
         }

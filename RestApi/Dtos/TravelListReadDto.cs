@@ -3,7 +3,10 @@ namespace RestApi.Dtos
 {
     public class TravelListReadDto
     {
-        public int TravelListID { get; set; }
+        public int TravelListItemID { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
+        public string Image { get; set; }
+        public string Country { get; set; }
     }
 }

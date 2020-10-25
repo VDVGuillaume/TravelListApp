@@ -21,6 +21,7 @@
                 <!-- Theme colors and icons -->
                 <ResourceDictionary Source="Services/Icons/Icons.xaml" />
                 <ResourceDictionary Source="Services/Theming/Theme.xaml" />
+                <ResourceDictionary Source="Services/Theming/SecondaryMenu.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

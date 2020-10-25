@@ -8,17 +8,17 @@ using TravelListModels;
 
 namespace TravelListRepository.Sql
 {
-    public class SqlTravelListRepo : ITravelListRepo
+    public class SqlTravelListItemRepo : ITravelListItemRepo
     {
         private readonly TravelListContext _context;
 
-        public SqlTravelListRepo(TravelListContext context)
+        public SqlTravelListItemRepo(TravelListContext context)
         {
             _context = context;
         }
 
 
-        public async Task CreateTravelList(TravelList tl)
+        public async Task CreateTravelList(TravelListItem tl)
         {
             if (tl == null)
             {
@@ -28,7 +28,7 @@ namespace TravelListRepository.Sql
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteTravelList(TravelList tl)
+        public async Task DeleteTravelList(TravelListItem tl)
         {
             if (tl == null)
             {
@@ -38,17 +38,17 @@ namespace TravelListRepository.Sql
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TravelList>> GetAllTravelLists()
+        public async Task<IEnumerable<TravelListItem>> GetAllTravelLists()
         {
             return await _context.TravelLists.AsNoTracking().ToListAsync();
         }
 
-        public async Task<TravelList> GetTravelListById(int id)
+        public async Task<TravelListItem> GetTravelListById(int id)
         {
-            return await _context.TravelLists.AsNoTracking().FirstOrDefaultAsync(p => p.TravelListID == id);
+            return await _context.TravelLists.AsNoTracking().FirstOrDefaultAsync(p => p.TravelListItemID == id);
         }
 
-        public async Task UpdateTravelList(TravelList tl)
+        public async Task UpdateTravelList(TravelListItem tl)
         {
             await _context.SaveChangesAsync();
         }

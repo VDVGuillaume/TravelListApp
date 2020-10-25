@@ -80,14 +80,6 @@
                               VerticalAlignment="Top"
                               ItemContainerStyle="{StaticResource MenuListViewItemStyle}"
                               ItemTemplate="{StaticResource MenuItemTemplate}" />
-                    <ListView x:Name="SecondMenu"
-                              ItemsSource="{Binding SecondMenu}"
-                              SelectionChanged="Menu_SelectionChanged"
-                              ItemContainerStyle="{StaticResource MenuListViewItemStyle}"
-                              ItemTemplate="{StaticResource MenuItemTemplate}"
-                              Margin="0 48 0 0"
-                              VerticalAlignment="Top"
-                              Grid.Row="2" />
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>

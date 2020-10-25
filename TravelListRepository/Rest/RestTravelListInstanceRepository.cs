@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TravelListRepository.Rest
 {
-    class RestTravelListInstanceRepository
+    public class RestTravelListInstanceRepository : ITravelListInstance
     {
         private readonly string _url;
 
@@ -13,6 +13,6 @@ namespace TravelListRepository.Rest
             _url = url;
         }
 
-        public ITravelListRepo TravelLists => new RestTravelListRepository(_url);
+        public ITravelListItemRepo TravelLists => new RestTravelListRepository(_url);
     }
 }

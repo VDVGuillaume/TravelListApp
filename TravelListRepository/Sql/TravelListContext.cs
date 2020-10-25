@@ -10,8 +10,8 @@ namespace TravelListRepository.Sql
         {
 
         }
-        public DbSet<TravelList> TravelLists { get; set; }
-        public DbSet<Item> Items { get; set; }
+        public DbSet<TravelListItem> TravelLists { get; set; }
+        public DbSet<CheckListItem> Items { get; set; }
 
         protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder)
         {

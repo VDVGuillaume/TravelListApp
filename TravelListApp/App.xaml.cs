@@ -16,6 +16,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using TravelListRepository;
 using TravelListApp.Views;
+using TravelListRepository.Rest;
+using TravelListApp.ViewModels;
 
 namespace TravelListApp
 {
@@ -24,6 +26,8 @@ namespace TravelListApp
     /// </summary>
     sealed partial class App : Application
     {
+
+        public static MainViewModel ViewModel { get; } = new MainViewModel();
         /// <summary>
         /// Pipeline for interacting with backend service or database.
         /// </summary>
@@ -45,6 +49,9 @@ namespace TravelListApp
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+
+            Repository = new RestTravelListInstanceRepository("http://localhost:60561/api/");
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,

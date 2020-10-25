@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace TravelListModels
 {
-    public class Item
+    public class CheckListItem
     {
-        public int ItemID { get; set; }
+        public int CheckListItemID { get; set; }
         public string Name { get; set; }
-        public int TravelListID { get; set; }
-        public virtual TravelList TravelList { get; set; }
+        public int TravelListItemID { get; set; }
+        public virtual TravelListItem TravelListItem { get; set; }
     }
 }

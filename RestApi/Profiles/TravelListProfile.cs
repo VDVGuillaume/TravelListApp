@@ -13,10 +13,10 @@ namespace RestApi.Profiles
         public TravelListProfile()
         {
             //Source -> Target
-            CreateMap<TravelList, TravelListReadDto>();
-            CreateMap<TravelListCreateDto, TravelList>();
-            CreateMap<TravelListUpdateDto, TravelList>();
-            CreateMap<TravelList, TravelListUpdateDto>();
+            CreateMap<TravelListItem, TravelListReadDto>();
+            CreateMap<TravelListCreateDto, TravelListItem>();
+            CreateMap<TravelListUpdateDto, TravelListItem>();
+            CreateMap<TravelListItem, TravelListUpdateDto>();
         }
     }
 }

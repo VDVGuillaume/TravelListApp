@@ -39,11 +39,11 @@ namespace RestApi
             ";";
 
             services.AddDbContext<TravelListContext>(opt => opt.UseSqlServer
-            (TravelListConnection));
+            (TravelListConnection, b => b.MigrationsAssembly("TravelList.Api")));
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddScoped<ITravelListRepo, SqlTravelListRepo>();
+            services.AddScoped<ITravelListItemRepo, SqlTravelListItemRepo>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
