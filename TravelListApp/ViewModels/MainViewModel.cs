@@ -12,16 +12,40 @@ namespace TravelListApp.ViewModels
 {
     public class MainViewModel : BindableBase
     {
-        public MainViewModel() => Task.Run(GetTravelListListAsync);
+        public MainViewModel()
+        {
+            Task.Run(GetTravelListListAsync);
+            Task.Run(GetCountriesAsync);
+        }
 
-        public ObservableCollection<TravelListItem> TravelListItems { get; set; }
+        // public ObservableCollection<TravelListItemViewModel> TravelListItems { get; set; }
 
-        private TravelListViewModel _selectedTravelList;
+        ObservableCollection<TravelListItemViewModel> _travelListItemViewModel = new ObservableCollection<TravelListItemViewModel>();
+
+        public ObservableCollection<TravelListItemViewModel> TravelListItems
+        {
+            get
+            {
+                return _travelListItemViewModel;
+            }
+            set
+            {
+                if (_travelListItemViewModel != value)
+                {
+                    _travelListItemViewModel = value;
+                    OnPropertyChanged(nameof(TravelListItems));
+                }
+            }
+        }
+
+        public ObservableCollection<Country> Countries { get; set; }
+
+        private TravelListItemViewModel _selectedTravelList;
 
         /// <summary>
         /// Gets or sets the selected customer, or null if no customer is selected. 
         /// </summary>
-        public TravelListViewModel SelectedTravelList
+        public TravelListItemViewModel SelectedTravelList
         {
             get => _selectedTravelList;
             set => SetProperty(ref _selectedTravelList, value);
@@ -39,7 +63,7 @@ namespace TravelListApp.ViewModels
         {
             await DispatcherHelper.ExecuteOnUIThreadAsync(() => IsLoading = true);
 
-            TravelListItems = new ObservableCollection<TravelListItem>();
+            TravelListItems = new ObservableCollection<TravelListItemViewModel>();
 
             var travelLists = await App.Repository.TravelLists.GetAllTravelLists();
             if (travelLists == null)
@@ -52,10 +76,33 @@ namespace TravelListApp.ViewModels
                 TravelListItems.Clear();
                 foreach (var c in travelLists)
                 {
-                    TravelListItems.Add(c);
+                    TravelListItems.Add(new TravelListItemViewModel(c));
                 }
                 IsLoading = false;
             });
+        }
+
+        public async Task GetCountriesAsync()
+        {
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() => IsLoading = true);
+
+            Countries = new ObservableCollection<Country>();
+            var countries = await App.Repository.Countries.GetAllCountries();
+            if (countries == null)
+            {
+                return;
+            }
+
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            {
+                Countries.Clear();
+                foreach (var c in countries)
+                {
+                    Countries.Add(c);
+                }
+                IsLoading = false;
+            });
+
         }
     }
 }

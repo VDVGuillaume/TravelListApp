@@ -32,9 +32,10 @@ namespace TravelListApp.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
+            Menu.SetModel(ViewModel);
             // Send page type to menu.
             Menu.SetTab(GetType());
-            ViewModel = new TravelListItemViewModel (App.ViewModel.TravelListItems.Where(travelList => travelList.TravelListItemID == (int)e.Parameter).First());
             base.OnNavigatedTo(e);
         }
     }

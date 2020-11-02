@@ -21,9 +21,9 @@ namespace TravelListApp.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class TravelListItemMapsPage : Page
+    public sealed partial class TravelListItemEditPage : Page
     {
-        public TravelListItemMapsPage()
+        public TravelListItemEditPage()
         {
             this.InitializeComponent();
         }
@@ -32,11 +32,27 @@ namespace TravelListApp.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
+            if (e.Parameter == null)
+            {
+                ViewModel = new TravelListItemViewModel
+                {
+                    IsNewTravelList = true,
+                    IsInEdit = true
+                };
+            }
+            else
+            {
+                ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
+                ViewModel.StartEdit();
+            }
             Menu.SetModel(ViewModel);
-            // Send page type to menu.
             Menu.SetTab(GetType());
             base.OnNavigatedTo(e);
+        }
+
+        private async void SaveButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            await ViewModel.SaveAsync();
         }
     }
 

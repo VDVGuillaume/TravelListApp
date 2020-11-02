@@ -50,7 +50,7 @@ namespace RestApi.Controllers
 
         //api/travellists
         [HttpPost]
-        public async Task<IActionResult> CreateTravelList(TravelListCreateDto travelListCreateDto)
+        public async Task<IActionResult> CreateTravelList([FromBody]TravelListCreateDto travelListCreateDto)
         {
             var travelListModel = _mapper.Map<TravelListItem>(travelListCreateDto);
            await _repo.CreateTravelList(travelListModel);
@@ -63,7 +63,7 @@ namespace RestApi.Controllers
 
         //api/travellists/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTravelList(int id, TravelListCreateDto travelListUpdateDto)
+        public async Task<IActionResult> UpdateTravelList(int id, [FromBody]TravelListCreateDto travelListUpdateDto)
         {
             var travelListModelFromRepo = await _repo.GetTravelListById(id);
             if (travelListModelFromRepo == null)
@@ -83,7 +83,7 @@ namespace RestApi.Controllers
 
         //PATCH api/travellists/{id}
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PartialTravelListUpdate(int id, JsonPatchDocument<TravelListUpdateDto> patchDoc)
+        public async Task<IActionResult> PartialTravelListUpdate(int id, [FromBody]JsonPatchDocument<TravelListUpdateDto> patchDoc)
         {
             var travelListModelFromRepo = await _repo.GetTravelListById(id);
             if (travelListModelFromRepo == null)

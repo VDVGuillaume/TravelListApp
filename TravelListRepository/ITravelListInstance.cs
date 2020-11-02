@@ -7,5 +7,6 @@ namespace TravelListRepository
     public interface ITravelListInstance
     {
         ITravelListItemRepo TravelLists { get; }
+        ICountryRepo Countries { get; }
     }
 }

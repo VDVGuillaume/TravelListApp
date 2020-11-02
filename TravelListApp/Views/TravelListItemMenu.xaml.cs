@@ -4,6 +4,7 @@ using TravelListApp.Controls;
 using TravelListApp.Mvvm;
 using TravelListApp.Services.Icons;
 using TravelListApp.Services.Navigation;
+using TravelListApp.ViewModels;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -18,15 +19,19 @@ namespace TravelListApp.Views
     {
         private WrapGrid _itemsPanel;
 
+        private TravelListItemViewModel _model;
+
         public TravelListItemMenu()
         {
             this.InitializeComponent();
 
             // Populate Menu.
-            Menu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("SevenDotsIcon"), Text = "View", NavigationDestination = typeof(TravelListItemPage) });
-            Menu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("SevenDotsIcon"), Text = "Details", NavigationDestination = typeof(TravelListItemDetailsPage) });
-            Menu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("SevenDotsIcon"), Text = "Checklist", NavigationDestination = typeof(TravelListItemChecklistPage) });
-            Menu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("SevenDotsIcon"), Text = "Map", NavigationDestination = typeof(TravelListItemMapsPage) });
+            Menu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("View"), Text = "View", NavigationDestination = typeof(TravelListItemPage) });
+            Menu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("Edit"), Text = "Edit", NavigationDestination = typeof(TravelListItemEditPage) });
+            Menu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("CheckList"), Text = "Checklist", NavigationDestination = typeof(TravelListItemChecklistPage) });
+            Menu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("Map"), Text = "Map", NavigationDestination = typeof(TravelListItemMapsPage) });
+            Menu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("Save"), Text = "Save", NavigationDestination = null });
+            Menu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("Clear"), Text = "Clear", NavigationDestination = null });
 
             // Animate Menu.
             GridView.RegisterImplicitAnimations();
@@ -52,11 +57,16 @@ namespace TravelListApp.Views
             }
         }
 
+        public void SetModel(TravelListItemViewModel model)
+        {
+            _model = model;
+        }
+
         private void Menu_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.First() is MenuItem menuItem && menuItem.IsNavigation)
             {
-                Navigation.Navigate(menuItem.NavigationDestination);
+                Navigation.Navigate(menuItem.NavigationDestination, _model.TravelListItemID);
             }
         }
 

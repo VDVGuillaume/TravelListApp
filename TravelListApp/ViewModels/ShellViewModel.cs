@@ -13,7 +13,7 @@ namespace TravelListApp.Mvvm
         public ShellViewModel()
         {
             // Build the menus
-            Menu.Add(new MenuItem() { Glyph = Icon.GetIcon("SevenDotsIcon"), Text = "TravelLists", NavigationDestination = typeof(TravelListPage) });
+            Menu.Add(new MenuItem() { Glyph = Icon.GetIcon("Explore"), Text = "TravelLists", NavigationDestination = typeof(TravelListPage) });
         }
     }
 }

@@ -41,7 +41,7 @@ namespace TravelListApp.Views
 
         private void AddButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            Navigation.Navigate(typeof(EditTravelListPage));
+            Navigation.Navigate(typeof(TravelListItemEditPage));
         }
 
         private void GoToButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)

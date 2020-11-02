@@ -133,8 +133,8 @@
     <Compile Include="ViewModels\TravelListItemViewModel.cs" />
     <Compile Include="ViewModels\TravelListViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="Views\EditTravelListPage.xaml.cs">
-      <DependentUpon>EditTravelListPage.xaml</DependentUpon>
+    <Compile Include="Views\TravelListItemEditPage.xaml.cs">
+      <DependentUpon>TravelListItemEditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
@@ -144,9 +144,6 @@
     </Compile>
     <Compile Include="Views\TravelListItemChecklistPage.xaml.cs">
       <DependentUpon>TravelListItemChecklistPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TravelListItemDetailsPage.xaml.cs">
-      <DependentUpon>TravelListItemDetailsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TravelListItemMapsPage.xaml.cs">
       <DependentUpon>TravelListItemMapsPage.xaml</DependentUpon>
@@ -194,7 +191,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditTravelListPage.xaml">
+    <Page Include="Views\TravelListItemEditPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -207,10 +204,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TravelListItemChecklistPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TravelListItemDetailsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -239,7 +232,9 @@
       <Version>6.1.1</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Services\Validation\" />
+  </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>

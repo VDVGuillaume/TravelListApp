@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using TravelListApp.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -25,6 +26,17 @@ namespace TravelListApp.Views
         public TravelListItemChecklistPage()
         {
             this.InitializeComponent();
+        }
+
+        public TravelListItemViewModel ViewModel { get; set; }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
+            Menu.SetModel(ViewModel);
+            // Send page type to menu.
+            Menu.SetTab(GetType());
+            base.OnNavigatedTo(e);
         }
     }
 }

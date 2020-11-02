@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TravelListRepository;
+using TravelListRepository.Restcountries;
 using TravelListRepository.Sql;
 
 namespace RestApi
@@ -44,6 +45,7 @@ namespace RestApi
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<ITravelListItemRepo, SqlTravelListItemRepo>();
+            services.AddScoped<ICountryRepo, RestCountriesRepo>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

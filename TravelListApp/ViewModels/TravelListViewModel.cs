@@ -15,7 +15,7 @@ using TravelListModels;
 
 namespace TravelListApp.Mvvm
 {
-    public class TravelListViewModel : BindableBase, IEditableObject
+    public class TravelListViewModel : BindableBase
     {
 
         public ObservableCollection<TravelListByCountry> Items { get; set; }
@@ -23,6 +23,13 @@ namespace TravelListApp.Mvvm
         public TravelListViewModel()
         {
             getTravelListsItemsByCountry();
+            ViewModel.TravelListItems.CollectionChanged += Name_CollectionChanged;
+        }
+
+
+        private void Name_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+             getTravelListsItemsByCountry();
         }
 
         public MainViewModel ViewModel => App.ViewModel;
@@ -30,31 +37,17 @@ namespace TravelListApp.Mvvm
 
         public void getTravelListsItemsByCountry()
         {
-            var travelListsByCountry = ViewModel.TravelListItems.GroupBy(x => x.Country)
-                .Select(x => new TravelListByCountry { Name = x.Key, Items = new ObservableCollection<TravelListItem>(x.ToList()) });
+            var travelListsByCountry = ViewModel.TravelListItems.OrderBy(x => x.Country).GroupBy(x => x.Country)
+                .Select(x => new TravelListByCountry { Name = x.Key, Items = new ObservableCollection<TravelListItemViewModel>(x.ToList()) });
 
             Items = new ObservableCollection<TravelListByCountry>(travelListsByCountry.ToList());
         }
 
-        public void BeginEdit()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CancelEdit()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void EndEdit()
-        {
-            throw new NotImplementedException();
-        }
     }
 
     public class TravelListByCountry
     {
         public string Name { get; set; }
-        public ObservableCollection<TravelListItem> Items { get; set; }
+        public ObservableCollection<TravelListItemViewModel> Items { get; set; }
     }
 }
