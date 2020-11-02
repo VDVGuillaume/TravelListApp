@@ -27,12 +27,10 @@ namespace TravelListRepository.Rest
         public async Task<TravelListItem> GetTravelListById(int id) =>
             await _http.GetAsync<TravelListItem>($"travellists/{id}");
 
-        public bool SaveChanges()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task UpdateTravelList(int id, TravelListItem tl) =>
+            await _http.PutAsync<TravelListItem, TravelListItem>($"travellists/{id}", tl);
 
-        public Task UpdateTravelList(TravelListItem tl)
+        public bool SaveChanges()
         {
             throw new NotImplementedException();
         }

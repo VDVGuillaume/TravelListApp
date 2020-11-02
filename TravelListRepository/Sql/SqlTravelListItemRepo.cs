@@ -48,8 +48,15 @@ namespace TravelListRepository.Sql
             return await _context.TravelLists.AsNoTracking().FirstOrDefaultAsync(p => p.TravelListItemID == id);
         }
 
-        public async Task UpdateTravelList(TravelListItem tl)
+        public async Task UpdateTravelList(int id, TravelListItem tl)
         {
+            if (tl == null)
+            {
+                throw new ArgumentNullException(nameof(tl));
+            }
+            _context.TravelLists.Update(tl);
+            //TravelListItem travelList = await _context.TravelLists.FirstAsync(p => p.TravelListItemID == id);
+            //travelList = tl;
             await _context.SaveChangesAsync();
         }
 

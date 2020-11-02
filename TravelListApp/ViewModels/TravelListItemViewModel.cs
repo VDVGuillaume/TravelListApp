@@ -86,9 +86,42 @@ namespace TravelListApp.ViewModels
                 if (value != Model.Country)
                 {
                     Model.Country = value;
+                    Country country = App.ViewModel.Countries.Where(x => x.Name == value).First();
+                    Latitude = country.LatLng[0];
+                    Longitude = country.LatLng[1];
                     IsModified = true;
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(Country));
+                }
+            }
+        }
+
+        public decimal Latitude
+        {
+            get => Model.Latitude;
+            set
+            {
+                if (value != Model.Latitude)
+                {
+                    Model.Latitude = value;
+                    IsModified = true;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Latitude));
+                }
+            }
+        }
+
+        public decimal Longitude
+        {
+            get => Model.Longitude;
+            set
+            {
+                if (value != Model.Longitude)
+                {
+                    Model.Longitude = value;
+                    IsModified = true;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Longitude));
                 }
             }
         }
@@ -127,7 +160,7 @@ namespace TravelListApp.ViewModels
                 await App.Repository.TravelLists.CreateTravelList(Model);
             } else
             {
-                await App.Repository.TravelLists.UpdateTravelList(Model);
+                await App.Repository.TravelLists.UpdateTravelList(Model.TravelListItemID, Model);
             }
         }
 

@@ -9,5 +9,6 @@ namespace TravelListModels
     public class Country
     {
         public string Name { get; set; }
+        public decimal[] LatLng { get; set; }
     }
 }

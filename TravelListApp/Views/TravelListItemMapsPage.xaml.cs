@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using TravelListApp.ViewModels;
+using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -37,6 +38,13 @@ namespace TravelListApp.Views
             // Send page type to menu.
             Menu.SetTab(GetType());
             base.OnNavigatedTo(e);
+        }
+
+        private void myMap_Loaded(object sender, RoutedEventArgs e)
+        {
+            Geopoint zoomPoint = new Geopoint(new BasicGeoposition() { Latitude = (double)ViewModel.Latitude, Longitude = (double)ViewModel.Longitude });
+            myMap.Center = zoomPoint;
+            myMap.ZoomLevel = 5;
         }
     }
 

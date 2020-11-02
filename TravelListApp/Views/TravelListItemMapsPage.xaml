@@ -5,6 +5,7 @@
     xmlns:local="using:TravelListApp.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -16,6 +17,8 @@
         </Grid.RowDefinitions>
 
         <local:TravelListItemMenu x:Name="Menu" />
+
+        <maps:MapControl x:Name="myMap" Loaded="myMap_Loaded" Grid.Row="2"/>
 
     </Grid>
 </Page>

@@ -73,7 +73,7 @@ namespace RestApi.Controllers
 
             _mapper.Map(travelListUpdateDto, travelListModelFromRepo);
 
-            await _repo.UpdateTravelList(travelListModelFromRepo);
+            await _repo.UpdateTravelList(id, travelListModelFromRepo);
 
             _repo.SaveChanges();
 
@@ -100,7 +100,7 @@ namespace RestApi.Controllers
 
             _mapper.Map(travelListToPatch, travelListModelFromRepo);
 
-            await _repo.UpdateTravelList(travelListModelFromRepo);
+            await _repo.UpdateTravelList(id, travelListModelFromRepo);
 
             _repo.SaveChanges();
 

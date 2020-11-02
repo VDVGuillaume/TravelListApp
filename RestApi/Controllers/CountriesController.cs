@@ -31,9 +31,9 @@ namespace RestApi.Controllers
         {
 
 
-            var travelListItems = await _repo.GetAllCountries();
+            var countries = await _repo.GetAllCountries();
 
-            return Ok(_mapper.Map<IEnumerable<CountryReadDto>>(travelListItems));
+            return Ok(_mapper.Map<IEnumerable<CountryReadDto>>(countries));
         }
 
     }
