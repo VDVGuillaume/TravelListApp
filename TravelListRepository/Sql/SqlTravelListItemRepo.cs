@@ -40,12 +40,12 @@ namespace TravelListRepository.Sql
 
         public async Task<IEnumerable<TravelListItem>> GetAllTravelLists()
         {
-            return await _context.TravelLists.AsNoTracking().ToListAsync();
+            return await _context.TravelLists.AsNoTracking().Include(x => x.Points).Include(x => x.Items).ToListAsync();
         }
 
         public async Task<TravelListItem> GetTravelListById(int id)
         {
-            return await _context.TravelLists.AsNoTracking().FirstOrDefaultAsync(p => p.TravelListItemID == id);
+            return await _context.TravelLists.AsNoTracking().Include(x => x.Points).Include(x => x.Items).FirstOrDefaultAsync(p => p.TravelListItemID == id);
         }
 
         public async Task UpdateTravelList(int id, TravelListItem tl)

@@ -1,4 +1,7 @@
 ﻿
+using System.Collections.Generic;
+using TravelListModels;
+
 namespace RestApi.Dtos
 {
     public class TravelListReadDto
@@ -10,5 +13,7 @@ namespace RestApi.Dtos
         public string Country { get; set; }
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
+        public virtual ICollection<CheckListItem> Items { get; set; }
+        public virtual ICollection<TravelPointOfInterest> Points { get; set; }
     }
 }

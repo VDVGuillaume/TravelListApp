@@ -10,7 +10,8 @@ namespace TravelListModels
     {
         public TravelListItem()
         {
-            Items = new HashSet<CheckListItem>();
+            this.Items = new List<CheckListItem>();
+            this.Points = new List<TravelPointOfInterest>();
         }
         public int TravelListItemID { get; set; }
         public string Name { get; set; }
@@ -20,5 +21,6 @@ namespace TravelListModels
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
         public virtual ICollection<CheckListItem> Items { get; set; }
+        public virtual ICollection<TravelPointOfInterest> Points { get; set; }
     }
 }

@@ -9,6 +9,26 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.BottomAppBar>
+        <CommandBar x:Name="SecondaryTileCommandBar" Padding="10,0,10,0" IsSticky="True" IsOpen="False" >
+            <AppBarButton x:Name="AddPointCommandButton" Label="Add" Foreground="{StaticResource PageForegroundBrush}" Click="AddPointAppBar_Click" >
+                <AppBarButton.Icon >
+                    <PathIcon Data="{x:Bind AddPointIcon.Glyph}" HorizontalAlignment="Center" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="RemovePointCommandButton" Label="Remove" Foreground="{StaticResource PageForegroundBrush}" Click="RemovePointAppBar_Click">
+                <AppBarButton.Icon>
+                    <PathIcon Data="{x:Bind RemovePointIcon.Glyph}" HorizontalAlignment="Center"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="SaveCommandButton" Label="Save" Foreground="{StaticResource PageForegroundBrush}">
+                <AppBarButton.Icon>
+                    <PathIcon Data="{x:Bind SaveIcon.Glyph}" HorizontalAlignment="Center"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </CommandBar>
+    </Page.BottomAppBar>
+
     <Grid Background="{StaticResource PageBackgroundBrush}"
           Padding="10">
         <Grid.RowDefinitions>
@@ -18,7 +38,30 @@
 
         <local:TravelListItemMenu x:Name="Menu" />
 
-        <maps:MapControl x:Name="myMap" Loaded="myMap_Loaded" Grid.Row="2"/>
+        <maps:MapControl x:Name="myMap" Loaded="MyMap_Loaded" MapTapped="MapUserTapped" Grid.Row="2">
+            <maps:MapItemsControl x:Name="MapItems">
+                <maps:MapItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button x:Name="mapItemButton" Click="mapItemButton_Click" Background="Transparent">
+                            <StackPanel>
+                                <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </Border>
+                                <Image Source="{Binding ImageSourceUri}"
+                                               maps:MapControl.NormalizedAnchorPoint="{Binding NormalizedAnchorPoint}"
+                                               maps:MapControl.Location="{Binding Location}">
+                                    <Image.Transitions>
+                                        <TransitionCollection>
+                                            <EntranceThemeTransition/>
+                                        </TransitionCollection>
+                                    </Image.Transitions>
+                                </Image>
+                            </StackPanel>
+                        </Button>
+                    </DataTemplate>
+                </maps:MapItemsControl.ItemTemplate>
+            </maps:MapItemsControl>
+        </maps:MapControl>
 
     </Grid>
 </Page>
