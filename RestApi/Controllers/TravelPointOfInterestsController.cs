@@ -37,18 +37,18 @@ namespace RestApi.Controllers
             return NotFound();
         }
 
-        ////api/travellists
-        //[HttpPost]
-        //public async Task<IActionResult> CreateTravelList([FromBody]TravelListCreateDto travelListCreateDto)
-        //{
-        //    var travelListModel = _mapper.Map<TravelListItem>(travelListCreateDto);
-        //   await _repo.CreateTravelList(travelListModel);
-        //    _repo.SaveChanges();
+        //api/travellists
+        [HttpPost]
+        public async Task<IActionResult> CreateTravelPointOfInterest([FromBody]TravelPointOfInterestCreateDto travelPointOfInterestCreateDto)
+        {
+            var travelPointOfInterestModel = _mapper.Map<TravelPointOfInterest>(travelPointOfInterestCreateDto);
+            await _repo.CreateTravelPointOfInterest(travelPointOfInterestModel);
+            _repo.SaveChanges();
 
-        //    var travelListReadDto = _mapper.Map<TravelListReadDto>(travelListModel);
+            var travelPointOfInterestReadDto = _mapper.Map<TravelPointOfInterestReadDto>(travelPointOfInterestModel);
 
-        //    return CreatedAtRoute(nameof(GetTravelListById), new { Id = travelListReadDto.TravelListItemID }, travelListReadDto);
-        //}
+            return CreatedAtRoute(nameof(GetTravelPointOfInterestById), new { Id = travelPointOfInterestReadDto.TravelPointOfInterestID }, travelPointOfInterestReadDto);
+        }
 
         ////api/travellists/{id}
         //[HttpPut("{id}")]

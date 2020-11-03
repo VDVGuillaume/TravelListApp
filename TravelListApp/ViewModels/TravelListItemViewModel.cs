@@ -4,8 +4,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TravelListApp.Models;
 using TravelListApp.Mvvm;
 using TravelListModels;
+using Windows.Devices.Geolocation;
+using Windows.Foundation;
 
 namespace TravelListApp.ViewModels 
 {
@@ -24,7 +27,7 @@ namespace TravelListApp.ViewModels
                 if (_model != value)
                 {
                     _model = value;
-
+                    FillSyncPoints();
                     // Raise the PropertyChanged event for all properties.
                     OnPropertyChanged(string.Empty);
                 }
@@ -180,6 +183,33 @@ namespace TravelListApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets or sets newPoints.
+        /// </summary>
+        public List<PointOfInterest> syncPoints = new List<PointOfInterest>();
+
+        public void FillSyncPoints()
+        {
+            syncPoints = new List<PointOfInterest>();
+            foreach (TravelPointOfInterest point in Points)
+            {
+                syncPoints.Add(new PointOfInterest() {
+                    TravelPointOfInterestID = point.TravelPointOfInterestID,
+                    Name = point.Name,
+                    ImageSourceUri = new Uri("ms-appx:///Assets/MapPin.png"),
+                    NormalizedAnchorPoint = new Point(0.5, 1),
+                    Latitude = (decimal)point.Latitude,
+                    Longitude = (decimal)point.Longitude,
+                    Location = new Geopoint(new BasicGeoposition()
+                    {
+                        Latitude = (double)point.Latitude,
+                        Longitude = (double)point.Longitude
+                    }),
+                    TravelListItemID = point.TravelListItemID
+                });
+            }
+        }
+
         public List<String> Countries = App.ViewModel.Countries.Select(x => x.Name).ToList();
 
         /// <summary>
@@ -197,6 +227,20 @@ namespace TravelListApp.ViewModels
             } else
             {
                 await App.Repository.TravelLists.UpdateTravelList(Model.TravelListItemID, Model);
+            }
+        }
+
+        /// <summary>
+        /// Saves travellist data that has been edited.
+        /// </summary>
+        public async Task SavePointsAsync()
+        {
+            foreach (PointOfInterest point in syncPoints)
+            {
+                if (point.IsNew)
+                {
+                    await App.Repository.Points.CreateTravelPointOfInterest(point);
+                }
             }
         }
 
