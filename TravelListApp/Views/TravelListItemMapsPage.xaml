@@ -21,7 +21,7 @@
                     <PathIcon Data="{x:Bind RemovePointIcon.Glyph}" HorizontalAlignment="Center"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton x:Name="SaveCommandButton" Label="Save" Foreground="{StaticResource PageForegroundBrush}">
+            <AppBarButton x:Name="SaveCommandButton" Label="Save" Foreground="{StaticResource PageForegroundBrush}" Click="SaveAppBar_Click">
                 <AppBarButton.Icon>
                     <PathIcon Data="{x:Bind SaveIcon.Glyph}" HorizontalAlignment="Center"/>
                 </AppBarButton.Icon>
@@ -45,7 +45,7 @@
                         <Button x:Name="mapItemButton" Click="mapItemButton_Click" Background="Transparent">
                             <StackPanel>
                                 <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                                    <TextBlock Text="{Binding DisplayName}"/>
+                                    <TextBlock Text="{Binding Name}"/>
                                 </Border>
                                 <Image Source="{Binding ImageSourceUri}"
                                                maps:MapControl.NormalizedAnchorPoint="{Binding NormalizedAnchorPoint}"

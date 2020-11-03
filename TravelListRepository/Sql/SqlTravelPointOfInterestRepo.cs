@@ -17,6 +17,16 @@ namespace TravelListRepository.Sql
             _context = context;
         }
 
+        public async Task CreateTravelPointOfInterest(TravelPointOfInterest tl)
+        {
+            if (tl == null)
+            {
+                throw new ArgumentNullException(nameof(tl));
+            }
+            _context.Points.Add(tl);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<TravelPointOfInterest> GetTravelPointOfInterestById(int id)
         {
             return await _context.Points.AsNoTracking().FirstOrDefaultAsync(p => p.TravelPointOfInterestID == id);

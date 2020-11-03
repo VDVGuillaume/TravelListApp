@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using TravelListApp.Models;
 using TravelListApp.Mvvm;
 using TravelListApp.Services.Icons;
 using TravelListApp.ViewModels;
@@ -24,13 +25,6 @@ using Windows.UI.Xaml.Navigation;
 
 namespace TravelListApp.Views
 {
-    public class PointOfInterest
-    {
-        public string DisplayName { get; set; }
-        public Geopoint Location { get; set; }
-        public Uri ImageSourceUri { get; set; }
-        public Point NormalizedAnchorPoint { get; set; }
-    }
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -39,7 +33,6 @@ namespace TravelListApp.Views
         public TravelListItemMapsPage()
         {
             this.InitializeComponent();
-            _pinUri = new Uri("ms-appx:///Assets/MapPin.png");
             _pointOfInterests = new List<PointOfInterest>();
             _addPointMode = false;
             _removePointMode = false;
@@ -78,24 +71,8 @@ namespace TravelListApp.Views
 
         private void AddPoints()
         {
-            foreach (TravelPointOfInterest point in ViewModel.Points)
-            {
-                _pointOfInterests.Add(
-                    new PointOfInterest()
-                    {
-                        DisplayName = point.Name,
-                        ImageSourceUri = _pinUri,
-                        NormalizedAnchorPoint = new Point(0.5, 1),
-                        Location = new Geopoint(new BasicGeoposition()
-                        {
-                            Latitude = (double)point.Latitude,
-                            Longitude = (double)point.Longitude
-                        })
-                    }
-                );
-            }
             MapItems.ItemsSource = new List<PointOfInterest>();
-            MapItems.ItemsSource = _pointOfInterests;
+            MapItems.ItemsSource = ViewModel.syncPoints.FindAll(p => p.ToRemove == false);
         }
 
         private void MapUserTapped(MapControl sender, MapInputEventArgs args)
@@ -108,21 +85,25 @@ namespace TravelListApp.Views
             //to get a basicgeoposition of wherever the user clicks on the map
             BasicGeoposition basgeo_edit_position = args.Location.Position;
 
-            _pointOfInterests.Add(
-                new PointOfInterest()
+            PointOfInterest newPoint = 
+            new PointOfInterest()
+            {
+                Name = "Place One",
+                ImageSourceUri = new Uri("ms-appx:///Assets/MapPin.png"),
+                NormalizedAnchorPoint = new Point(0.5, 1),
+                Latitude = (decimal)basgeo_edit_position.Latitude,
+                Longitude = (decimal)basgeo_edit_position.Longitude,
+                Location = new Geopoint(new BasicGeoposition()
                 {
-                    DisplayName = "Place One",
-                    ImageSourceUri = _pinUri,
-                    NormalizedAnchorPoint = new Point(0.5, 1),
-                    Location = new Geopoint(new BasicGeoposition()
-                    {
-                        Latitude = basgeo_edit_position.Latitude,
-                        Longitude = basgeo_edit_position.Longitude
-                    })
-                }
-                );
-            MapItems.ItemsSource = new List<PointOfInterest>();
-            MapItems.ItemsSource = _pointOfInterests;
+                    Latitude = (double)basgeo_edit_position.Latitude,
+                    Longitude = (double)basgeo_edit_position.Longitude
+                }),
+                TravelListItemID = ViewModel.TravelListItemID,
+                IsNew = true
+            };
+
+            ViewModel.syncPoints.Add(newPoint);
+            AddPoints();
         }
 
         private void AddPointAppBar_Click(object sender, RoutedEventArgs e)
@@ -146,14 +127,16 @@ namespace TravelListApp.Views
             {
                 _removePointMode = false;
                 RemovePointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["PageForegroundBrush"]);
-                _pointOfInterests.Remove(_selectedPointOfInterests);
-                MapItems.ItemsSource = new List<PointOfInterest>();
-                MapItems.ItemsSource = _pointOfInterests;
+                _selectedPointOfInterests.ToRemove = true;
+                AddPoints();
                 _selectedPointOfInterests = null;
             }
         }
 
-        
+        private async void SaveAppBar_Click(object sender, RoutedEventArgs e)
+        {
+            await ViewModel.SavePointsAsync();
+        }
 
         private void mapItemButton_Click(object sender, RoutedEventArgs e)
         {

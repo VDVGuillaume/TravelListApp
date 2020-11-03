@@ -14,6 +14,7 @@ namespace RestApi.Profiles
         {
             //Source -> Target
             CreateMap<TravelPointOfInterest, TravelPointOfInterestReadDto>();
+            CreateMap<TravelPointOfInterestCreateDto, TravelPointOfInterest>();
         }
     }
 }

@@ -15,6 +15,9 @@ namespace TravelListRepository.Rest
             _http = new HttpHelper(baseUrl);
         }
 
+        public async Task CreateTravelPointOfInterest(TravelPointOfInterest tl) =>
+            await _http.PostAsync<TravelPointOfInterest, TravelPointOfInterest>("TravelPointOfInterests", tl);
+
         public async Task<TravelPointOfInterest> GetTravelPointOfInterestById(int id) =>
             await _http.GetAsync<TravelPointOfInterest>($"TravelPointOfInterests/{id}");
 
