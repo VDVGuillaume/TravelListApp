@@ -12,6 +12,15 @@ namespace TravelListRepository.Sql
         }
         public DbSet<TravelListItem> TravelLists { get; set; }
         public DbSet<CheckListItem> Items { get; set; }
+        public DbSet<TravelPointOfInterest> Points { get; set; }
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<TravelPointOfInterest>()
+        //        .HasOne(p => p.TravelListItem)
+        //        .WithMany(b => b.Points)
+        //        .HasForeignKey(p => p.TravelListItemID);
+        //}
 
         protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder)
         {

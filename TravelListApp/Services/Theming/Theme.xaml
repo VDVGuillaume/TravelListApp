@@ -14,6 +14,8 @@
                      Opacity=".1" />
     <SolidColorBrush x:Key="HighlightBrush"
                      Color="#FFEFBF7D" />
+    <SolidColorBrush x:Key="ActionBrush"
+                     Color="#FFFF0000" />
 
     <!-- Header -->
     <SolidColorBrush x:Key="TitlebarBackgroundBrush"

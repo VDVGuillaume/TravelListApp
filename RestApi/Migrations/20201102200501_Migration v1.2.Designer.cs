@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelListRepository.Sql;
 
 namespace TravelList.Api.Migrations
 {
     [DbContext(typeof(TravelListContext))]
-    partial class TravelListContextModelSnapshot : ModelSnapshot
+    [Migration("20201102200501_Migration v1.2")]
+    partial class Migrationv12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,39 +60,10 @@ namespace TravelList.Api.Migrations
                     b.ToTable("TravelLists");
                 });
 
-            modelBuilder.Entity("TravelListModels.TravelPointOfInterest", b =>
-                {
-                    b.Property<int>("TravelPointOfInterestID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("Latitude");
-
-                    b.Property<decimal>("Longitude");
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("TravelListItemID");
-
-                    b.HasKey("TravelPointOfInterestID");
-
-                    b.HasIndex("TravelListItemID");
-
-                    b.ToTable("Points");
-                });
-
             modelBuilder.Entity("TravelListModels.CheckListItem", b =>
                 {
                     b.HasOne("TravelListModels.TravelListItem", "TravelListItem")
                         .WithMany("Items")
-                        .HasForeignKey("TravelListItemID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("TravelListModels.TravelPointOfInterest", b =>
-                {
-                    b.HasOne("TravelListModels.TravelListItem", "TravelListItem")
-                        .WithMany("Points")
                         .HasForeignKey("TravelListItemID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

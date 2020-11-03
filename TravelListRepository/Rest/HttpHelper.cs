@@ -76,6 +76,21 @@ namespace TravelListRepository.Rest
         }
 
         /// <summary>
+        /// Makes an HTTP POST request to the given controller with the given object as the body.
+        /// Returns the deserialized response content.
+        /// </summary>
+        public async Task<TResult> PutAsync<TRequest, TResult>(string controller, TRequest body)
+        {
+            using (var client = BaseClient())
+            {
+                var response = await client.PutAsync(controller, new JsonStringContent(body));
+                string json = await response.Content.ReadAsStringAsync();
+                TResult obj = JsonConvert.DeserializeObject<TResult>(json);
+                return obj;
+            }
+        }
+
+        /// <summary>
         /// Makes an HTTP DELETE request to the given controller and includes all the given
         /// object's properties as URL parameters. Returns the deserialized response content.
         /// </summary>
