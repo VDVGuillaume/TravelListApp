@@ -144,6 +144,42 @@ namespace TravelListApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets or sets the customer's first name.
+        /// </summary>
+        public List<CheckListItem> Items
+        {
+            get => Model.Items.ToList();
+            set
+            {
+                if (value != Model.Items)
+                {
+                    Model.Items = value;
+                    IsModified = true;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Image));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the customer's first name.
+        /// </summary>
+        public List<TravelPointOfInterest> Points
+        {
+            get => Model.Points.ToList();
+            set
+            {
+                if (value != Model.Points)
+                {
+                    Model.Points = value;
+                    IsModified = true;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Image));
+                }
+            }
+        }
+
         public List<String> Countries = App.ViewModel.Countries.Select(x => x.Name).ToList();
 
         /// <summary>

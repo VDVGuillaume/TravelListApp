@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using TravelListApp.Mvvm;
 using TravelListApp.Services.Icons;
 using TravelListApp.ViewModels;
+using TravelListModels;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -64,6 +65,7 @@ namespace TravelListApp.Views
             Menu.SetModel(ViewModel);
             // Send page type to menu.
             Menu.SetTab(GetType());
+            AddPoints();
             base.OnNavigatedTo(e);
         }
 
@@ -72,6 +74,28 @@ namespace TravelListApp.Views
             Geopoint zoomPoint = new Geopoint(new BasicGeoposition() { Latitude = (double)ViewModel.Latitude, Longitude = (double)ViewModel.Longitude });
             myMap.Center = zoomPoint;
             myMap.ZoomLevel = 5;
+        }
+
+        private void AddPoints()
+        {
+            foreach (TravelPointOfInterest point in ViewModel.Points)
+            {
+                _pointOfInterests.Add(
+                    new PointOfInterest()
+                    {
+                        DisplayName = point.Name,
+                        ImageSourceUri = _pinUri,
+                        NormalizedAnchorPoint = new Point(0.5, 1),
+                        Location = new Geopoint(new BasicGeoposition()
+                        {
+                            Latitude = (double)point.Latitude,
+                            Longitude = (double)point.Longitude
+                        })
+                    }
+                );
+            }
+            MapItems.ItemsSource = new List<PointOfInterest>();
+            MapItems.ItemsSource = _pointOfInterests;
         }
 
         private void MapUserTapped(MapControl sender, MapInputEventArgs args)
