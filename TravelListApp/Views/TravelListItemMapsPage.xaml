@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:uc="using:TravelListApp.UserControls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -31,14 +32,27 @@
 
     <Grid Background="{StaticResource PageBackgroundBrush}"
           Padding="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <local:TravelListItemMenu x:Name="Menu" />
 
-        <maps:MapControl x:Name="myMap" Loaded="MyMap_Loaded" MapTapped="MapUserTapped" Grid.Row="2">
+        <uc:CollapsibleSearchBox
+                x:Name="BingSearchBox"
+                Margin="0 0 0 0"
+                Grid.Row="2"
+                Loaded="BingSearchBox_Loaded"
+                RelativePanel.AlignRightWithPanel="True"/>
+
+        <maps:MapControl x:Name="myMap" Loaded="MyMap_Loaded" MapTapped="MapUserTapped" Grid.Row="3" >
             <maps:MapItemsControl x:Name="MapItems">
                 <maps:MapItemsControl.ItemTemplate>
                     <DataTemplate>

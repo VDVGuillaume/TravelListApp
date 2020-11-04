@@ -119,6 +119,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\CollapsibleSearchBox.xaml.cs">
+      <DependentUpon>CollapsibleSearchBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ItemsControlExtensions.cs" />
     <Compile Include="Models\PointOfInterest.cs" />
     <Compile Include="Mvvm\BindableBase.cs" />
@@ -176,12 +179,17 @@
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\mappin.png" />
+    <Content Include=".env" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="UserControls\CollapsibleSearchBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Services\Icons\Icons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

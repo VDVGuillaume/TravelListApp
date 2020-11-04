@@ -58,6 +58,7 @@ namespace TravelListApp.Views
             Menu.SetModel(ViewModel);
             // Send page type to menu.
             Menu.SetTab(GetType());
+            myMap.MapServiceToken = App.ViewModel.MapServiceToken;
             AddPoints();
             base.OnNavigatedTo(e);
         }
@@ -147,6 +148,75 @@ namespace TravelListApp.Views
             _removePointMode = true;
             RemovePointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["ActionBrush"]);
         }
+
+        /// <summary>
+        /// Initializes the AutoSuggestBox portion of the search box.
+        /// </summary>
+        private void BingSearchBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (BingSearchBox != null)
+            {
+                BingSearchBox.AutoSuggestBox.QuerySubmitted += BingSearchBox_QuerySubmitted;
+                // BingSearchBox.AutoSuggestBox.TextChanged += BingSearchBox_TextChanged;
+                BingSearchBox.AutoSuggestBox.PlaceholderText = "Search address...";
+            }
+        }
+
+        /// <summary>
+        /// Filters the customer list based on the search text.
+        /// </summary>
+        private async void BingSearchBox_QuerySubmitted(AutoSuggestBox sender,
+            AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            if (String.IsNullOrEmpty(args.QueryText))
+            {
+                sender.ItemsSource = null;
+            }
+            else
+            {
+                Location location = await ViewModel.GetBingSearchResultsAsync(args.QueryText);
+                List<Resources> resourceSets = location.resourceSets.ToList();
+                List<Resource> resources = resourceSets[0].resources.OrderByDescending(r => r.confidence == "High")
+                .ThenByDescending(r => r.confidence == "Medium")
+                .ThenByDescending(r => r.confidence == "Low").ToList();
+                List<string> names = resources.Select(x => x.name).ToList();
+                sender.ItemsSource = names;
+
+                if (resources.Count > 0)
+                {
+                    Geopoint zoomPoint = new Geopoint(new BasicGeoposition() { Latitude = (double)resources[0].point.coordinates[0], Longitude = (double)resources[0].point.coordinates[1] });
+                    myMap.Center = zoomPoint;
+                    myMap.ZoomLevel = 12;
+                }
+
+            }
+        }
+
+        ///// <summary>
+        ///// Updates the search box items source when the user changes the search text.
+        ///// </summary>
+        //private async void BingSearchBox_TextChanged(AutoSuggestBox sender,
+        //    AutoSuggestBoxTextChangedEventArgs args)
+        //{
+        //    // We only want to get results when it was a user typing,
+        //    // otherwise we assume the value got filled in by TextMemberPath
+        //    // or the handler for SuggestionChosen.
+        //    if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+        //    {
+        //        // If no search query is entered, refresh the complete list.
+        //        if (String.IsNullOrEmpty(sender.Text))
+        //        {
+
+        //            sender.ItemsSource = null;
+        //        }
+        //        else
+        //        {
+        //            await ViewModel.GetBingSearchResultsAsync(sender.Text);
+        //            sender.ItemsSource = null;
+                    
+        //        }
+        //    }
+        //}
 
     }
 

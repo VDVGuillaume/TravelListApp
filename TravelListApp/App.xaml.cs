@@ -49,6 +49,9 @@ namespace TravelListApp
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            DotNetEnv.Env.Load();
+
+            ViewModel.MapServiceToken = System.Environment.GetEnvironmentVariable("MAP_SERVICE_TOKEN");
 
             Repository = new RestTravelListInstanceRepository("http://localhost:60561/api/");
 
