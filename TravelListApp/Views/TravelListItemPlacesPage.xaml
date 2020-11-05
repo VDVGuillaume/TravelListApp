@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="TravelListApp.Views.TravelListItemMapsPage"
+    x:Class="TravelListApp.Views.TravelListItemPlacesPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:TravelListApp.Views"
@@ -10,7 +10,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid x:Name="Grid" Background="{StaticResource PageBackgroundBrush}"
+    <Grid x:Name="Grid" Background="{StaticResource TravelBackground2}"
           Padding="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -59,7 +59,7 @@
             </maps:MapItemsControl>
         </maps:MapControl>
 
-        <CommandBar Grid.Row="3" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" SizeChanged="CommandBar_SizeChanged">
+        <CommandBar Grid.Row="3" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" SizeChanged="CommandBar_SizeChanged" Background="{StaticResource MaskBackground}">
             <AppBarButton x:Name="AddPointCommandButton" Label="Add" Foreground="{StaticResource PageForegroundBrush}" Click="AddPointAppBar_Click" >
                 <AppBarButton.Icon >
                     <PathIcon Data="{x:Bind AddPointIcon.Glyph}" HorizontalAlignment="Center" />

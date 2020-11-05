@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="using:TravelListApp.UserControls"
     xmlns:vm="using:TravelListApp.Mvvm"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -37,12 +38,12 @@
 
     </Page.Resources>
 
-    <Grid Style="{StaticResource LayoutRootStyle}">
+    <Grid Background="{StaticResource TravelBackground2}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Column="0" Grid.Row="0">
+        <Grid Grid.Column="0" Grid.Row="0" Background="{StaticResource MaskBackground}" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" />
@@ -50,15 +51,18 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <SearchBox Margin="50 0 0 0" Grid.Row="0" Grid.Column="0" x:Name="mySearchBox" 
-                FocusOnKeyboardInput="True"/>
+            <uc:CollapsibleSearchBox
+                x:Name="travelSearchBox"
+                Margin="50 0 0 0"
+                Grid.Row="0" Grid.Column="0"
+                RelativePanel.AlignRightWithPanel="True"/>
             <AppBarButton Grid.Row="0" Grid.Column="1" Icon="Add"
                 Click="AddButton_Click"
                 HorizontalAlignment="Right"
                 Label="Add"
                 IsCompact="False" />
         </Grid>
-        <Grid Grid.Column="0" Grid.Row="1">
+        <Grid Grid.Column="0" Grid.Row="1" Background="{StaticResource MaskBackground}">
             <SemanticZoom x:Name="Zoom" ScrollViewer.ZoomMode="Enabled">
             <SemanticZoom.ZoomedInView>
                 <GridView Margin="24"

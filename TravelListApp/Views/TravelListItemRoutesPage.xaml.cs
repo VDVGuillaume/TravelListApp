@@ -11,6 +11,7 @@ using TravelListModels;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Services.Maps;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -28,9 +29,9 @@ namespace TravelListApp.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class TravelListItemMapsPage : Page
+    public sealed partial class TravelListItemRoutesPage : Page
     {
-        public TravelListItemMapsPage()
+        public TravelListItemRoutesPage()
         {
             this.InitializeComponent();
             _pointOfInterests = new List<PointOfInterest>();
@@ -53,6 +54,42 @@ namespace TravelListApp.Views
         private PointOfInterest _selectedPointOfInterests { get; set; }
 
         public TravelListItemViewModel ViewModel { get; set; }
+
+        private async void ShowRouteOnMap()
+        {
+            // Start at Microsoft in Redmond, Washington.
+            BasicGeoposition startLocation = new BasicGeoposition() { Latitude = 47.643, Longitude = -122.131 };
+
+            // End at the city of Seattle, Washington.
+            BasicGeoposition endLocation = new BasicGeoposition() { Latitude = 47.604, Longitude = -122.329 };
+
+
+            // Get the route between the points.
+            MapRouteFinderResult routeResult =
+                  await MapRouteFinder.GetDrivingRouteAsync(
+                  new Geopoint(startLocation),
+                  new Geopoint(endLocation),
+                  MapRouteOptimization.Time,
+                  MapRouteRestrictions.None);
+
+            if (routeResult.Status == MapRouteFinderStatus.Success)
+            {
+                // Use the route to initialize a MapRouteView.
+                MapRouteView viewOfRoute = new MapRouteView(routeResult.Route);
+                viewOfRoute.RouteColor = Colors.Yellow;
+                viewOfRoute.OutlineColor = Colors.Black;
+
+                // Add the new MapRouteView to the Routes collection
+                // of the MapControl.
+                myMap.Routes.Add(viewOfRoute);
+
+                // Fit the MapControl to the route.
+                await myMap.TrySetViewBoundsAsync(
+                      routeResult.Route.BoundingBox,
+                      null,
+                      Windows.UI.Xaml.Controls.Maps.MapAnimationKind.None);
+            }
+        }
 
         private void CommandBar_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -81,9 +118,7 @@ namespace TravelListApp.Views
 
         private void MyMap_Loaded(object sender, RoutedEventArgs e)
         {
-            Geopoint zoomPoint = new Geopoint(new BasicGeoposition() { Latitude = (double)ViewModel.Latitude, Longitude = (double)ViewModel.Longitude });
-            myMap.Center = zoomPoint;
-            myMap.ZoomLevel = 5;
+            ShowRouteOnMap();
         }
 
         private void AddPoints()

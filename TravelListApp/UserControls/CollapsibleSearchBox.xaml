@@ -25,6 +25,7 @@
         </ToggleButton>
 
         <AutoSuggestBox
+            VerticalAlignment="Stretch"
             x:Name="searchBox"
             LostFocus="SearchBox_LostFocus"
             PlaceholderText="Search..."

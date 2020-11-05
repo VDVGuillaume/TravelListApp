@@ -59,7 +59,7 @@
                    IsPaneOpen="False"
                    CompactPaneLength="48"
                    OpenPaneLength="200"
-                   PaneBackground="{StaticResource SplitViewBackgroundBrush}"
+                   PaneBackground="{StaticResource TravelBackground2}"
                    DisplayMode="Overlay">
             <SplitView.Pane>
                 <Grid x:Name="SplitViewPane"
@@ -67,7 +67,7 @@
                       HorizontalAlignment="Stretch"
                       ManipulationMode="TranslateX"
                       ManipulationCompleted="SplitViewPane_ManipulationCompleted"
-                      Background="{StaticResource SplitViewBackgroundBrush}">
+                      Background="{StaticResource MaskBackground}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
@@ -83,7 +83,7 @@
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
-                <Grid Background="{StaticResource PageBackgroundBrush}">
+                <Grid Background="{StaticResource TravelBackground2}">
                     <!-- Navigation Frame -->
                     <Frame x:Name="SplitViewFrame"
                            Navigated="SplitViewFrame_OnNavigated"

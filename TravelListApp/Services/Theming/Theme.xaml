@@ -5,6 +5,11 @@
     <!-- Default Accent Color -->
     <Color x:Key="DefaultAccentColor">#8882A8</Color>
 
+    <!-- ImageBrush Color -->
+    <ImageBrush ImageSource="/Assets/TravelBackground1.png" x:Key="TravelBackground1" Stretch="UniformToFill"/>
+    <ImageBrush ImageSource="/Assets/TravelBackground2.png" x:Key="TravelBackground2" Stretch="UniformToFill"/>
+    <AcrylicBrush x:Key="MaskBackground" BackgroundSource="Backdrop" TintColor="White" TintOpacity="0.01" FallbackColor="White"/>
+
     <!-- General Purpose -->
     <SolidColorBrush x:Key="TenPercentDarkerBrush"
                      Color="Black"

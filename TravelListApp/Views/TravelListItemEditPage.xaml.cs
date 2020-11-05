@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using TravelListApp.Mvvm;
+using TravelListApp.Services.Icons;
 using TravelListApp.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -26,9 +28,11 @@ namespace TravelListApp.Views
         public TravelListItemEditPage()
         {
             this.InitializeComponent();
+            SaveIcon = new ButtonItem() { Glyph = Icon.GetIcon("Save"), Text = "Save" };
         }
 
         public TravelListItemViewModel ViewModel { get; set; }
+        public ButtonItem SaveIcon { get; set; }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -50,7 +54,7 @@ namespace TravelListApp.Views
             base.OnNavigatedTo(e);
         }
 
-        private async void SaveButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void SaveAppBar_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             await ViewModel.SaveAsync();
         }

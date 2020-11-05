@@ -8,9 +8,10 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Background="{StaticResource PageBackgroundBrush}"
+    <Grid Background="{StaticResource TravelBackground2}"
           Padding="10">
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <!--<RowDefinition Height="auto" />-->
@@ -18,19 +19,6 @@
 
         <local:TravelListItemMenu x:Name="Menu" />
         
-        <Grid Grid.Column="0" Grid.Row="0" x:Name="CmdGrid">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <AppBarButton Icon="Save"
-                Click="SaveButton_Click"
-                HorizontalAlignment="Right"
-                Label="Save"
-                IsCompact="False" />
-        </Grid>
         <Grid Grid.Column="0" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
@@ -78,5 +66,12 @@
                 </ItemsControl>
             </Grid>
         </Grid>
+        <CommandBar Grid.Column="0" Grid.Row="2" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" Background="{StaticResource MaskBackground}" >
+            <AppBarButton x:Name="SaveCommandButton" Label="Save" Foreground="{StaticResource PageForegroundBrush}" Click="SaveAppBar_Click">
+                <AppBarButton.Icon>
+                    <PathIcon Data="{x:Bind SaveIcon.Glyph}" HorizontalAlignment="Center"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </CommandBar>
     </Grid>
 </Page>

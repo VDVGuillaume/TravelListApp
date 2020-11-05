@@ -150,8 +150,11 @@
     <Compile Include="Views\TravelListItemChecklistPage.xaml.cs">
       <DependentUpon>TravelListItemChecklistPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TravelListItemMapsPage.xaml.cs">
-      <DependentUpon>TravelListItemMapsPage.xaml</DependentUpon>
+    <Compile Include="Views\TravelListItemRoutesPage.xaml.cs">
+      <DependentUpon>TravelListItemRoutesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TravelListItemPlacesPage.xaml.cs">
+      <DependentUpon>TravelListItemPlacesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TravelListItemMenu.xaml.cs">
       <DependentUpon>TravelListItemMenu.xaml</DependentUpon>
@@ -179,6 +182,8 @@
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\mappin.png" />
+    <Content Include="Assets\TravelBackground1.png" />
+    <Content Include="Assets\TravelBackground2.png" />
     <Content Include=".env" />
   </ItemGroup>
   <ItemGroup>
@@ -218,7 +223,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TravelListItemMapsPage.xaml">
+    <Page Include="Views\TravelListItemRoutesPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TravelListItemPlacesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
