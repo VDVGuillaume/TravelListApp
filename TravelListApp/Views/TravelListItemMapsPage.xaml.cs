@@ -39,11 +39,13 @@ namespace TravelListApp.Views
             SaveIcon = new ButtonItem() { Glyph = Icon.GetIcon("Save"), Text = "Save" };
             AddPointIcon = new ButtonItem() { Glyph = Icon.GetIcon("Pin"), Text = "Pin" };
             RemovePointIcon = new ButtonItem() { Glyph = Icon.GetIcon("Clear"), Text = "Clear" };
+            _placeNameTextBoxSize = SecondaryTileCommandBar.ActualWidth / 2;
         }
 
         public ButtonItem SaveIcon { get; set; }
         public ButtonItem AddPointIcon { get; set; }
         public ButtonItem RemovePointIcon { get; set; }
+        private double _placeNameTextBoxSize { get; set; }
         private Boolean _addPointMode { get; set; }
         private Boolean _removePointMode { get; set; }
         private Uri _pinUri { get; set; }
@@ -51,6 +53,20 @@ namespace TravelListApp.Views
         private PointOfInterest _selectedPointOfInterests { get; set; }
 
         public TravelListItemViewModel ViewModel { get; set; }
+
+        private void CommandBar_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (SecondaryTileCommandBar == null)
+            {
+                return;
+            }
+
+            // Only react to change in Width.
+            if (e.NewSize.Width != e.PreviousSize.Width)
+            {
+                PlaceNameTextBox.Width = SecondaryTileCommandBar.ActualWidth / 2;
+            }
+        }        
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -86,10 +102,10 @@ namespace TravelListApp.Views
             //to get a basicgeoposition of wherever the user clicks on the map
             BasicGeoposition basgeo_edit_position = args.Location.Position;
 
-            PointOfInterest newPoint = 
+            PointOfInterest newPoint =
             new PointOfInterest()
             {
-                Name = "Place One",
+                Name = PlaceNameTextBox.Text,
                 ImageSourceUri = new Uri("ms-appx:///Assets/MapPin.png"),
                 NormalizedAnchorPoint = new Point(0.5, 1),
                 Latitude = (decimal)basgeo_edit_position.Latitude,
@@ -105,6 +121,7 @@ namespace TravelListApp.Views
 
             ViewModel.syncPoints.Add(newPoint);
             AddPoints();
+            PlaceNameTextBox.Text = "";
         }
 
         private void AddPointAppBar_Click(object sender, RoutedEventArgs e)
@@ -114,9 +131,11 @@ namespace TravelListApp.Views
             _selectedPointOfInterests = null;
             if (_addPointMode)
             {
+                PlaceNameTextBox.IsEnabled = true;
                 AddPointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["ActionBrush"]);
             } else
             {
+                PlaceNameTextBox.IsEnabled = false;
                 AddPointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["PageForegroundBrush"]);
             }
             

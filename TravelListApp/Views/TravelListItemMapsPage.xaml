@@ -10,37 +10,19 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Page.BottomAppBar>
-        <CommandBar x:Name="SecondaryTileCommandBar" Padding="10,0,10,0" IsSticky="True" IsOpen="False" >
-            <AppBarButton x:Name="AddPointCommandButton" Label="Add" Foreground="{StaticResource PageForegroundBrush}" Click="AddPointAppBar_Click" >
-                <AppBarButton.Icon >
-                    <PathIcon Data="{x:Bind AddPointIcon.Glyph}" HorizontalAlignment="Center" />
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <AppBarButton x:Name="RemovePointCommandButton" Label="Remove" Foreground="{StaticResource PageForegroundBrush}" Click="RemovePointAppBar_Click">
-                <AppBarButton.Icon>
-                    <PathIcon Data="{x:Bind RemovePointIcon.Glyph}" HorizontalAlignment="Center"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <AppBarButton x:Name="SaveCommandButton" Label="Save" Foreground="{StaticResource PageForegroundBrush}" Click="SaveAppBar_Click">
-                <AppBarButton.Icon>
-                    <PathIcon Data="{x:Bind SaveIcon.Glyph}" HorizontalAlignment="Center"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
-        </CommandBar>
-    </Page.BottomAppBar>
-
-    <Grid Background="{StaticResource PageBackgroundBrush}"
+    <Grid x:Name="Grid" Background="{StaticResource PageBackgroundBrush}"
           Padding="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <local:TravelListItemMenu x:Name="Menu" />
@@ -48,11 +30,11 @@
         <uc:CollapsibleSearchBox
                 x:Name="BingSearchBox"
                 Margin="0 0 0 0"
-                Grid.Row="2"
+                Grid.Row="1"
                 Loaded="BingSearchBox_Loaded"
                 RelativePanel.AlignRightWithPanel="True"/>
 
-        <maps:MapControl x:Name="myMap" Loaded="MyMap_Loaded" MapTapped="MapUserTapped" Grid.Row="3" >
+        <maps:MapControl x:Name="myMap" Loaded="MyMap_Loaded" MapTapped="MapUserTapped" Grid.Row="2" >
             <maps:MapItemsControl x:Name="MapItems">
                 <maps:MapItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -77,5 +59,25 @@
             </maps:MapItemsControl>
         </maps:MapControl>
 
+        <CommandBar Grid.Row="3" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" SizeChanged="CommandBar_SizeChanged">
+            <AppBarButton x:Name="AddPointCommandButton" Label="Add" Foreground="{StaticResource PageForegroundBrush}" Click="AddPointAppBar_Click" >
+                <AppBarButton.Icon >
+                    <PathIcon Data="{x:Bind AddPointIcon.Glyph}" HorizontalAlignment="Center" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="RemovePointCommandButton" Label="Remove" Foreground="{StaticResource PageForegroundBrush}" Click="RemovePointAppBar_Click">
+                <AppBarButton.Icon>
+                    <PathIcon Data="{x:Bind RemovePointIcon.Glyph}" HorizontalAlignment="Center"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton x:Name="SaveCommandButton" Label="Save" Foreground="{StaticResource PageForegroundBrush}" Click="SaveAppBar_Click">
+                <AppBarButton.Icon>
+                    <PathIcon Data="{x:Bind SaveIcon.Glyph}" HorizontalAlignment="Center"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <CommandBar.Content>
+                <TextBox x:Name="PlaceNameTextBox" PlaceholderText="Placename..."/>
+            </CommandBar.Content>
+        </CommandBar>
     </Grid>
 </Page>
