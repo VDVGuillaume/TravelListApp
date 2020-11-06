@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Background="{StaticResource PageBackgroundBrush}"
+    <Grid Background="{StaticResource TravelBackground2}"
           Padding="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />

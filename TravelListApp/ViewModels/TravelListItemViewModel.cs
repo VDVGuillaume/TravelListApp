@@ -245,6 +245,15 @@ namespace TravelListApp.ViewModels
         }
 
         /// <summary>
+        /// Saves travellist data that has been edited.
+        /// </summary>
+        public async Task<Location> GetBingSearchResultsAsync(string search)
+        {
+            Location location = await App.Repository.Bing.GetLocationByQuery(search);
+            return location;
+        }
+
+        /// <summary>
         /// Raised when the user cancels the changes they've made to the customer data.
         /// </summary>
         public event EventHandler AddNewTravelListCanceled;

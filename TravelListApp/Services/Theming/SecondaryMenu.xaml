@@ -19,9 +19,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
-                    <ListViewItemPresenter SelectedBackground="{StaticResource PageBackgroundBrush}"
-                                           SelectedPointerOverBackground="{StaticResource TenPercentLighterBrush}"
-                                           PointerOverBackground="{StaticResource TenPercentDarkerBrush}"
+                    <ListViewItemPresenter SelectedBackground="{StaticResource TwintyPercentGrayBrush}"
+                                           SelectedPointerOverBackground="{StaticResource TenPercentDarkerBrush}"
+                                           PointerOverBackground="{StaticResource TenPercentGrayBrush}"
                                            ContentTransitions="{TemplateBinding ContentTransitions}"
                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -44,12 +44,12 @@
                       HorizontalAlignment="Center"
                       Height="40"
                       Width="40"
-                      Fill="{StaticResource PageForegroundBrush}"
+                      Fill="{StaticResource WhiteBrush}"
                       Stretch="Uniform" />
             </Border>
             <TextBlock Text="{Binding Text}"
                        Margin="0 4 0 0"
-                       Foreground="{StaticResource PageForegroundBrush}"
+                       Foreground="{StaticResource WhiteBrush}"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </StackPanel>

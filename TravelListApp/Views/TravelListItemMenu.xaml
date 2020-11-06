@@ -8,8 +8,13 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
+    <!--<UserControl.Resources>
+        <ImageBrush ImageSource="/Assets/Travel-Wallpaper-Background.png" x:Key="ImageBackground" Stretch="UniformToFill"/>
+        <AcrylicBrush x:Key="MaskBackground" BackgroundSource="Backdrop" TintColor="White" TintOpacity="0.1" FallbackColor="White"/>
+    </UserControl.Resources>-->
+
     <GridView x:Name="GridView"
-              Background="{StaticResource TenPercentDarkerBrush}"
+              Background="{StaticResource transBrush}"
               HorizontalAlignment="Stretch"
               HorizontalContentAlignment="Stretch"
               VerticalAlignment="Stretch"
@@ -31,18 +36,19 @@
         <GridViewItem VerticalAlignment="Stretch"
                       VerticalContentAlignment="Center"
                       HorizontalAlignment="Stretch"
-                      HorizontalContentAlignment="Left">
+                      HorizontalContentAlignment="Left"
+                      Background="{StaticResource transBrush}">
             <Viewbox x:Name="Title"
                      Stretch="Uniform"
                      StretchDirection="DownOnly"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Center">
-                <TextBlock Foreground="{StaticResource PageForegroundBrush}"
+                <TextBlock Foreground="{StaticResource WhiteBrush}"
                            FontSize="48"
                            FontWeight="Light"
                            VerticalAlignment="Top"
                            HorizontalAlignment="Left"
-                           Margin="48 8 0 0">
+                           Margin="48 0 0 0">
                 <Run Text="TravelList" />
                 </TextBlock>
             </Viewbox>
@@ -70,6 +76,5 @@
                           Margin="20 10 10 0" />
             </Viewbox>
         </GridViewItem>
-
     </GridView>
 </UserControl>

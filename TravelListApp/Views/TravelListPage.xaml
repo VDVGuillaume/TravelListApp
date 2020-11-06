@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="using:TravelListApp.UserControls"
     xmlns:vm="using:TravelListApp.Mvvm"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -22,11 +23,10 @@
             <Button
                 Click="GoToButton_Click"
                 Tag="{Binding TravelListItemID}"
+                Background="{StaticResource transBrush}"
             >
-                <Grid HorizontalAlignment="Left" Width="250" Height="250">
-                    <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}">
-                        <Image Source="{Binding Image}" Stretch="UniformToFill"/>
-                    </Border>
+                <Grid HorizontalAlignment="Left" Width="200" Height="200">
+                    <Image Source="{Binding Image}" Stretch="UniformToFill"/>
                     <StackPanel VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
                         <TextBlock Text="{Binding Name}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextStyle}" Height="60" Margin="15,0,15,0"/>
                         <TextBlock Text="{Binding Description}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
@@ -37,12 +37,13 @@
 
     </Page.Resources>
 
-    <Grid Style="{StaticResource LayoutRootStyle}">
+
+    <Grid Background="{StaticResource TravelBackground2}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Column="0" Grid.Row="0">
+        <Grid Grid.Column="0" Grid.Row="0" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" />
@@ -50,8 +51,11 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <SearchBox Margin="50 0 0 0" Grid.Row="0" Grid.Column="0" x:Name="mySearchBox" 
-                FocusOnKeyboardInput="True"/>
+            <uc:CollapsibleSearchBox
+                x:Name="travelSearchBox"
+                Margin="50 0 0 0"
+                Grid.Row="0" Grid.Column="0"
+                RelativePanel.AlignRightWithPanel="True"/>
             <AppBarButton Grid.Row="0" Grid.Column="1" Icon="Add"
                 Click="AddButton_Click"
                 HorizontalAlignment="Right"

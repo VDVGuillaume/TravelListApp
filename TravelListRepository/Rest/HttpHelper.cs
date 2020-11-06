@@ -60,6 +60,19 @@ namespace TravelListRepository.Rest
             }
         }
 
+        public async Task<TResult> GetAsync<TResult>(string controller, string query)
+        {
+            UriBuilder builder = new UriBuilder(_baseUrl);
+            builder.Query = query;
+            using (var client = BaseClient())
+            {
+                var response = await client.GetAsync(builder.Uri);
+                string json = await response.Content.ReadAsStringAsync();
+                TResult obj = JsonConvert.DeserializeObject<TResult>(json);
+                return obj;
+            }
+        }
+
         /// <summary>
         /// Makes an HTTP POST request to the given controller with the given object as the body.
         /// Returns the deserialized response content.

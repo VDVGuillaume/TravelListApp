@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelList.App", "TravelLis
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelList.Models", "TravelListModels\TravelList.Models.csproj", "{2CD1A211-6C02-493A-AC2E-5F317FEF3F66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelList.Repository", "TravelListRepository\TravelList.Repository.csproj", "{D0C8AE28-79C6-44C0-A365-B2C7D1460978}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelList.Repository", "TravelListRepository\TravelList.Repository.csproj", "{D0C8AE28-79C6-44C0-A365-B2C7D1460978}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

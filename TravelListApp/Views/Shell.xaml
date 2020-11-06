@@ -43,12 +43,12 @@
                           HorizontalAlignment="Center"
                           Height="24"
                           Width="24"
-                          Fill="{StaticResource SplitViewForegroundBrush}"
+                          Fill="{StaticResource WhiteBrush}"
                           Stretch="Uniform" />
                 </Border>
                 <TextBlock Text="{x:Bind Text}"
                            Margin="12 0 0 0"
-                           Foreground="{StaticResource SplitViewForegroundBrush}"
+                           Foreground="{StaticResource WhiteBrush}"
                            VerticalAlignment="Center" />
             </StackPanel>
         </DataTemplate>
@@ -67,7 +67,7 @@
                       HorizontalAlignment="Stretch"
                       ManipulationMode="TranslateX"
                       ManipulationCompleted="SplitViewPane_ManipulationCompleted"
-                      Background="{StaticResource SplitViewBackgroundBrush}">
+                      Background="{StaticResource TravelBackground2}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
@@ -80,10 +80,18 @@
                               VerticalAlignment="Top"
                               ItemContainerStyle="{StaticResource MenuListViewItemStyle}"
                               ItemTemplate="{StaticResource MenuItemTemplate}" />
+                    <ListView x:Name="SecondMenu"
+                              ItemsSource="{Binding SecondMenu}"
+                              SelectionChanged="Menu_SelectionChanged"
+                              ItemContainerStyle="{StaticResource MenuListViewItemStyle}"
+                              ItemTemplate="{StaticResource MenuItemTemplate}"
+                              Margin="0 48 0 0"
+                              VerticalAlignment="Top"
+                              Grid.Row="2" />
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
-                <Grid Background="{StaticResource PageBackgroundBrush}">
+                <Grid Background="{StaticResource TravelBackground2}">
                     <!-- Navigation Frame -->
                     <Frame x:Name="SplitViewFrame"
                            Navigated="SplitViewFrame_OnNavigated"
@@ -123,7 +131,7 @@
                 BorderThickness="0"
                 Click="HamburgerButton_Click">
             <Path Data="{StaticResource HamburgerIcon}"
-                  Fill="{StaticResource HamburgerForegroundBrush}"
+                  Fill="{StaticResource WhiteBrush}"
                   VerticalAlignment="Center"
                   HorizontalAlignment="Center"
                   Height="24"

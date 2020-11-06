@@ -8,30 +8,18 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Background="{StaticResource PageBackgroundBrush}"
+    <Grid Background="{StaticResource TravelBackground2}"
           Padding="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
             <!--<RowDefinition Height="auto" />-->
         </Grid.RowDefinitions>
 
         <local:TravelListItemMenu x:Name="Menu" />
-        
-        <Grid Grid.Column="0" Grid.Row="0" x:Name="CmdGrid">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <AppBarButton Icon="Save"
-                Click="SaveButton_Click"
-                HorizontalAlignment="Right"
-                Label="Save"
-                IsCompact="False" />
-        </Grid>
-        <Grid Grid.Column="0" Grid.Row="1">
+
+        <Grid Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
@@ -43,21 +31,33 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <TextBlock Text="Travellist Editor"
-                            Foreground="{StaticResource HamburgerForegroundBrush}"
+                            Foreground="{StaticResource WhiteBrush}"
                             FontSize="24"
                             Margin="0 0 0 10"
                             Grid.ColumnSpan="2" />
             <TextBox Header="Name"
+                             BorderThickness="0.5"
+                             Foreground="{StaticResource WhiteBrush}"
+                             BorderBrush="{StaticResource WhiteBrush}"
+                             Background="{StaticResource transBrush}"
                              Text="{x:Bind ViewModel.Name, Mode=TwoWay}"
                              Margin="0 0 10 10"
                              Grid.Row="1"
                              Grid.Column="0" />
             <TextBox Header="Description"
+                             BorderThickness="0.5"
+                             Foreground="{StaticResource WhiteBrush}"
+                             BorderBrush="{StaticResource WhiteBrush}"
+                             Background="{StaticResource transBrush}"
                              Text="{x:Bind ViewModel.Description, Mode=TwoWay}"
                              Margin="5 0 5 10"
                              Grid.Row="1"
                              Grid.Column="1" />
             <ComboBox Header="Country"
+                              BorderThickness="0.5"
+                              Foreground="{StaticResource WhiteBrush}"
+                              BorderBrush="{StaticResource WhiteBrush}"
+                              Background="{StaticResource transBrush}"
                               ItemsSource="{x:Bind ViewModel.Countries}"
                               SelectedItem="{x:Bind ViewModel.Country, Mode=TwoWay}"
                               Margin="0 0 5 10"
@@ -78,5 +78,12 @@
                 </ItemsControl>
             </Grid>
         </Grid>
+        <CommandBar Grid.Column="0" Grid.Row="2" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" Background="{StaticResource TenPercentLighterBrush}" >
+            <AppBarButton x:Name="SaveCommandButton" Label="Save" Foreground="{StaticResource WhiteBrush}" Click="SaveAppBar_Click">
+                <AppBarButton.Icon>
+                    <PathIcon Data="{x:Bind SaveIcon.Glyph}" HorizontalAlignment="Center"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </CommandBar>
     </Grid>
 </Page>

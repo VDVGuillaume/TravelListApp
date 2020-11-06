@@ -18,6 +18,8 @@ namespace TravelListApp.ViewModels
             Task.Run(GetCountriesAsync);
         }
 
+        public string MapServiceToken { get; set; }
+
         // public ObservableCollection<TravelListItemViewModel> TravelListItems { get; set; }
 
         ObservableCollection<TravelListItemViewModel> _travelListItemViewModel = new ObservableCollection<TravelListItemViewModel>();

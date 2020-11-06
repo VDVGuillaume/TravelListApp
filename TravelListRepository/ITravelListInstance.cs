@@ -9,5 +9,6 @@ namespace TravelListRepository
         ITravelListItemRepo TravelLists { get; }
         ITravelPointOfInterestRepo Points { get; }
         ICountryRepo Countries { get; }
+        IBingRepo Bing { get; }
     }
 }
