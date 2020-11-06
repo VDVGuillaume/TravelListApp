@@ -41,6 +41,15 @@ namespace TravelListApp.Views
         {
             if (e.AddedItems.Count > 0)
             {
+                // Unselect the other menu.
+                if ((sender as ListView) == Menu)
+                {
+                    SecondMenu.SelectedItem = null;
+                }
+                else
+                {
+                    Menu.SelectedItem = null;
+                }
 
                 if (e.AddedItems.First() is MenuItem menuItem && menuItem.IsNavigation)
                 {
@@ -102,6 +111,17 @@ namespace TravelListApp.Views
             }
 
             Menu.SelectedIndex = -1;
+
+            item = (from i in SecondMenu.Items
+                    where (i as MenuItem).NavigationDestination == e.SourcePageType
+                    select i).FirstOrDefault();
+            if (item != null)
+            {
+                SecondMenu.SelectedItem = item;
+                return;
+            }
+
+            SecondMenu.SelectedIndex = -1;
 
         }
     }

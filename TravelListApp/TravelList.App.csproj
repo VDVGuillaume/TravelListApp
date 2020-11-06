@@ -184,7 +184,9 @@
     <Content Include="Assets\mappin.png" />
     <Content Include="Assets\TravelBackground1.png" />
     <Content Include="Assets\TravelBackground2.png" />
-    <Content Include=".env" />
+    <Content Include="..\RestApi\.env">
+      <Link>.env</Link>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

@@ -14,7 +14,7 @@
     </UserControl.Resources>-->
 
     <GridView x:Name="GridView"
-              Background="{StaticResource MaskBackground}"
+              Background="{StaticResource transBrush}"
               HorizontalAlignment="Stretch"
               HorizontalContentAlignment="Stretch"
               VerticalAlignment="Stretch"
@@ -37,13 +37,13 @@
                       VerticalContentAlignment="Center"
                       HorizontalAlignment="Stretch"
                       HorizontalContentAlignment="Left"
-                      Background="{StaticResource MaskBackground}">
+                      Background="{StaticResource transBrush}">
             <Viewbox x:Name="Title"
                      Stretch="Uniform"
                      StretchDirection="DownOnly"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Center">
-                <TextBlock Foreground="{StaticResource PageForegroundBrush}"
+                <TextBlock Foreground="{StaticResource WhiteBrush}"
                            FontSize="48"
                            FontWeight="Light"
                            VerticalAlignment="Top"

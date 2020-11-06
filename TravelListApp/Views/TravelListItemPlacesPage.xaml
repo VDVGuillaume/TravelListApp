@@ -59,18 +59,18 @@
             </maps:MapItemsControl>
         </maps:MapControl>
 
-        <CommandBar Grid.Row="3" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" SizeChanged="CommandBar_SizeChanged" Background="{StaticResource MaskBackground}">
-            <AppBarButton x:Name="AddPointCommandButton" Label="Add" Foreground="{StaticResource PageForegroundBrush}" Click="AddPointAppBar_Click" >
+        <CommandBar Grid.Row="3" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" SizeChanged="CommandBar_SizeChanged" Background="{StaticResource TenPercentLighterBrush}">
+            <AppBarButton x:Name="AddPointCommandButton" Label="Add" Foreground="{StaticResource WhiteBrush}" Click="AddPointAppBar_Click" >
                 <AppBarButton.Icon >
                     <PathIcon Data="{x:Bind AddPointIcon.Glyph}" HorizontalAlignment="Center" />
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton x:Name="RemovePointCommandButton" Label="Remove" Foreground="{StaticResource PageForegroundBrush}" Click="RemovePointAppBar_Click">
+            <AppBarButton x:Name="RemovePointCommandButton" Label="Remove" Foreground="{StaticResource WhiteBrush}" Click="RemovePointAppBar_Click">
                 <AppBarButton.Icon>
                     <PathIcon Data="{x:Bind RemovePointIcon.Glyph}" HorizontalAlignment="Center"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton x:Name="SaveCommandButton" Label="Save" Foreground="{StaticResource PageForegroundBrush}" Click="SaveAppBar_Click">
+            <AppBarButton x:Name="SaveCommandButton" Label="Save" Foreground="{StaticResource WhiteBrush}" Click="SaveAppBar_Click">
                 <AppBarButton.Icon>
                     <PathIcon Data="{x:Bind SaveIcon.Glyph}" HorizontalAlignment="Center"/>
                 </AppBarButton.Icon>
