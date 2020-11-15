@@ -25,6 +25,8 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -65,8 +67,33 @@
                               Grid.ColumnSpan="2"
                               Grid.Row="2"
                               Grid.Column="0" />
+            <Button x:Name="button" 
+                    Click="Convert_Click"
+                    BorderThickness="0.5"
+                    Foreground="{StaticResource WhiteBrush}"
+                    BorderBrush="{StaticResource WhiteBrush}"
+                    Background="{StaticResource transBrush}"
+                    Content="Add picture" 
+                    HorizontalAlignment="Stretch"
+                    Margin="0 0 5 10" 
+                    Grid.ColumnSpan="2"
+                    Grid.Row="3" 
+                    Grid.Column="0"/>
+            <Border BorderThickness="1"
+                    BorderBrush="{StaticResource WhiteBrush}"
+                    Margin="0 0 5 10" 
+                    Grid.ColumnSpan="2"
+                    Grid.Row="4" 
+                    Grid.Column="0">
+                <Image x:Name="imgbit"
+                    Stretch="Fill"
+                    Source="{Binding ImageUri}" 
+                    Loaded="Image_Loaded"
+                    ImageFailed="Image_ImageFailed"
+                    HorizontalAlignment="Stretch"/>
+            </Border>
             <Grid Background="{StaticResource HamburgerForegroundBrush}"
-                          Grid.Row="3"
+                          Grid.Row="5"
                           Grid.Column="0"
                           Grid.ColumnSpan="2">
                 <ItemsControl ItemsSource="{Binding Errors, Mode=OneWay}">
