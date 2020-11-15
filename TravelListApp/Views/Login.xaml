@@ -1,0 +1,63 @@
+﻿<Page
+    x:Class="TravelListApp.Views.LoginScreen"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TravelListApp.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Background="{StaticResource TravelBackground2}"
+          Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <!--<RowDefinition Height="auto" />-->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+
+        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="50,40,-1478,0" HorizontalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Login Page"
+                            Foreground="{StaticResource WhiteBrush}"
+                            FontSize="24"
+                            Margin="0 0 0 10"
+                            Grid.ColumnSpan="2" />
+            <TextBox Header="Username"
+                             BorderThickness="0.5"
+                             Foreground="{StaticResource WhiteBrush}"
+                             BorderBrush="{StaticResource WhiteBrush}"
+                             Background="{StaticResource transBrush}"                            
+                             Margin="0,0,30,10"                             
+                             Grid.Row="1"
+                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+
+            <PasswordBox Header="Password"
+                              BorderThickness="0.5"
+                              Foreground="{StaticResource WhiteBrush}"
+                              BorderBrush="{StaticResource WhiteBrush}"
+                              Background="{StaticResource transBrush}"                              
+                              Margin="0,0,30,0"
+                              HorizontalAlignment="Stretch"
+                              Grid.Row="2"
+                              Grid.Column="0" VerticalAlignment="Top" />
+            <Button Content="Login" HorizontalAlignment="Left" Margin="480,46,0,0" Grid.Row="3" VerticalAlignment="Top" Width="204"/>
+            <HyperlinkButton Content="Don't have an account yet? Register here." HorizontalAlignment="Left" Margin="399,86,0,0" Grid.Row="3" VerticalAlignment="Top" Width="285"/>
+        </Grid>
+    </Grid>
+</Page>
