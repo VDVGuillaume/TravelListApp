@@ -24,7 +24,7 @@ namespace TravelListApp.Views
             Navigation.Frame = SplitViewFrame;
 
             // Navigate to home page.
-            Navigation.Navigate(typeof(LoginPage));
+            Navigation.Navigate(typeof(HomePage));
         }
 
         // Navigate to another page.
