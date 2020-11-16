@@ -15,6 +15,9 @@ namespace TravelListRepository.Rest
             _http = new HttpHelper(baseUrl);
         }
 
+        public async Task<TravelListItemImage> GetTravelListImageById(int id) =>
+    await _http.GetAsync<TravelListItemImage>($"travellistimages/{id}");
+
         public async Task CreateTravelListImage(TravelListItemImage tl) =>
             await _http.PostAsync<TravelListItemImage, TravelListItemImage>("travellistimages", tl);
         

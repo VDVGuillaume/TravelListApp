@@ -10,6 +10,7 @@ namespace TravelListRepository
     public interface ITravelListItemImageRepo
     {
         bool SaveChanges();
+        Task<TravelListItemImage> GetTravelListImageById(int id);
         Task CreateTravelListImage(TravelListItemImage tl);
         Task UpdateTravelListImage(int id, TravelListItemImage tl);
         Task DeleteTravelListImage(TravelListItemImage tl);

@@ -17,6 +17,11 @@ namespace TravelListRepository.Sql
             _context = context;
         }
 
+        public async Task<TravelListItemImage> GetTravelListImageById(int id)
+        {
+            return await _context.TravelListImages.AsNoTracking().FirstOrDefaultAsync(p => p.TravelListItemImageID == id);
+        }
+
 
         public async Task CreateTravelListImage(TravelListItemImage tl)
         {

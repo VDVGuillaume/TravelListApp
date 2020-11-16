@@ -43,6 +43,7 @@ namespace RestApi
             services.AddScoped<ICountryRepo, RestCountriesRepo>();
             services.AddScoped<IBingRepo, RestBingRepo>();
             services.AddScoped<ITravelPointOfInterestRepo, SqlTravelPointOfInterestRepo>();
+            services.AddScoped<ITravelListItemImageRepo, SqlTravelListItemImageRepo>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
