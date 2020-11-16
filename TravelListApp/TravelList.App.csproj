@@ -138,6 +138,9 @@
     <Compile Include="ViewModels\TravelListItemViewModel.cs" />
     <Compile Include="ViewModels\TravelListViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TravelListItemEditPage.xaml.cs">
       <DependentUpon>TravelListItemEditPage.xaml</DependentUpon>
     </Compile>
@@ -170,6 +173,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include="ClassDiagram1.cd" />
     <None Include="TravelListApp_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +210,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Services\Theming\Theme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
