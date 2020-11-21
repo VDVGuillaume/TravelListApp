@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TravelListRepository;
 using TravelListModels;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.IO;
 
 namespace RestApi.Controllers
 {
@@ -25,7 +28,7 @@ namespace RestApi.Controllers
             _mapper = mapper;
         }
 
-        //api/travellists/{id}
+        //api/travellistimages/{id}
         [HttpGet("{id}", Name = "GetTravelListImageById")]
         public async Task<IActionResult> GetTravelListImageById(int id)
         {
@@ -37,12 +40,19 @@ namespace RestApi.Controllers
             return NotFound();
         }
 
-        //api/travellists
-        [HttpPost]
-        public async Task<IActionResult> CreateTravelListImage([FromBody]TravelListImageCreateDto travelListCreateDto)
+        //api/travellistimages/{id}
+        [HttpPost("{id}")]
+        public async Task<IActionResult> CreateTravelListImage(int id, [FromForm]TravelListImageCreateDto travelListCreateDto)
         {
+            using (var reader = new StreamReader(Request.Form.Files[0].OpenReadStream()))
+            {
+                string contentAsString = reader.ReadToEnd();
+                byte[] bytes = new byte[contentAsString.Length * sizeof(char)];
+                System.Buffer.BlockCopy(contentAsString.ToCharArray(), 0, bytes, 0, bytes.Length);
+                travelListCreateDto.ImageData = bytes;
+            }
             var travelListItemImageModel = _mapper.Map<TravelListItemImage>(travelListCreateDto);
-           await _repo.CreateTravelListImage(travelListItemImageModel);
+            await _repo.CreateTravelListImage(travelListItemImageModel);
             _repo.SaveChanges();
 
             var travelListImageReadDto = _mapper.Map<TravelListImageReadDto>(travelListItemImageModel);
@@ -50,7 +60,7 @@ namespace RestApi.Controllers
             return CreatedAtRoute(nameof(GetTravelListImageById), new { Id = travelListImageReadDto.TravelListItemImageID }, travelListImageReadDto);
         }
 
-        //api/travellists/{id}
+        //api/travellistimages/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTravelListImage(int id, [FromBody]TravelListImageCreateDto travelListUpdateDto)
         {
@@ -70,7 +80,7 @@ namespace RestApi.Controllers
 
         }
 
-        //DELETE api/travellists/{id}
+        //DELETE api/travellistimages/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTravelListImage(int id)
         {

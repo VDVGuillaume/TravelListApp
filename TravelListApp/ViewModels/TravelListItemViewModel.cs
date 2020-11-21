@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TravelListApp.Models;
-using TravelListApp.Mvvm;
 using TravelListModels;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 
-namespace TravelListApp.ViewModels 
+namespace TravelListApp.ViewModels
 {
     public class TravelListItemViewModel : BindableBase, IEditableObject
     {
@@ -40,6 +38,15 @@ namespace TravelListApp.ViewModels
         public int TravelListItemID
         {
             get => Model.TravelListItemID;
+            set
+            {
+                if (value != Model.TravelListItemID)
+                {
+                    Model.TravelListItemID = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(TravelListItemID));
+                }
+            }
         }
 
         /// <summary>
@@ -222,11 +229,17 @@ namespace TravelListApp.ViewModels
             if (IsNewTravelList)
             {
                 IsNewTravelList = false;
+                var item = await App.Repository.TravelLists.CreateTravelList(Model);
+                this.TravelListItemID = item.TravelListItemID;
                 App.ViewModel.TravelListItems.Add(this);
-                await App.Repository.TravelLists.CreateTravelList(Model);
             } else
             {
                 await App.Repository.TravelLists.UpdateTravelList(Model.TravelListItemID, Model);
+                var item = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == Model.TravelListItemID).First();
+                if (item != null)
+                {
+                    item.Model = _model;
+                }
             }
         }
 
@@ -286,7 +299,7 @@ namespace TravelListApp.ViewModels
             IsInEdit = false;
             if (IsModified)
             {
-                await RefreshCustomerAsync();
+                await RefreshAsync();
                 IsModified = false;
             }
         }
@@ -294,7 +307,7 @@ namespace TravelListApp.ViewModels
         /// <summary>
         /// Reloads all of the customer data.
         /// </summary>
-        public async Task RefreshCustomerAsync()
+        public async Task RefreshAsync()
         {
             Model = await App.Repository.TravelLists.GetTravelListById(Model.TravelListItemID);
         }

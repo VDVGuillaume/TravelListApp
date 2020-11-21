@@ -1,23 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using TravelListApp.Mvvm;
 using TravelListApp.Services.Icons;
 using TravelListApp.ViewModels;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
@@ -41,7 +34,9 @@ namespace TravelListApp.Views
 
         public BitmapImage ImageUri { get; set; }
         public TravelListItemViewModel ViewModel { get; set; }
+        public TravelListItemImageViewModel ViewModelImage { get; set; }
         public ButtonItem SaveIcon { get; set; }
+        public byte[] imageData { get; set; }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -52,12 +47,33 @@ namespace TravelListApp.Views
                     IsNewTravelList = true,
                     IsInEdit = true
                 };
+                ViewModelImage = new TravelListItemImageViewModel
+                {
+                    IsNewTravelListImage = true,
+                    IsInEdit = true
+                };
             }
             else
             {
                 ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
                 ViewModel.StartEdit();
+
+                ViewModelImage = App.ViewModel.TravelListImages.Where(image => image.Model.TravelListItemID == (int)e.Parameter).First();
+                if (!(ViewModelImage.TravelListItemImageID > 0))
+                {
+                    ViewModelImage = new TravelListItemImageViewModel
+                    {
+                        IsNewTravelListImage = true,
+                        IsInEdit = true
+                    };
+                } else
+                {
+                    ViewModelImage.StartEdit();
+                }
+
             }
+
+
             Menu.SetModel(ViewModel);
             Menu.SetTab(GetType());
             base.OnNavigatedTo(e);
@@ -65,7 +81,17 @@ namespace TravelListApp.Views
 
         private async void SaveAppBar_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            await ViewModel.SaveAsync();
+            if (ViewModel.IsModified)
+            {
+                await ViewModel.SaveAsync();
+            }
+            if (ViewModel.TravelListItemID > 0)
+            {
+                ViewModelImage.TravelListItemID = ViewModel.TravelListItemID;
+                ViewModelImage.ImageData = imageData;
+                await ViewModelImage.SaveAsync();
+            }
+            
         }
 
         private void Image_ImageFailed(object sender, ExceptionRoutedEventArgs e)
@@ -100,6 +126,7 @@ namespace TravelListApp.Views
             }
             return imageSource;
         }
+
         public async Task<byte[]> SaveToBytesAsync(ImageSource imageSource)
         {
             byte[] imageBuffer;
@@ -124,6 +151,7 @@ namespace TravelListApp.Views
             await file.DeleteAsync(StorageDeleteOption.Default);
             return imageBuffer;
         }
+
         private async void Convert_Click(object sender, RoutedEventArgs e)
         {
             FileOpenPicker fileOpenPicker = new FileOpenPicker();
@@ -153,6 +181,7 @@ namespace TravelListApp.Views
             //SaveToBytesAsync(imgSource);
             bitmap.CopyToBuffer(imgSource.PixelBuffer);
             byte[] dataArrayTobeSent = await SaveToBytesAsync(imgSource);
+            imageData = dataArrayTobeSent;
         }
     }
 

@@ -15,5 +15,6 @@ namespace RestApi.Dtos
         public decimal Longitude { get; set; }
         public virtual ICollection<CheckListItem> Items { get; set; }
         public virtual ICollection<TravelPointOfInterest> Points { get; set; }
+        public virtual ICollection<TravelListItemImage> Images { get; set; }
     }
 }

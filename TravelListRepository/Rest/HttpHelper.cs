@@ -25,7 +25,9 @@
 
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -112,6 +114,32 @@ namespace TravelListRepository.Rest
             using (var client = BaseClient())
             {
                 await client.DeleteAsync($"{controller}/{objectId}");
+            }
+        }
+
+        public async Task<TResult> UploadAsync<TRequest, TResult>(string controller, int TravelListItemID, byte[] file)
+        {
+            using (var client = BaseClient())
+            {
+
+                var form = new MultipartFormDataContent();
+                //var file_content = new ByteArrayContent(file, 0, file.Count());
+                //file_content.Headers.ContentType = new MediaTypeHeaderValue("image/jpg");
+                //file_content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+                //{
+                //    FileName = "hide-and-seek.jpg",
+                //    Name = "ImageData",
+                //};
+                //form.Add(file_content);
+                form.Add(new ByteArrayContent(file, 0, file.Count()), "ImageData", "hide-and-seek.jpg");
+                form.Add(new StringContent(TravelListItemID.ToString()), "TravelListItemID");
+
+                var response = await client.PostAsync($"{controller}/{TravelListItemID}", form); //No response if filesize exceeds 20 MB
+
+                string json = await response.Content.ReadAsStringAsync();
+                TResult obj = JsonConvert.DeserializeObject<TResult>(json);
+                return obj;
+
             }
         }
 

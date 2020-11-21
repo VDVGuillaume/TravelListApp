@@ -1,11 +1,6 @@
 ﻿using Microsoft.Toolkit.Uwp.Helpers;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using TravelListApp.Mvvm;
 using TravelListModels;
 
 namespace TravelListApp.ViewModels
@@ -23,6 +18,7 @@ namespace TravelListApp.ViewModels
         // public ObservableCollection<TravelListItemViewModel> TravelListItems { get; set; }
 
         ObservableCollection<TravelListItemViewModel> _travelListItemViewModel = new ObservableCollection<TravelListItemViewModel>();
+        ObservableCollection<TravelListItemImageViewModel> _travelListItemImageViewModel = new ObservableCollection<TravelListItemImageViewModel>();
 
         public ObservableCollection<TravelListItemViewModel> TravelListItems
         {
@@ -36,6 +32,22 @@ namespace TravelListApp.ViewModels
                 {
                     _travelListItemViewModel = value;
                     OnPropertyChanged(nameof(TravelListItems));
+                }
+            }
+        }
+
+        public ObservableCollection<TravelListItemImageViewModel> TravelListImages
+        {
+            get
+            {
+                return _travelListItemImageViewModel;
+            }
+            set
+            {
+                if (_travelListItemImageViewModel != value)
+                {
+                    _travelListItemImageViewModel = value;
+                    OnPropertyChanged(nameof(TravelListImages));
                 }
             }
         }

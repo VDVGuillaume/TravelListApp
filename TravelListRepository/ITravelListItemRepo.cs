@@ -12,7 +12,7 @@ namespace TravelListRepository
         bool SaveChanges();
         Task<IEnumerable<TravelListItem>> GetAllTravelLists();
         Task<TravelListItem> GetTravelListById(int id);
-        Task CreateTravelList(TravelListItem tl);
+        Task<TravelListItem> CreateTravelList(TravelListItem tl);
         Task UpdateTravelList(int id, TravelListItem tl);
         Task DeleteTravelList( TravelListItem tl);
     }
