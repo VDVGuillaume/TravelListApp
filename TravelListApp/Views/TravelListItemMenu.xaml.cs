@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using TravelListApp.Controls;
-using TravelListApp.Mvvm;
 using TravelListApp.Services.Icons;
 using TravelListApp.Services.Navigation;
 using TravelListApp.ViewModels;

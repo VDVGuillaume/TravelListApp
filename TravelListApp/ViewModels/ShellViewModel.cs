@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TravelListApp.Services.Icons;
 using TravelListApp.Views;
 
-namespace TravelListApp.Mvvm
+namespace TravelListApp.ViewModels
 {
     internal class ShellViewModel : ViewModelBase
     {

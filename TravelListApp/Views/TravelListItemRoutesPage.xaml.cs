@@ -1,24 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using TravelListApp.Models;
-using TravelListApp.Mvvm;
 using TravelListApp.Services.Icons;
 using TravelListApp.ViewModels;
 using TravelListModels;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Services.Maps;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 

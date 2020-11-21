@@ -1,19 +1,7 @@
-﻿using Microsoft.Toolkit.Uwp.Helpers;
-using Newtonsoft.Json;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using TravelListApp.ViewModels;
-using TravelListApp.Views;
-using TravelListModels;
 
-namespace TravelListApp.Mvvm
+namespace TravelListApp.ViewModels
 {
     public class TravelListViewModel : BindableBase
     {

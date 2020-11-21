@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TravelListApp.Models;
-using TravelListApp.Mvvm;
 using TravelListModels;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 
-namespace TravelListApp.ViewModels 
+namespace TravelListApp.ViewModels
 {
     public class TravelListItemViewModel : BindableBase, IEditableObject
     {
