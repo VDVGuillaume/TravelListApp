@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using TravelListApp.Services;
 using TravelListApp.Services.Icons;
 using TravelListApp.ViewModels;
 using Windows.Graphics.Imaging;
@@ -11,6 +12,7 @@ using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
@@ -37,8 +39,9 @@ namespace TravelListApp.Views
         public TravelListItemImageViewModel ViewModelImage { get; set; }
         public ButtonItem SaveIcon { get; set; }
         public byte[] imageData { get; set; }
+        public string imageName { get; set; }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter == null)
             {
@@ -58,8 +61,8 @@ namespace TravelListApp.Views
                 ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
                 ViewModel.StartEdit();
 
-                ViewModelImage = App.ViewModel.TravelListImages.Where(image => image.Model.TravelListItemID == (int)e.Parameter).First();
-                if (!(ViewModelImage.TravelListItemImageID > 0))
+                ViewModelImage = App.ViewModel.TravelListImages.Where(image => image.Model.TravelListItemID == (int)e.Parameter).FirstOrDefault();
+                if ( ViewModelImage == null || !(ViewModelImage.TravelListItemImageID > 0))
                 {
                     ViewModelImage = new TravelListItemImageViewModel
                     {
@@ -69,10 +72,13 @@ namespace TravelListApp.Views
                 } else
                 {
                     ViewModelImage.StartEdit();
+                    var array = await App.Repository.TravelListImages.GetTravelListImageDataById(ViewModelImage.TravelListItemImageID);
+                    // ConvertByteToBitmap(array);
+                    StorageFile sfile = await LocalStorage.AsStorageFile(array, ViewModelImage.ImageName);
+                    setStorageFileToImageSource(sfile);
                 }
 
             }
-
 
             Menu.SetModel(ViewModel);
             Menu.SetTab(GetType());
@@ -89,6 +95,7 @@ namespace TravelListApp.Views
             {
                 ViewModelImage.TravelListItemID = ViewModel.TravelListItemID;
                 ViewModelImage.ImageData = imageData;
+                ViewModelImage.ImageName = imageName;
                 await ViewModelImage.SaveAsync();
             }
             
@@ -111,45 +118,20 @@ namespace TravelListApp.Views
             }
         }
 
-        public async Task<ImageSource> SaveToImageSource(byte[] imageBuffer)
+        private async void setStorageFileToImageSource(StorageFile file)
         {
-            ImageSource imageSource = null;
-            using (MemoryStream stream = new MemoryStream(imageBuffer))
+            SoftwareBitmap softwareBitmap;
+            using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.Read))
             {
-                var ras = stream.AsRandomAccessStream();
-                BitmapDecoder decoder = await BitmapDecoder.CreateAsync(BitmapDecoder.JpegDecoderId, ras);
-                var provider = await decoder.GetPixelDataAsync();
-                byte[] buffer = provider.DetachPixelData();
-                WriteableBitmap bitmap = new WriteableBitmap((int)decoder.PixelWidth, (int)decoder.PixelHeight);
-                await bitmap.PixelBuffer.AsStream().WriteAsync(buffer, 0, buffer.Length);
-                imageSource = bitmap;
+                // Create the decoder from the stream
+                BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
+                // Get the SoftwareBitmap representation of the file
+                softwareBitmap = await decoder.GetSoftwareBitmapAsync();
             }
-            return imageSource;
-        }
-
-        public async Task<byte[]> SaveToBytesAsync(ImageSource imageSource)
-        {
-            byte[] imageBuffer;
-            var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            var file = await localFolder.CreateFileAsync("temp.jpg", CreationCollisionOption.ReplaceExisting);
-            using (var ras = await file.OpenAsync(FileAccessMode.ReadWrite, StorageOpenOptions.None))
-            {
-                WriteableBitmap bitmap = imageSource as WriteableBitmap;
-                var stream = bitmap.PixelBuffer.AsStream();
-                byte[] buffer = new byte[stream.Length];
-                await stream.ReadAsync(buffer, 0, buffer.Length);
-                BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, ras);
-                encoder.SetPixelData(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Ignore, (uint)bitmap.PixelWidth, (uint)bitmap.PixelHeight, 96.0, 96.0, buffer);
-                await encoder.FlushAsync();
-
-                var imageStream = ras.AsStream();
-                imageStream.Seek(0, SeekOrigin.Begin);
-                imageBuffer = new byte[imageStream.Length];
-                var re = await imageStream.ReadAsync(imageBuffer, 0, imageBuffer.Length);
-
-            }
-            await file.DeleteAsync(StorageDeleteOption.Default);
-            return imageBuffer;
+            var bitmap = softwareBitmap;
+            var imgSource = new WriteableBitmap(bitmap.PixelWidth, bitmap.PixelHeight);
+            imgbit.Source = imgSource;
+            bitmap.CopyToBuffer(imgSource.PixelBuffer);
         }
 
         private async void Convert_Click(object sender, RoutedEventArgs e)
@@ -159,7 +141,7 @@ namespace TravelListApp.Views
             fileOpenPicker.FileTypeFilter.Add(".jpg");
             fileOpenPicker.ViewMode = PickerViewMode.Thumbnail;
 
-            var inputFile = await fileOpenPicker.PickSingleFileAsync();
+            StorageFile inputFile = await fileOpenPicker.PickSingleFileAsync();
 
             if (inputFile == null)
             {
@@ -178,10 +160,27 @@ namespace TravelListApp.Views
             var bitmap = softwareBitmap;
             var imgSource = new WriteableBitmap(bitmap.PixelWidth, bitmap.PixelHeight);
             imgbit.Source = imgSource;
-            //SaveToBytesAsync(imgSource);
             bitmap.CopyToBuffer(imgSource.PixelBuffer);
-            byte[] dataArrayTobeSent = await SaveToBytesAsync(imgSource);
+            byte[] dataArrayTobeSent = await ConvertImageToByte(inputFile);
+            imageName = Guid.NewGuid() + inputFile.FileType;
             imageData = dataArrayTobeSent;
+        }
+
+        /// <summary>
+        /// Convert Image to byte[]
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        private async Task<byte[]> ConvertImageToByte(StorageFile file)
+        {
+            using (var inputStream = await file.OpenSequentialReadAsync())
+            {
+                Stream readStream = inputStream.AsStreamForRead();
+                byte[] byteArray = new byte[readStream.Length];
+                await readStream.ReadAsync(byteArray, 0, byteArray.Length);
+                return byteArray;
+            }
+
         }
     }
 

@@ -9,5 +9,6 @@ namespace TravelListModels
         public int TravelListItemImageID { get; set; }
         public int TravelListItemID { get; set; }
         public byte[] ImageData { get; set; }
+        public string ImageName { get; set; }
     }
 }

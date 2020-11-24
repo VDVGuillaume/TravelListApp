@@ -10,6 +10,7 @@ namespace TravelListApp.ViewModels
         public MainViewModel()
         {
             Task.Run(GetTravelListListAsync);
+            Task.Run(GetTravelListListImagesAsync);
             Task.Run(GetCountriesAsync);
         }
 
@@ -91,6 +92,29 @@ namespace TravelListApp.ViewModels
                 foreach (var c in travelLists)
                 {
                     TravelListItems.Add(new TravelListItemViewModel(c));
+                }
+                IsLoading = false;
+            });
+        }
+
+        public async Task GetTravelListListImagesAsync()
+        {
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() => IsLoading = true);
+
+            TravelListImages = new ObservableCollection<TravelListItemImageViewModel>();
+
+            var travelListsImages = await App.Repository.TravelListImages.GetAllTravelListImages();
+            if (travelListsImages == null)
+            {
+                return;
+            }
+
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            {
+                TravelListItems.Clear();
+                foreach (var c in travelListsImages)
+                {
+                    TravelListImages.Add(new TravelListItemImageViewModel(c));
                 }
                 IsLoading = false;
             });

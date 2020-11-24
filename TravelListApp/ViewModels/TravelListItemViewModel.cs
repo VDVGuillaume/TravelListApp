@@ -167,7 +167,7 @@ namespace TravelListApp.ViewModels
                     Model.Items = value;
                     IsModified = true;
                     OnPropertyChanged();
-                    OnPropertyChanged(nameof(Image));
+                    OnPropertyChanged(nameof(Items));
                 }
             }
         }
@@ -185,7 +185,25 @@ namespace TravelListApp.ViewModels
                     Model.Points = value;
                     IsModified = true;
                     OnPropertyChanged();
-                    OnPropertyChanged(nameof(Image));
+                    OnPropertyChanged(nameof(Points));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the customer's first name.
+        /// </summary>
+        public List<TravelListItemImage> Images
+        {
+            get => Model.Images.ToList();
+            set
+            {
+                if (value != Model.Images)
+                {
+                    Model.Images = value;
+                    IsModified = true;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Images));
                 }
             }
         }

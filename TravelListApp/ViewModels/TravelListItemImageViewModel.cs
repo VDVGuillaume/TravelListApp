@@ -75,6 +75,24 @@ namespace TravelListApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets ImageData
+        /// </summary>
+        public string ImageName
+        {
+            get => Model.ImageName;
+            set
+            {
+                if (value != Model.ImageName)
+                {
+                    Model.ImageName = value;
+                    IsModified = true;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(ImageName));
+                }
+            }
+        }
+
 
         /// <summary>
         /// Saves travellist data that has been edited.
@@ -181,5 +199,6 @@ namespace TravelListApp.ViewModels
         /// Called when a bound DataGrid control commits the edits that have been made to a customer.
         /// </summary>
         public async void EndEdit() => await SaveAsync();
+
     }
 }

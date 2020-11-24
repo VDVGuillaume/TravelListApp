@@ -15,11 +15,17 @@ namespace TravelListRepository.Rest
             _http = new HttpHelper(baseUrl);
         }
 
+        public async Task<IEnumerable<TravelListItemImage>> GetAllTravelListImages() =>
+            await _http.GetAsync<IEnumerable<TravelListItemImage>>("travellistimages");
+
+        public async Task<byte[]> GetTravelListImageDataById(int id) =>
+            await _http.DownloadAsync<byte[]>($"travellistimages/{id}/imagedata");
+
         public async Task<TravelListItemImage> GetTravelListImageById(int id) =>
-    await _http.GetAsync<TravelListItemImage>($"travellistimages/{id}");
+            await _http.GetAsync<TravelListItemImage>($"travellistimages/{id}");
 
         public async Task CreateTravelListImage(TravelListItemImage tl) =>
-            await _http.UploadAsync<TravelListItemImage, TravelListItemImage>("travellistimages", tl.TravelListItemID, tl.ImageData);
+            await _http.UploadAsync<TravelListItemImage, TravelListItemImage>("travellistimages", tl.ImageName , tl.TravelListItemID, tl.ImageData);
         
         public async Task DeleteTravelListImage(TravelListItemImage tl) =>
             await _http.DeleteAsync("travellistimage", tl.TravelListItemID);

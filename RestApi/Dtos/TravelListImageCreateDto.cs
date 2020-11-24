@@ -5,5 +5,6 @@ namespace RestApi.Dtos
     {
         public int TravelListItemID { get; set; }
         public byte[] ImageData { get; set; }
+        public string ImageName { get; set; }
     }
 }

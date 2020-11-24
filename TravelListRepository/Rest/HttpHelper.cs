@@ -25,6 +25,7 @@
 
 using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -117,22 +118,15 @@ namespace TravelListRepository.Rest
             }
         }
 
-        public async Task<TResult> UploadAsync<TRequest, TResult>(string controller, int TravelListItemID, byte[] file)
+        public async Task<TResult> UploadAsync<TRequest, TResult>(string controller, string ImageName, int TravelListItemID, byte[] file)
         {
             using (var client = BaseClient())
             {
 
                 var form = new MultipartFormDataContent();
-                //var file_content = new ByteArrayContent(file, 0, file.Count());
-                //file_content.Headers.ContentType = new MediaTypeHeaderValue("image/jpg");
-                //file_content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-                //{
-                //    FileName = "hide-and-seek.jpg",
-                //    Name = "ImageData",
-                //};
-                //form.Add(file_content);
-                form.Add(new ByteArrayContent(file, 0, file.Count()), "ImageData", "hide-and-seek.jpg");
+                form.Add(new ByteArrayContent(file, 0, file.Count()), "ImageData", ImageName);
                 form.Add(new StringContent(TravelListItemID.ToString()), "TravelListItemID");
+                form.Add(new StringContent(ImageName.ToString()), "ImageName");
 
                 var response = await client.PostAsync($"{controller}/{TravelListItemID}", form); //No response if filesize exceeds 20 MB
 
@@ -140,6 +134,19 @@ namespace TravelListRepository.Rest
                 TResult obj = JsonConvert.DeserializeObject<TResult>(json);
                 return obj;
 
+            }
+        }
+
+        /// <summary>
+        /// Makes an HTTP GET request to the given controller and returns the deserialized response content.
+        /// </summary>
+        public async Task<byte[]> DownloadAsync<TResult>(string controller)
+        {
+            using (var client = BaseClient())
+            {
+                var response = await client.GetAsync(controller);                
+                byte[] mybytearray = await response.Content.ReadAsByteArrayAsync();
+                return mybytearray;
             }
         }
 

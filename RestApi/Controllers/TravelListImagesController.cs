@@ -10,6 +10,9 @@ using TravelListModels;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net;
 
 namespace RestApi.Controllers
 {
@@ -28,6 +31,27 @@ namespace RestApi.Controllers
             _mapper = mapper;
         }
 
+        //api/travellists
+        [HttpGet]
+        public async Task<IActionResult> GetAllTravelListImages()
+        {
+
+
+            var travelListImageItems = await _repo.GetAllTravelListImages();
+
+            return Ok(_mapper.Map<IEnumerable<TravelListImageReadDto>>(travelListImageItems));
+        }
+
+        //api/travellistimages/{id}/imagedata
+        [HttpGet("{id}/imagedata", Name = "GetTravelListImageDataById")]
+        [Produces("application/octet-stream")]
+        public async Task<FileStreamResult> GetTravelListImageDataById(int id)
+        {
+            byte[] imageData = await _repo.GetTravelListImageDataById(id);
+            return File(new MemoryStream(imageData), "application/octet-stream");
+
+        }
+
         //api/travellistimages/{id}
         [HttpGet("{id}", Name = "GetTravelListImageById")]
         public async Task<IActionResult> GetTravelListImageById(int id)
@@ -44,13 +68,21 @@ namespace RestApi.Controllers
         [HttpPost("{id}")]
         public async Task<IActionResult> CreateTravelListImage(int id, [FromForm]TravelListImageCreateDto travelListCreateDto)
         {
-            using (var reader = new StreamReader(Request.Form.Files[0].OpenReadStream()))
+            using (var ms = new MemoryStream())
             {
-                string contentAsString = reader.ReadToEnd();
-                byte[] bytes = new byte[contentAsString.Length * sizeof(char)];
-                System.Buffer.BlockCopy(contentAsString.ToCharArray(), 0, bytes, 0, bytes.Length);
-                travelListCreateDto.ImageData = bytes;
+                Request.Form.Files[0].CopyTo(ms);
+                var fileBytes = ms.ToArray();
+                travelListCreateDto.ImageData = fileBytes;
+                // string s = Convert.ToBase64String(fileBytes);
+                // act on the Base64 data
             }
+            //using (var reader = new StreamReader(Request.Form.Files[0].OpenReadStream()))
+            //{
+            //    string contentAsString = reader.ReadToEnd();
+            //    byte[] bytes = new byte[contentAsString.Length * sizeof(char)];
+            //    System.Buffer.BlockCopy(contentAsString.ToCharArray(), 0, bytes, 0, bytes.Length);
+            //    travelListCreateDto.ImageData = bytes;
+            //}
             var travelListItemImageModel = _mapper.Map<TravelListItemImage>(travelListCreateDto);
             await _repo.CreateTravelListImage(travelListItemImageModel);
             _repo.SaveChanges();
