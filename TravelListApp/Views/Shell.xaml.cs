@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿
+using System.Diagnostics;
 using System.Linq;
 using TravelListApp.Services.Navigation;
 using TravelListApp.ViewModels;
@@ -20,7 +21,7 @@ namespace TravelListApp.Views
         {
             InitializeComponent();
 
-            // Initialize Navigation Service.
+            // Initialize Navigation Service.            
             Navigation.Frame = SplitViewFrame;
 
             // Navigate to home page.
@@ -39,15 +40,23 @@ namespace TravelListApp.Views
                 }
                 else
                 {
-                    Menu.SelectedItem = null;
-                }
+                    Menu.SelectedItem = null;                }
+                }               
+                
+
 
                 if (e.AddedItems.First() is MenuItem menuItem && menuItem.IsNavigation)
                 {
+                    if(menuItem.Text == "User")
+                    {
+                    Navigation.Frame = Frame;
+                    Frame.Navigate(typeof(LoginPage));
+                    }
+
                     Navigation.Navigate(menuItem.NavigationDestination);
                 }
-            }
         }
+        
 
         // Execute command.
         private void Menu_ItemClick(object sender, ItemClickEventArgs e)
@@ -88,6 +97,7 @@ namespace TravelListApp.Views
         {
             MySplitView.IsPaneOpen = !MySplitView.IsPaneOpen;
         }
+
 
         private void SplitViewFrame_OnNavigated(object sender, NavigationEventArgs e)
         {
