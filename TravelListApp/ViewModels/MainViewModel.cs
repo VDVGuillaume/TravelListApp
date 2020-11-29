@@ -10,7 +10,6 @@ namespace TravelListApp.ViewModels
         public MainViewModel()
         {
             Task.Run(GetTravelListListAsync);
-            Task.Run(GetTravelListListImagesAsync);
             Task.Run(GetCountriesAsync);
         }
 
@@ -19,7 +18,6 @@ namespace TravelListApp.ViewModels
         // public ObservableCollection<TravelListItemViewModel> TravelListItems { get; set; }
 
         ObservableCollection<TravelListItemViewModel> _travelListItemViewModel = new ObservableCollection<TravelListItemViewModel>();
-        ObservableCollection<TravelListItemImageViewModel> _travelListItemImageViewModel = new ObservableCollection<TravelListItemImageViewModel>();
 
         public ObservableCollection<TravelListItemViewModel> TravelListItems
         {
@@ -33,22 +31,6 @@ namespace TravelListApp.ViewModels
                 {
                     _travelListItemViewModel = value;
                     OnPropertyChanged(nameof(TravelListItems));
-                }
-            }
-        }
-
-        public ObservableCollection<TravelListItemImageViewModel> TravelListImages
-        {
-            get
-            {
-                return _travelListItemImageViewModel;
-            }
-            set
-            {
-                if (_travelListItemImageViewModel != value)
-                {
-                    _travelListItemImageViewModel = value;
-                    OnPropertyChanged(nameof(TravelListImages));
                 }
             }
         }
@@ -97,29 +79,6 @@ namespace TravelListApp.ViewModels
             });
         }
 
-        public async Task GetTravelListListImagesAsync()
-        {
-            await DispatcherHelper.ExecuteOnUIThreadAsync(() => IsLoading = true);
-
-            TravelListImages = new ObservableCollection<TravelListItemImageViewModel>();
-
-            var travelListsImages = await App.Repository.TravelListImages.GetAllTravelListImages();
-            if (travelListsImages == null)
-            {
-                return;
-            }
-
-            await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
-            {
-                TravelListItems.Clear();
-                foreach (var c in travelListsImages)
-                {
-                    TravelListImages.Add(new TravelListItemImageViewModel(c));
-                }
-                IsLoading = false;
-            });
-        }
-
         public async Task GetCountriesAsync()
         {
             await DispatcherHelper.ExecuteOnUIThreadAsync(() => IsLoading = true);
@@ -142,5 +101,7 @@ namespace TravelListApp.ViewModels
             });
 
         }
+
+
     }
 }

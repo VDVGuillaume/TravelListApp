@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using TravelListApp.Models;
 using TravelListApp.Services;
 using TravelListApp.Services.Icons;
 using TravelListApp.ViewModels;
@@ -36,7 +37,6 @@ namespace TravelListApp.Views
 
         public BitmapImage ImageUri { get; set; }
         public TravelListItemViewModel ViewModel { get; set; }
-        public TravelListItemImageViewModel ViewModelImage { get; set; }
         public ButtonItem SaveIcon { get; set; }
         public byte[] imageData { get; set; }
         public string imageName { get; set; }
@@ -50,34 +50,13 @@ namespace TravelListApp.Views
                     IsNewTravelList = true,
                     IsInEdit = true
                 };
-                ViewModelImage = new TravelListItemImageViewModel
-                {
-                    IsNewTravelListImage = true,
-                    IsInEdit = true
-                };
             }
             else
             {
                 ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
+                StorageFile sfile = await LocalStorage.AsStorageFile(ViewModel.Images[0].ImageData, ViewModel.Images[0].ImageName);
+                imgbit.Source = ViewModel.firstConvertedImage;
                 ViewModel.StartEdit();
-
-                ViewModelImage = App.ViewModel.TravelListImages.Where(image => image.Model.TravelListItemID == (int)e.Parameter).FirstOrDefault();
-                if ( ViewModelImage == null || !(ViewModelImage.TravelListItemImageID > 0))
-                {
-                    ViewModelImage = new TravelListItemImageViewModel
-                    {
-                        IsNewTravelListImage = true,
-                        IsInEdit = true
-                    };
-                } else
-                {
-                    ViewModelImage.StartEdit();
-                    var array = await App.Repository.TravelListImages.GetTravelListImageDataById(ViewModelImage.TravelListItemImageID);
-                    // ConvertByteToBitmap(array);
-                    StorageFile sfile = await LocalStorage.AsStorageFile(array, ViewModelImage.ImageName);
-                    setStorageFileToImageSource(sfile);
-                }
-
             }
 
             Menu.SetModel(ViewModel);
@@ -89,16 +68,15 @@ namespace TravelListApp.Views
         {
             if (ViewModel.IsModified)
             {
+                ViewModel.imageChanges.Add(new ListItemImage()
+                {
+                    ImageData = imageData,
+                    ImageName = imageName,
+                    IsNew = true
+                });
                 await ViewModel.SaveAsync();
+
             }
-            if (ViewModel.TravelListItemID > 0)
-            {
-                ViewModelImage.TravelListItemID = ViewModel.TravelListItemID;
-                ViewModelImage.ImageData = imageData;
-                ViewModelImage.ImageName = imageName;
-                await ViewModelImage.SaveAsync();
-            }
-            
         }
 
         private void Image_ImageFailed(object sender, ExceptionRoutedEventArgs e)
@@ -116,22 +94,6 @@ namespace TravelListApp.Views
                 bitmapImage.UriSource = new Uri("ms-appx:///Assets/StoreLogo.png");
                 img.Source = bitmapImage;
             }
-        }
-
-        private async void setStorageFileToImageSource(StorageFile file)
-        {
-            SoftwareBitmap softwareBitmap;
-            using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.Read))
-            {
-                // Create the decoder from the stream
-                BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
-                // Get the SoftwareBitmap representation of the file
-                softwareBitmap = await decoder.GetSoftwareBitmapAsync();
-            }
-            var bitmap = softwareBitmap;
-            var imgSource = new WriteableBitmap(bitmap.PixelWidth, bitmap.PixelHeight);
-            imgbit.Source = imgSource;
-            bitmap.CopyToBuffer(imgSource.PixelBuffer);
         }
 
         private async void Convert_Click(object sender, RoutedEventArgs e)

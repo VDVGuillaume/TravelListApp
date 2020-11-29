@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\ListItemImage.cs" />
     <Compile Include="Services\LocalStorage.cs" />
     <Compile Include="UserControls\CollapsibleSearchBox.xaml.cs">
       <DependentUpon>CollapsibleSearchBox.xaml</DependentUpon>
@@ -136,7 +137,6 @@
     <Compile Include="ViewModels\TravelListItemCmd.cs" />
     <Compile Include="ViewModels\MenuItem.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="ViewModels\TravelListItemImageViewModel.cs" />
     <Compile Include="ViewModels\TravelListItemViewModel.cs" />
     <Compile Include="ViewModels\TravelListViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />

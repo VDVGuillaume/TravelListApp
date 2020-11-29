@@ -4,9 +4,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using TravelListApp.Models;
+using TravelListApp.Services;
 using TravelListModels;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
+using Windows.Storage;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace TravelListApp.ViewModels
 {
@@ -26,6 +29,7 @@ namespace TravelListApp.ViewModels
                 {
                     _model = value;
                     FillSyncPoints();
+                    ConvertImages();
                     // Raise the PropertyChanged event for all properties.
                     OnPropertyChanged(string.Empty);
                 }
@@ -202,9 +206,32 @@ namespace TravelListApp.ViewModels
                 {
                     Model.Images = value;
                     IsModified = true;
+                    ConvertImages();
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(Images));
                 }
+            }
+        }
+
+        public List<ListItemImage> imageChanges = new List<ListItemImage>();
+
+        /// <summary>
+        /// Gets or sets convertImages.
+        /// </summary>
+        public List<WriteableBitmap> convertedImages = new List<WriteableBitmap>();
+
+        public WriteableBitmap firstConvertedImage
+        {
+            get => convertedImages.FirstOrDefault();
+        }
+
+        public async void ConvertImages()
+        {
+            convertedImages = new List<WriteableBitmap>();
+            foreach (TravelListItemImage image in Images)
+            {
+                StorageFile sfile = await LocalStorage.AsStorageFile(image.ImageData, image.ImageName);
+                convertedImages.Add(await LocalStorage.getImageFromStorageFile(sfile));
             }
         }
 
@@ -250,6 +277,21 @@ namespace TravelListApp.ViewModels
                 var item = await App.Repository.TravelLists.CreateTravelList(Model);
                 this.TravelListItemID = item.TravelListItemID;
                 App.ViewModel.TravelListItems.Add(this);
+                foreach (ListItemImage ic in imageChanges)
+                {
+                    if (ic.IsNew)
+                    {
+                        ic.TravelListItemID = this.TravelListItemID;
+                        await App.Repository.TravelListImages.CreateTravelListImage(ic);
+                    }
+                    if (ic.ToRemove)
+                    {
+                        await App.Repository.TravelListImages.DeleteTravelListImage(ic);
+                    }
+                }
+                imageChanges.Clear();
+                var newModel = await App.Repository.TravelLists.GetTravelListById(item.TravelListItemID);
+                this.Model = newModel;
             } else
             {
                 await App.Repository.TravelLists.UpdateTravelList(Model.TravelListItemID, Model);
@@ -258,6 +300,21 @@ namespace TravelListApp.ViewModels
                 {
                     item.Model = _model;
                 }
+                foreach (ListItemImage ic in imageChanges)
+                {
+                    if (ic.IsNew)
+                    {
+                        ic.TravelListItemID = this.TravelListItemID;
+                        await App.Repository.TravelListImages.CreateTravelListImage(ic);
+                    }
+                    if (ic.ToRemove)
+                    {
+                        await App.Repository.TravelListImages.DeleteTravelListImage(ic);
+                    }
+                }
+                imageChanges.Clear();
+                var newModel = await App.Repository.TravelLists.GetTravelListById(Model.TravelListItemID);
+                this.Model = newModel;
             }
         }
 
@@ -274,6 +331,7 @@ namespace TravelListApp.ViewModels
                 }
             }
         }
+
 
         /// <summary>
         /// Saves travellist data that has been edited.
