@@ -44,8 +44,8 @@ namespace TravelListApp.Views
                 }               
                 
 
-
-                if (e.AddedItems.First() is MenuItem menuItem && menuItem.IsNavigation)
+            
+                if (e.AddedItems.Count > 0 && e.AddedItems.First() is MenuItem menuItem && menuItem.IsNavigation)
                 {
                     if(menuItem.Text == "User")
                     {
