@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -7,6 +9,7 @@ using TravelListApp.Models;
 using TravelListApp.Services;
 using TravelListApp.Services.Icons;
 using TravelListApp.ViewModels;
+using TravelListModels;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -47,26 +50,28 @@ namespace TravelListApp.Views
             {
                 ViewModel = new TravelListItemViewModel
                 {
-                    IsNewTravelList = true,
-                    IsInEdit = true
+                    IsNewTravelList = true
                 };
+                ViewModel.StartDate = DateTime.Today;
+                ViewModel.EndDate = DateTime.Today;
             }
             else
             {
                 ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
                 StorageFile sfile = await LocalStorage.AsStorageFile(ViewModel.Images[0].ImageData, ViewModel.Images[0].ImageName);
                 imgbit.Source = ViewModel.firstConvertedImage;
-                ViewModel.StartEdit();
             }
-
+            ViewModel.PropertyChanged += (obj, ev) => SaveCommandButton.IsEnabled = ViewModel.IsValid;
+            ViewModel.Validate();
             Menu.SetModel(ViewModel);
             Menu.SetTab(GetType());
             base.OnNavigatedTo(e);
+            
         }
 
         private async void SaveAppBar_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            if (ViewModel.IsModified)
+            if (ViewModel.IsNewTravelList || ViewModel.IsDirty)
             {
                 ViewModel.imageChanges.Add(new ListItemImage()
                 {
@@ -126,6 +131,13 @@ namespace TravelListApp.Views
             byte[] dataArrayTobeSent = await ConvertImageToByte(inputFile);
             imageName = Guid.NewGuid() + inputFile.FileType;
             imageData = dataArrayTobeSent;
+            ViewModel.imageChanges.Add(new ListItemImage()
+            {
+                ImageData = imageData,
+                ImageName = imageName,
+                IsSet = true
+            });
+            ViewModel.imageChangesCheck = ViewModel.imageChanges;
         }
 
         /// <summary>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TravelListApp.Models;
 using TravelListApp.Services;
+using TravelListApp.Services.Validation;
 using TravelListModels;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
@@ -13,10 +14,16 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace TravelListApp.ViewModels
 {
-    public class TravelListItemViewModel : BindableBase, IEditableObject
+    //public class TravelListItemViewModel : BindableBase, IEditableObject
+    public class TravelListItemViewModel : ValidatableModelBase
     {
 
-        public TravelListItemViewModel(TravelListItem model = null) => Model = model ?? new TravelListItem();
+        // public TravelListItemViewModel(TravelListItem model = null) => Model = model ?? new TravelListItem();
+
+        public TravelListItemViewModel(TravelListItem model = null)
+        {
+            this.Model = model;
+        }
 
         private TravelListItem _model;
 
@@ -25,14 +32,27 @@ namespace TravelListApp.ViewModels
             get => _model;
             set
             {
-                if (_model != value)
-                {
-                    _model = value;
-                    FillSyncPoints();
-                    ConvertImages();
-                    // Raise the PropertyChanged event for all properties.
-                    OnPropertyChanged(string.Empty);
+                if (value != null) {
+                    if (_model != value)
+                    {
+                        _model = value;
+                        this.TravelListItemID = _model.TravelListItemID;
+                        this.Name = _model.Name;
+                        this.Description = _model.Description;
+                        this.StartDate = _model.StartDate;
+                        this.EndDate = _model.EndDate;
+                        this.Country = _model.Country;
+                        this.Latitude = _model.Latitude;
+                        this.Longitude = _model.Longitude;
+                        this.Items = _model.Items.ToList();
+                        this.Points = _model.Points.ToList();
+                        this.Images = _model.Images.ToList();
+                    }
+                } else {
+                    _model = new TravelListItem();
                 }
+
+                this.Validator = that => { Validation_Executed(that as TravelListItemViewModel); };
             }
         }
 
@@ -41,15 +61,11 @@ namespace TravelListApp.ViewModels
         /// </summary>
         public int TravelListItemID
         {
-            get => Model.TravelListItemID;
+            get => Read<int>();
             set
             {
-                if (value != Model.TravelListItemID)
-                {
-                    Model.TravelListItemID = value;
-                    OnPropertyChanged();
-                    OnPropertyChanged(nameof(TravelListItemID));
-                }
+                Model.TravelListItemID = value;
+                Write(value);
             }
         }
 
@@ -58,34 +74,50 @@ namespace TravelListApp.ViewModels
         /// </summary>
         public string Name
         {
-            get => Model.Name;
+            get => Read<string>();
             set
             {
-                if (value != Model.Name)
-                {
-                    Model.Name = value;
-                    IsModified = true;
-                    OnPropertyChanged();
-                    OnPropertyChanged(nameof(Name));
-                }
+                Model.Name = value;
+                Write(value);
             }
         }
 
         /// <summary>
-        /// Gets or sets the customer's first name.
+        /// Gets or sets Description.
         /// </summary>
         public string Description
         {
-            get => Model.Description;
+            get => Read<string>();
             set
             {
-                if (value != Model.Description)
-                {
-                    Model.Description = value;
-                    IsModified = true;
-                    OnPropertyChanged();
-                    OnPropertyChanged(nameof(Description));
-                }
+                Model.Description = value;
+                Write(value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets StartDate.
+        /// </summary>
+        public DateTime StartDate
+        {
+            get => Read<DateTime>();
+            set
+            {
+                Model.StartDate = value;
+                Write(value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets EndDate.
+        /// </summary>
+        public DateTime EndDate
+        {
+            get => Read<DateTime>();
+            set
+            {
+                Model.EndDate = value;
+                Write(value);
             }
         }
 
@@ -94,67 +126,34 @@ namespace TravelListApp.ViewModels
         /// </summary>
         public string Country
         {
-            get => Model.Country;
+            get => Read<string>();
             set
             {
-                if (value != Model.Country)
-                {
-                    Model.Country = value;
-                    Country country = App.ViewModel.Countries.Where(x => x.Name == value).First();
-                    Latitude = country.LatLng[0];
-                    Longitude = country.LatLng[1];
-                    IsModified = true;
-                    OnPropertyChanged();
-                    OnPropertyChanged(nameof(Country));
-                }
+                Model.Country = value;
+                Write(value);
+                Country country = App.ViewModel.Countries.Where(x => x.Name == value).First();
+                Latitude = country.LatLng[0];
+                Longitude = country.LatLng[1];
             }
         }
 
         public decimal Latitude
         {
-            get => Model.Latitude;
+            get => Read<decimal>();
             set
             {
-                if (value != Model.Latitude)
-                {
-                    Model.Latitude = value;
-                    IsModified = true;
-                    OnPropertyChanged();
-                    OnPropertyChanged(nameof(Latitude));
-                }
+                Model.Latitude = value;
+                Write(value);
             }
         }
 
         public decimal Longitude
         {
-            get => Model.Longitude;
+            get => Read<decimal>();
             set
             {
-                if (value != Model.Longitude)
-                {
-                    Model.Longitude = value;
-                    IsModified = true;
-                    OnPropertyChanged();
-                    OnPropertyChanged(nameof(Longitude));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the customer's first name.
-        /// </summary>
-        public string Image
-        {
-            get => Model.Image;
-            set
-            {
-                if (value != Model.Image)
-                {
-                    Model.Image = value;
-                    IsModified = true;
-                    OnPropertyChanged();
-                    OnPropertyChanged(nameof(Image));
-                }
+                Model.Longitude = value;
+                Write(value);
             }
         }
 
@@ -163,17 +162,20 @@ namespace TravelListApp.ViewModels
         /// </summary>
         public List<CheckListItem> Items
         {
-            get => Model.Items.ToList();
+            get => ReadList<CheckListItem>().ToList();
             set
             {
-                if (value != Model.Items)
-                {
-                    Model.Items = value;
-                    IsModified = true;
-                    OnPropertyChanged();
-                    OnPropertyChanged(nameof(Items));
-                }
+                Model.Items = value;
+                WriteList(value);
             }
+            //set
+            //{
+            //    if (value != Model.Items)
+            //    {
+            //        Model.Items = value;
+            //        Write(value);
+            //    }
+            //}
         }
 
         /// <summary>
@@ -181,17 +183,22 @@ namespace TravelListApp.ViewModels
         /// </summary>
         public List<TravelPointOfInterest> Points
         {
-            get => Model.Points.ToList();
+            get => ReadList<TravelPointOfInterest>();
             set
             {
-                if (value != Model.Points)
-                {
-                    Model.Points = value;
-                    IsModified = true;
-                    OnPropertyChanged();
-                    OnPropertyChanged(nameof(Points));
-                }
+                Model.Points = value;
+                WriteList(value);
+                FillSyncPoints();
             }
+            //get => Model.Points.ToList();
+            //set
+            //{
+            //    if (value != Model.Points)
+            //    {
+            //        Model.Points = value;
+            //        IsModified = true;
+            //    }
+            //}
         }
 
         /// <summary>
@@ -199,17 +206,24 @@ namespace TravelListApp.ViewModels
         /// </summary>
         public List<TravelListItemImage> Images
         {
-            get => Model.Images.ToList();
+            get => ReadList<TravelListItemImage>().ToList();
             set
             {
-                if (value != Model.Images)
-                {
-                    Model.Images = value;
-                    IsModified = true;
-                    ConvertImages();
-                    OnPropertyChanged();
-                    OnPropertyChanged(nameof(Images));
-                }
+                Model.Images = value;
+                WriteList(value);
+                ConvertImages();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the customer's first name.
+        /// </summary>
+        public List<ListItemImage> imageChangesCheck
+        {
+            get => ReadList<ListItemImage>().ToList();
+            set
+            {
+                WriteList(value);
             }
         }
 
@@ -228,7 +242,7 @@ namespace TravelListApp.ViewModels
         public async void ConvertImages()
         {
             convertedImages = new List<WriteableBitmap>();
-            foreach (TravelListItemImage image in Images)
+            foreach (TravelListItemImage image in Images) 
             {
                 StorageFile sfile = await LocalStorage.AsStorageFile(image.ImageData, image.ImageName);
                 convertedImages.Add(await LocalStorage.getImageFromStorageFile(sfile));
@@ -264,12 +278,44 @@ namespace TravelListApp.ViewModels
 
         public List<String> Countries = App.ViewModel.Countries.Select(x => x.Name).ToList();
 
+        private void Validation_Executed(TravelListItemViewModel c)
+        {
+            if (string.IsNullOrEmpty(c.Name))
+            {
+                c.Properties[nameof(c.Name)].Errors.Add("Name is mandatory.");
+            }
+
+            if (string.IsNullOrEmpty(c.Description))
+            {
+                c.Properties[nameof(c.Description)].Errors.Add("Description is mandatory.");
+            }
+
+            // Compare two properties.
+            if (c.EndDate < c.StartDate)
+            {
+                // Unfortunately errors have to be assigned to a property.
+                c.Properties[nameof(c.EndDate)].Errors.Add("EndDate should come after StartDate.");
+            }
+
+            if (string.IsNullOrEmpty(c.Country))
+            {
+                c.Properties[nameof(c.Country)].Errors.Add("Country is mandatory.");
+            }
+
+            // Compare two properties.
+            if (c.Images.Count == 0 && (c.imageChanges.Count == 0 || c.imageChanges.FindAll(image => image.IsSet).Count == 0))
+            {
+                // Unfortunately errors have to be assigned to a property.
+                c.Properties[nameof(c.Images)].Errors.Add("Image is mandatory.");
+            }
+
+        }
+
         /// <summary>
         /// Saves travellist data that has been edited.
         /// </summary>
         public async Task SaveAsync()
         {
-            IsInEdit = false;
             IsModified = false;
             if (IsNewTravelList)
             {
@@ -363,16 +409,10 @@ namespace TravelListApp.ViewModels
         }
 
         /// <summary>
-        /// Enables edit mode.
-        /// </summary>
-        public void StartEdit() => IsInEdit = true;
-
-        /// <summary>
         /// Discards any edits that have been made, restoring the original values.
         /// </summary>
         public async Task RevertChangesAsync()
         {
-            IsInEdit = false;
             if (IsModified)
             {
                 await RefreshAsync();
@@ -388,37 +428,20 @@ namespace TravelListApp.ViewModels
             Model = await App.Repository.TravelLists.GetTravelListById(Model.TravelListItemID);
         }
 
-        private bool _isNewTravelList;
+        // private bool _isNewTravelList;
 
         /// <summary>
         /// Gets or sets a value that indicates whether this is a new customer.
         /// </summary>
         public bool IsNewTravelList
         {
-            get => _isNewTravelList;
-            set => SetProperty(ref _isNewTravelList, value);
+            get => Read<bool>();
+            set => Write(value);
+            // set => SetProperty(ref _isNewTravelList, value);
         }
 
-        private bool _isInEdit = false;
-
-        /// <summary>
-        /// Gets or sets a value that indicates whether the customer data is being edited.
-        /// </summary>
-        public bool IsInEdit
-        {
-            get => _isInEdit;
-            set => SetProperty(ref _isInEdit, value);
-        }
 
         public bool IsModified { get; set; }
-
-        /// <summary>
-        /// Called when a bound DataGrid control causes the travellist to enter edit mode.
-        /// </summary>
-        public void BeginEdit()
-        {
-            // Not used.
-        }
 
         /// <summary>
         /// Called when a bound DataGrid control cancels the edits that have been made to a travellist.

@@ -5,8 +5,13 @@
     xmlns:local="using:TravelListApp.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mvvm="using:TravelListApp.ViewModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <mvvm:DateTimeToDateTimeOffsetConverter x:Key="DateTimeToDateTimeOffsetConverter" />
+    </Page.Resources>
 
     <Grid Background="{StaticResource TravelBackground2}"
           Padding="10">
@@ -21,6 +26,7 @@
 
         <Grid Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch">
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
@@ -55,6 +61,28 @@
                              Margin="5 0 5 10"
                              Grid.Row="1"
                              Grid.Column="1" />
+            <CalendarDatePicker Header="Start date"
+                                BorderThickness="0.5"
+                                Foreground="{StaticResource WhiteBrush}"
+                                BorderBrush="{StaticResource WhiteBrush}"
+                                Background="{StaticResource transBrush}"
+                                Date="{x:Bind ViewModel.StartDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"
+                                HorizontalAlignment="Stretch"
+                                Margin="0 0 10 10"
+                                Grid.Row="2"
+                                Grid.Column="0" 
+                                DateFormat="{}{month.full} {day.integer}, {year.full}" />
+            <CalendarDatePicker Header="End date"
+                                BorderThickness="0.5"
+                                Foreground="{StaticResource WhiteBrush}"
+                                BorderBrush="{StaticResource WhiteBrush}"
+                                Background="{StaticResource transBrush}"
+                                Date="{x:Bind ViewModel.EndDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"
+                                HorizontalAlignment="Stretch"
+                                Margin="5 0 5 10"
+                                Grid.Row="2"
+                                Grid.Column="1" 
+                                DateFormat="{}{month.full} {day.integer}, {year.full}" />
             <ComboBox Header="Country"
                               BorderThickness="0.5"
                               Foreground="{StaticResource WhiteBrush}"
@@ -65,7 +93,7 @@
                               Margin="0 0 5 10"
                               HorizontalAlignment="Stretch"
                               Grid.ColumnSpan="2"
-                              Grid.Row="2"
+                              Grid.Row="3"
                               Grid.Column="0" />
             <Button x:Name="button" 
                     Click="Convert_Click"
@@ -77,13 +105,13 @@
                     HorizontalAlignment="Stretch"
                     Margin="0 0 5 10" 
                     Grid.ColumnSpan="2"
-                    Grid.Row="3" 
+                    Grid.Row="4" 
                     Grid.Column="0"/>
             <Border BorderThickness="1"
                     BorderBrush="{StaticResource WhiteBrush}"
                     Margin="0 0 5 10" 
                     Grid.ColumnSpan="2"
-                    Grid.Row="4" 
+                    Grid.Row="5" 
                     Grid.Column="0">
                 <Image x:Name="imgbit"
                     Stretch="Fill"
@@ -92,14 +120,14 @@
                     ImageFailed="Image_ImageFailed"
                     HorizontalAlignment="Stretch"/>
             </Border>
-            <Grid Background="{StaticResource HamburgerForegroundBrush}"
-                          Grid.Row="5"
+            <Grid Background="{StaticResource AlertForegroundBrush}"
+                          Grid.Row="6"
                           Grid.Column="0"
                           Grid.ColumnSpan="2">
-                <ItemsControl ItemsSource="{Binding Errors, Mode=OneWay}">
+                <ItemsControl ItemsSource="{x:Bind ViewModel.Errors, Mode=OneWay}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding}" Margin="10 5" />
+                            <TextBlock Foreground="{StaticResource WhiteBrush}" Text="{Binding}" Margin="10 5" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

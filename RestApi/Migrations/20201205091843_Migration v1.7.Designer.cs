@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelListRepository.Sql;
 
 namespace TravelList.Api.Migrations
 {
     [DbContext(typeof(TravelListContext))]
-    partial class TravelListContextModelSnapshot : ModelSnapshot
+    [Migration("20201205091843_Migration v1.7")]
+    partial class Migrationv17
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,6 +49,8 @@ namespace TravelList.Api.Migrations
                     b.Property<string>("Description");
 
                     b.Property<DateTime>("EndDate");
+
+                    b.Property<string>("Image");
 
                     b.Property<decimal>("Latitude");
 

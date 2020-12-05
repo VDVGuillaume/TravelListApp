@@ -13,5 +13,6 @@ namespace TravelListApp.Models
     {
         public Boolean IsNew { get; set; }
         public Boolean ToRemove { get; set; }
+        public Boolean IsSet { get; set; }
     }
 }
