@@ -1,0 +1,59 @@
+﻿<Page
+    x:Class="TravelListApp.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid Background="{StaticResource TravelBackground2}"
+          Padding="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+                <!--<RowDefinition Height="auto" />-->
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+
+            <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="30,57,-1498,-20" Grid.RowSpan="2" HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="29.156" />
+                    <RowDefinition Height="13.844"/>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="0*"/>
+                    <RowDefinition Height="5*"/>
+                    <RowDefinition Height="846*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Login Page"
+                            Foreground="{StaticResource WhiteBrush}"
+                            FontSize="24"
+                            Margin="0,0,0,9.844"
+                            Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+
+
+                <Button x:Name="CallGraphButton" Content="Login with windows Account" HorizontalAlignment="Left" Margin="58,18.156,0,0" Grid.Row="1" VerticalAlignment="Top" Width="204" Grid.RowSpan="6" Click="CallGraphButton_Click"/>
+                <Button x:Name="SignOutButton" Content="Sign out" HorizontalAlignment="Left" Margin="58,44,0,0" Grid.Row="7" VerticalAlignment="Top" Width="204" Click="SignOutButton_Click" Visibility="Collapsed"/>
+                <TextBlock x:Name="ErrorLabel" Text="" Margin="58,0,41,814" Grid.Row="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                <SymbolIcon Symbol="Contact" Margin="0,23,688,0" Grid.Row="1" RenderTransformOrigin="-1.884,0.357" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <SymbolIcon x:Name="SignOutIcon" Symbol="Undo" Margin="0,51,688,782" Grid.Row="7" RenderTransformOrigin="-1.884,0.357" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed"/>
+
+            </Grid>
+        </Grid>
+
+
+
+    </Grid>
+</Page> 
