@@ -183,7 +183,7 @@ namespace TravelListApp.ViewModels
         /// </summary>
         public List<TravelPointOfInterest> Points
         {
-            get => ReadList<TravelPointOfInterest>();
+            get => ReadList<TravelPointOfInterest>().ToList();
             set
             {
                 Model.Points = value;
@@ -243,6 +243,16 @@ namespace TravelListApp.ViewModels
         {
             convertedImages = new List<WriteableBitmap>();
             foreach (TravelListItemImage image in Images) 
+            {
+                StorageFile sfile = await LocalStorage.AsStorageFile(image.ImageData, image.ImageName);
+                convertedImages.Add(await LocalStorage.getImageFromStorageFile(sfile));
+            }
+        }
+
+        public async Task ConvertImagesTask()
+        {
+            convertedImages = new List<WriteableBitmap>();
+            foreach (TravelListItemImage image in Images)
             {
                 StorageFile sfile = await LocalStorage.AsStorageFile(image.ImageData, image.ImageName);
                 convertedImages.Add(await LocalStorage.getImageFromStorageFile(sfile));
@@ -362,6 +372,7 @@ namespace TravelListApp.ViewModels
                 var newModel = await App.Repository.TravelLists.GetTravelListById(Model.TravelListItemID);
                 this.Model = newModel;
             }
+            await ConvertImagesTask();
         }
 
         /// <summary>

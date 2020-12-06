@@ -1,25 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using TravelListApp.Models;
 using TravelListApp.Services;
 using TravelListApp.Services.Icons;
 using TravelListApp.ViewModels;
-using TravelListModels;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using TravelListApp.Services.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -80,7 +75,7 @@ namespace TravelListApp.Views
                     IsNew = true
                 });
                 await ViewModel.SaveAsync();
-
+                Navigation.Navigate(typeof(TravelListItemPage), ViewModel.TravelListItemID);
             }
         }
 
