@@ -22,9 +22,16 @@
 
         <local:TravelListItemMenu x:Name="Menu" />
 
-        <!--<TextBlock
-                x:Name="PageTitle"
-                Text="{x:Bind ViewModel.Name, Mode=OneWay}" />-->
+        <Grid Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch">
+            <Image Source="{x:Bind ViewModel.firstConvertedImage }" Stretch="UniformToFill"/>
+            <StackPanel VerticalAlignment="Bottom" Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
+                <TextBlock Text="{x:Bind ViewModel.Name}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextStyle}" Height="60" Margin="15,0,15,0"/>
+                <TextBlock Text="{x:Bind ViewModel.Description}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                <TextBlock Text="{x:Bind ViewModel.Country}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                <TextBlock Text="{x:Bind ViewModel.StartDate}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                <TextBlock Text="{x:Bind ViewModel.EndDate}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+            </StackPanel>
+        </Grid>
 
     </Grid>
 </Page>

@@ -25,7 +25,10 @@
 
 using Newtonsoft.Json;
 using System;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -112,6 +115,38 @@ namespace TravelListRepository.Rest
             using (var client = BaseClient())
             {
                 await client.DeleteAsync($"{controller}/{objectId}");
+            }
+        }
+
+        public async Task<TResult> UploadAsync<TRequest, TResult>(string controller, string ImageName, int TravelListItemID, byte[] file)
+        {
+            using (var client = BaseClient())
+            {
+
+                var form = new MultipartFormDataContent();
+                form.Add(new ByteArrayContent(file, 0, file.Count()), "ImageData", ImageName);
+                form.Add(new StringContent(TravelListItemID.ToString()), "TravelListItemID");
+                form.Add(new StringContent(ImageName.ToString()), "ImageName");
+
+                var response = await client.PostAsync($"{controller}/{TravelListItemID}", form); //No response if filesize exceeds 20 MB
+
+                string json = await response.Content.ReadAsStringAsync();
+                TResult obj = JsonConvert.DeserializeObject<TResult>(json);
+                return obj;
+
+            }
+        }
+
+        /// <summary>
+        /// Makes an HTTP GET request to the given controller and returns the deserialized response content.
+        /// </summary>
+        public async Task<byte[]> DownloadAsync<TResult>(string controller)
+        {
+            using (var client = BaseClient())
+            {
+                var response = await client.GetAsync(controller);                
+                byte[] mybytearray = await response.Content.ReadAsByteArrayAsync();
+                return mybytearray;
             }
         }
 

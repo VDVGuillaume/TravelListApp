@@ -15,7 +15,7 @@ namespace TravelListRepository.Rest
             _http = new HttpHelper(baseUrl);
         }
 
-        public async Task CreateTravelList(TravelListItem tl) =>
+        public async Task<TravelListItem> CreateTravelList(TravelListItem tl) =>
             await _http.PostAsync<TravelListItem, TravelListItem>("travellists", tl);
         
         public async Task DeleteTravelList(TravelListItem tl) =>

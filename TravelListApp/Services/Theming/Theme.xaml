@@ -45,6 +45,10 @@
     <SolidColorBrush x:Key="StatusbarBackgroundBrush"
                      Color="#FF6EC0D6" />
 
+    <!-- Alert -->
+    <SolidColorBrush x:Key="AlertForegroundBrush"
+                     Color="#FFFF4500" />
+
     <!-- Splitview Pane -->
     <SolidColorBrush x:Key="SplitViewBackgroundBrush"
                      Color="#FF000000" />

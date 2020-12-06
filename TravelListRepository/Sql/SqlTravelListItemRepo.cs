@@ -18,7 +18,7 @@ namespace TravelListRepository.Sql
         }
 
 
-        public async Task CreateTravelList(TravelListItem tl)
+        public async Task<TravelListItem> CreateTravelList(TravelListItem tl)
         {
             if (tl == null)
             {
@@ -26,6 +26,7 @@ namespace TravelListRepository.Sql
             }
             _context.TravelLists.Add(tl);
             await _context.SaveChangesAsync();
+            return await _context.TravelLists.AsNoTracking().Include(x => x.Points).Include(x => x.Items).Include(x => x.Images).FirstOrDefaultAsync(p => p.TravelListItemID == tl.TravelListItemID);
         }
 
         public async Task DeleteTravelList(TravelListItem tl)
@@ -40,12 +41,12 @@ namespace TravelListRepository.Sql
 
         public async Task<IEnumerable<TravelListItem>> GetAllTravelLists()
         {
-            return await _context.TravelLists.AsNoTracking().Include(x => x.Points).Include(x => x.Items).ToListAsync();
+            return await _context.TravelLists.AsNoTracking().Include(x => x.Points).Include(x => x.Items).Include(x => x.Images).ToListAsync();
         }
 
         public async Task<TravelListItem> GetTravelListById(int id)
         {
-            return await _context.TravelLists.AsNoTracking().Include(x => x.Points).Include(x => x.Items).FirstOrDefaultAsync(p => p.TravelListItemID == id);
+            return await _context.TravelLists.AsNoTracking().Include(x => x.Points).Include(x => x.Items).Include(x => x.Images).FirstOrDefaultAsync(p => p.TravelListItemID == id);
         }
 
         public async Task UpdateTravelList(int id, TravelListItem tl)

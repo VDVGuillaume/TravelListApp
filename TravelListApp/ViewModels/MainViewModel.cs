@@ -9,8 +9,14 @@ namespace TravelListApp.ViewModels
     {
         public MainViewModel()
         {
-            Task.Run(GetTravelListListAsync);
-            Task.Run(GetCountriesAsync);
+            //Task.Run(GetTravelListListAsync);
+            //Task.Run(GetCountriesAsync);
+        }
+
+        public async Task GetAllDataAsync()
+        {
+            await Task.Run(GetCountriesAsync);
+            await Task.Run(GetTravelListListAsync);
         }
 
         public string MapServiceToken { get; set; }
@@ -40,7 +46,7 @@ namespace TravelListApp.ViewModels
         private TravelListItemViewModel _selectedTravelList;
 
         /// <summary>
-        /// Gets or sets the selected customer, or null if no customer is selected. 
+        /// Gets or sets the selected TravelList, or null if no TravelList is selected. 
         /// </summary>
         public TravelListItemViewModel SelectedTravelList
         {
@@ -54,6 +60,14 @@ namespace TravelListApp.ViewModels
         {
             get => _isLoading;
             set => SetProperty(ref _isLoading, value);
+        }
+
+        private bool _isReady = false;
+
+        public bool IsReady
+        {
+            get => _isReady;
+            set => SetProperty(ref _isReady, value);
         }
 
         public async Task GetTravelListListAsync()
@@ -101,5 +115,7 @@ namespace TravelListApp.ViewModels
             });
 
         }
+
+
     }
 }
