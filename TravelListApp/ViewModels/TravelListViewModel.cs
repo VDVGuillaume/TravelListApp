@@ -19,6 +19,29 @@ namespace TravelListApp.ViewModels
             ViewModel.TravelListItems.CollectionChanged += Name_CollectionChanged;
         }
 
+        public async Task RefreshData()
+        {
+            IsLoading = true;
+            await App.ViewModel.GetAllDataTravelListAsync();
+            getTravelListsItemsByCountry();
+            //ViewModel.TravelListItems.CollectionChanged += Name_CollectionChanged;
+            IsLoading = false;
+        }
+
+        private bool _isLoading;
+
+        /// <summary>
+        /// Gets or sets a value that indicates whether this is a new customer.
+        /// </summary>
+        public bool IsLoading
+        {
+            get => _isLoading ;
+            set
+            {
+                SetProperty(ref _isLoading, value);
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
 
         private void Name_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {

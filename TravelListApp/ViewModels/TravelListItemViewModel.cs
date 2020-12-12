@@ -211,7 +211,10 @@ namespace TravelListApp.ViewModels
             {
                 Model.Images = value;
                 WriteList(value);
-                ConvertImages();
+                //if (!IsSaving)
+                //{
+                //    ConvertImages();
+                //}                    
             }
         }
 
@@ -326,6 +329,7 @@ namespace TravelListApp.ViewModels
         /// </summary>
         public async Task SaveAsync()
         {
+            IsSaving = true;
             IsModified = false;
             if (IsNewTravelList)
             {
@@ -372,13 +376,22 @@ namespace TravelListApp.ViewModels
                 var newModel = await App.Repository.TravelLists.GetTravelListById(Model.TravelListItemID);
                 this.Model = newModel;
             }
-            await ConvertImagesTask();
+            IsSaving = false;
         }
 
         /// <summary>
-        /// Saves travellist data that has been edited.
+        /// Delete travellist.
         /// </summary>
-        public async Task SavePointsAsync()
+        public async Task DeleteAsync()
+        {
+            await App.Repository.TravelLists.DeleteTravelList(Model);
+            App.ViewModel.TravelListItems.Remove(this);
+        }
+
+            /// <summary>
+            /// Saves travellist data that has been edited.
+            /// </summary>
+            public async Task SavePointsAsync()
         {
             foreach (PointOfInterest point in syncPoints)
             {
@@ -451,6 +464,7 @@ namespace TravelListApp.ViewModels
             // set => SetProperty(ref _isNewTravelList, value);
         }
 
+        public bool IsSaving { get; set; }
 
         public bool IsModified { get; set; }
 

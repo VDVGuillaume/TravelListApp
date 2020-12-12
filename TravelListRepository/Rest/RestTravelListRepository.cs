@@ -19,7 +19,7 @@ namespace TravelListRepository.Rest
             await _http.PostAsync<TravelListItem, TravelListItem>("travellists", tl);
         
         public async Task DeleteTravelList(TravelListItem tl) =>
-            await _http.DeleteAsync("travellist", tl.TravelListItemID);
+            await _http.DeleteAsync("travellists", tl.TravelListItemID);
 
         public async Task<IEnumerable<TravelListItem>> GetAllTravelLists() =>
             await _http.GetAsync<IEnumerable<TravelListItem>>("travellists");
