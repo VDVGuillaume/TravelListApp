@@ -1,25 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using TravelListApp.Models;
 using TravelListApp.Services;
 using TravelListApp.Services.Icons;
 using TravelListApp.ViewModels;
-using TravelListModels;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using TravelListApp.Services.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -34,6 +29,7 @@ namespace TravelListApp.Views
         {
             this.InitializeComponent();
             SaveIcon = new ButtonItem() { Glyph = Icon.GetIcon("Save"), Text = "Save" };
+            DeleteIcon = new ButtonItem() { Glyph = Icon.GetIcon("Clear"), Text = "Clear" };
             ImageUri = new BitmapImage(new Uri("ms-appx:///Assets/StoreLogo.png"));
 
         }
@@ -41,6 +37,7 @@ namespace TravelListApp.Views
         public BitmapImage ImageUri { get; set; }
         public TravelListItemViewModel ViewModel { get; set; }
         public ButtonItem SaveIcon { get; set; }
+        public ButtonItem DeleteIcon { get; set; }
         public byte[] imageData { get; set; }
         public string imageName { get; set; }
 
@@ -73,6 +70,8 @@ namespace TravelListApp.Views
         {
             if (ViewModel.IsNewTravelList || ViewModel.IsDirty)
             {
+                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                MyProgressRing.IsActive = true;
                 ViewModel.imageChanges.Add(new ListItemImage()
                 {
                     ImageData = imageData,
@@ -80,7 +79,23 @@ namespace TravelListApp.Views
                     IsNew = true
                 });
                 await ViewModel.SaveAsync();
+                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                MyProgressRing.IsActive = false;
+                await ViewModel.ConvertImagesTask();
+                Navigation.Navigate(typeof(TravelListItemPage), ViewModel.TravelListItemID);
+            }
+        }
 
+        private async void DeleteAppBar_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            if (!ViewModel.IsNewTravelList)
+            {
+                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                MyProgressRing.IsActive = true;
+                await ViewModel.DeleteAsync();
+                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                MyProgressRing.IsActive = false;
+                Navigation.Navigate(typeof(TravelListPage));
             }
         }
 

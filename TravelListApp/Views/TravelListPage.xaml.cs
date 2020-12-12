@@ -1,4 +1,5 @@
-﻿using TravelListApp.Services.Navigation;
+﻿using System.Threading.Tasks;
+using TravelListApp.Services.Navigation;
 using TravelListApp.ViewModels;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -19,10 +20,14 @@ namespace TravelListApp.Views
             this.DataContext = ViewModel;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            await ViewModel.RefreshData();
+            groupedItemsViewSource.Source = ViewModel.Items;
             var collectionGroups = groupedItemsViewSource.View.CollectionGroups;
             ((ListViewBase)this.Zoom.ZoomedOutView).ItemsSource = collectionGroups;
+            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
 
         private void AddButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)

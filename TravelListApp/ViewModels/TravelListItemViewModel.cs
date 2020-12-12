@@ -183,7 +183,7 @@ namespace TravelListApp.ViewModels
         /// </summary>
         public List<TravelPointOfInterest> Points
         {
-            get => ReadList<TravelPointOfInterest>();
+            get => ReadList<TravelPointOfInterest>().ToList();
             set
             {
                 Model.Points = value;
@@ -211,7 +211,10 @@ namespace TravelListApp.ViewModels
             {
                 Model.Images = value;
                 WriteList(value);
-                ConvertImages();
+                //if (!IsSaving)
+                //{
+                //    ConvertImages();
+                //}                    
             }
         }
 
@@ -243,6 +246,16 @@ namespace TravelListApp.ViewModels
         {
             convertedImages = new List<WriteableBitmap>();
             foreach (TravelListItemImage image in Images) 
+            {
+                StorageFile sfile = await LocalStorage.AsStorageFile(image.ImageData, image.ImageName);
+                convertedImages.Add(await LocalStorage.getImageFromStorageFile(sfile));
+            }
+        }
+
+        public async Task ConvertImagesTask()
+        {
+            convertedImages = new List<WriteableBitmap>();
+            foreach (TravelListItemImage image in Images)
             {
                 StorageFile sfile = await LocalStorage.AsStorageFile(image.ImageData, image.ImageName);
                 convertedImages.Add(await LocalStorage.getImageFromStorageFile(sfile));
@@ -316,6 +329,7 @@ namespace TravelListApp.ViewModels
         /// </summary>
         public async Task SaveAsync()
         {
+            IsSaving = true;
             IsModified = false;
             if (IsNewTravelList)
             {
@@ -362,12 +376,22 @@ namespace TravelListApp.ViewModels
                 var newModel = await App.Repository.TravelLists.GetTravelListById(Model.TravelListItemID);
                 this.Model = newModel;
             }
+            IsSaving = false;
         }
 
         /// <summary>
-        /// Saves travellist data that has been edited.
+        /// Delete travellist.
         /// </summary>
-        public async Task SavePointsAsync()
+        public async Task DeleteAsync()
+        {
+            await App.Repository.TravelLists.DeleteTravelList(Model);
+            App.ViewModel.TravelListItems.Remove(this);
+        }
+
+            /// <summary>
+            /// Saves travellist data that has been edited.
+            /// </summary>
+            public async Task SavePointsAsync()
         {
             foreach (PointOfInterest point in syncPoints)
             {
@@ -440,6 +464,7 @@ namespace TravelListApp.ViewModels
             // set => SetProperty(ref _isNewTravelList, value);
         }
 
+        public bool IsSaving { get; set; }
 
         public bool IsModified { get; set; }
 

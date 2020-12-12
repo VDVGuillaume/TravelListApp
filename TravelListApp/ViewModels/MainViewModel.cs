@@ -19,6 +19,16 @@ namespace TravelListApp.ViewModels
             await Task.Run(GetTravelListListAsync);
         }
 
+        public async Task GetAllDataCountriesAsync()
+        {
+            await Task.Run(GetCountriesAsync);
+        }
+
+        public async Task GetAllDataTravelListAsync()
+        {
+            await Task.Run(GetTravelListListAsync);
+        }
+
         public string MapServiceToken { get; set; }
 
         // public ObservableCollection<TravelListItemViewModel> TravelListItems { get; set; }
@@ -82,12 +92,14 @@ namespace TravelListApp.ViewModels
                 return;
             }
 
-            await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            await DispatcherHelper.ExecuteOnUIThreadAsync(async () =>
             {
                 TravelListItems.Clear();
                 foreach (var c in travelLists)
                 {
-                    TravelListItems.Add(new TravelListItemViewModel(c));
+                    var newModel = new TravelListItemViewModel(c);
+                    await newModel.ConvertImagesTask();
+                    TravelListItems.Add(newModel);
                 }
                 IsLoading = false;
             });
