@@ -5,6 +5,7 @@ namespace RestApi.Dtos
 {
     public class TravelListCreateDto
     {
+        public string UserId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime StartDate { get; set; }

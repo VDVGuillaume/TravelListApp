@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TravelListApp.Models;
 using TravelListApp.Services;
 using TravelListApp.Services.Validation;
+using TravelListApp.Views;
 using TravelListModels;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
@@ -50,11 +51,15 @@ namespace TravelListApp.ViewModels
                     }
                 } else {
                     _model = new TravelListItem();
+                    _model.UserId = LoginPage.account.Id;
                 }
 
                 this.Validator = that => { Validation_Executed(that as TravelListItemViewModel); };
             }
         }
+
+
+    
 
         /// <summary>
         /// Gets or sets the TravelListItemID's.
