@@ -46,6 +46,7 @@ namespace TravelListApp.Views
 
         private static string MSGraphURL = "https://graph.microsoft.com/v1.0/";
         private static AuthenticationResult authResult;
+        public static User account;
       
 
 
@@ -60,13 +61,12 @@ namespace TravelListApp.Views
                 GraphServiceClient graphClient = await SignInAndInitializeGraphServiceClient(scopes);
 
                 // Call the /me endpoint of Graph
-                User graphUser = await graphClient.Me.Request().GetAsync();
+                account = await graphClient.Me.Request().GetAsync();
 
                 // Go back to the UI thread to make changes to the UI
-                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                {
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>                {
 
-                    Account account = new Account(graphUser.Id, graphUser.GivenName, graphUser.UserPrincipalName);
+                    
                     Frame rootFrame = Window.Current.Content as Frame;                    
                     rootFrame.Navigate(typeof(Shell));
                     

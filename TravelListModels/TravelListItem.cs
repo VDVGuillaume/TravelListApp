@@ -14,6 +14,8 @@ namespace TravelListModels
             this.Points = new List<TravelPointOfInterest>();
             this.Images = new List<TravelListItemImage>();
         }
+
+        public string UserId { get; set; }
         public int TravelListItemID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
