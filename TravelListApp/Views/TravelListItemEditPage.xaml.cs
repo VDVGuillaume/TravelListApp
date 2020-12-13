@@ -15,6 +15,9 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using TravelListApp.Services.Navigation;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using TravelListModels;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -31,7 +34,7 @@ namespace TravelListApp.Views
             SaveIcon = new ButtonItem() { Glyph = Icon.GetIcon("Save"), Text = "Save" };
             DeleteIcon = new ButtonItem() { Glyph = Icon.GetIcon("Clear"), Text = "Clear" };
             ImageUri = new BitmapImage(new Uri("ms-appx:///Assets/StoreLogo.png"));
-
+            CarouselControl.ItemsSource = cImages;
         }
 
         public BitmapImage ImageUri { get; set; }
@@ -40,8 +43,9 @@ namespace TravelListApp.Views
         public ButtonItem DeleteIcon { get; set; }
         public byte[] imageData { get; set; }
         public string imageName { get; set; }
+        public ObservableCollection<CarouselImage> cImages = new ObservableCollection<CarouselImage>();
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter == null)
             {
@@ -55,8 +59,16 @@ namespace TravelListApp.Views
             else
             {
                 ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
-                StorageFile sfile = await LocalStorage.AsStorageFile(ViewModel.Images[0].ImageData, ViewModel.Images[0].ImageName);
-                imgbit.Source = ViewModel.firstConvertedImage;
+                // StorageFile sfile = await LocalStorage.AsStorageFile(ViewModel.Images[0].ImageData, ViewModel.Images[0].ImageName);
+                // imgbit.Source = ViewModel.firstConvertedImage;
+                foreach (var item in ViewModel.convertedImages)
+                {
+                    cImages.Add(item);
+                }
+                if (ViewModel.imageChanges.Count > 0)
+                {
+                    ViewModel.imageChanges.Clear();
+                }
             }
             ViewModel.PropertyChanged += (obj, ev) => SaveCommandButton.IsEnabled = ViewModel.IsValid;
             ViewModel.Validate();
@@ -72,17 +84,20 @@ namespace TravelListApp.Views
             {
                 MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 MyProgressRing.IsActive = true;
-                ViewModel.imageChanges.Add(new ListItemImage()
-                {
-                    ImageData = imageData,
-                    ImageName = imageName,
-                    IsNew = true
-                });
                 await ViewModel.SaveAsync();
-                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                MyProgressRing.IsActive = false;
                 await ViewModel.ConvertImagesTask();
+                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                MyProgressRing.IsActive = false;
                 Navigation.Navigate(typeof(TravelListItemPage), ViewModel.TravelListItemID);
+            }
+            else if (ViewModel.imageChanges.Count > 0)
+            {
+                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                MyProgressRing.IsActive = true;
+                await ViewModel.SaveImagesAsync();
+                await ViewModel.ConvertImagesTask();
+                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                MyProgressRing.IsActive = false;
             }
         }
 
@@ -99,20 +114,26 @@ namespace TravelListApp.Views
             }
         }
 
-        private void Image_ImageFailed(object sender, ExceptionRoutedEventArgs e)
+        private void DeleteImageAppBar_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            ((Image)sender).Source = new BitmapImage(new Uri("./Assets/StoreLogo.png", UriKind.Relative));
-        }
-
-        void Image_Loaded(object sender, RoutedEventArgs e)
-        {
-            Image img = sender as Image;
-            if (img != null)
+            var button = sender as Button;
+            var ImageName = button.Tag;
+            CarouselImage imageToDelete = cImages.First(image => image.ImageName.Equals(ImageName));
+            if(imageToDelete != null)
             {
-                BitmapImage bitmapImage = new BitmapImage();
-                img.Width = bitmapImage.DecodePixelWidth = 280;
-                bitmapImage.UriSource = new Uri("ms-appx:///Assets/StoreLogo.png");
-                img.Source = bitmapImage;
+                imageToDelete.ToRemove = true;
+                if (imageToDelete.IsNew)
+                {
+                    ViewModel.imageChanges.Remove(imageToDelete);
+                }
+                else if (imageToDelete.TravelListItemImageID > 0)
+                {
+                    ViewModel.imageChanges.Add(imageToDelete);
+                    
+                }
+                ViewModel.imageChangesCheck = new List<CarouselImage>();
+                ViewModel.imageChangesCheck = ViewModel.imageChanges;
+                cImages.Remove(imageToDelete);
             }
         }
 
@@ -141,18 +162,22 @@ namespace TravelListApp.Views
             //var bitmap = new SoftwareBitmap(BitmapPixelFormat.Bgra8, 200, 200);
             var bitmap = softwareBitmap;
             var imgSource = new WriteableBitmap(bitmap.PixelWidth, bitmap.PixelHeight);
-            imgbit.Source = imgSource;
+            // imgbit.Source = imgSource;
             bitmap.CopyToBuffer(imgSource.PixelBuffer);
             byte[] dataArrayTobeSent = await ConvertImageToByte(inputFile);
             imageName = Guid.NewGuid() + inputFile.FileType;
             imageData = dataArrayTobeSent;
-            ViewModel.imageChanges.Add(new ListItemImage()
+            TravelListItemImage liImage = new TravelListItemImage()
             {
                 ImageData = imageData,
                 ImageName = imageName,
-                IsSet = true
-            });
+            };
+            CarouselImage cImage = await ViewModel.ConvertImageTask(liImage);
+            cImage.IsNew = true;
+            ViewModel.imageChanges.Add(cImage);
+            ViewModel.imageChangesCheck = new List<CarouselImage>();
             ViewModel.imageChangesCheck = ViewModel.imageChanges;
+            cImages.Add(cImage);
         }
 
         /// <summary>

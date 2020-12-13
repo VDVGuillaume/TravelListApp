@@ -28,7 +28,7 @@ namespace TravelListRepository.Rest
             await _http.UploadAsync<TravelListItemImage, TravelListItemImage>("travellistimages", tl.ImageName , tl.TravelListItemID, tl.ImageData);
         
         public async Task DeleteTravelListImage(TravelListItemImage tl) =>
-            await _http.DeleteAsync("travellistimage", tl.TravelListItemID);
+            await _http.DeleteAsync("travellistimages", tl.TravelListItemImageID);
 
         public async Task UpdateTravelListImage(int id, TravelListItemImage tl) =>
             await _http.PutAsync<TravelListItemImage, TravelListItemImage>($"travellistimages/{id}", tl);

@@ -226,45 +226,63 @@ namespace TravelListApp.ViewModels
         /// <summary>
         /// Gets or sets the customer's first name.
         /// </summary>
-        public List<ListItemImage> imageChangesCheck
+        public List<CarouselImage> imageChangesCheck
         {
-            get => ReadList<ListItemImage>().ToList();
+            get => ReadList<CarouselImage>().ToList();
             set
             {
                 WriteList(value);
             }
         }
 
-        public List<ListItemImage> imageChanges = new List<ListItemImage>();
+        public List<CarouselImage> imageChanges = new List<CarouselImage>();
 
         /// <summary>
         /// Gets or sets convertImages.
         /// </summary>
-        public List<WriteableBitmap> convertedImages = new List<WriteableBitmap>();
+        public List<CarouselImage> convertedImages = new List<CarouselImage>();
 
         public WriteableBitmap firstConvertedImage
         {
-            get => convertedImages.FirstOrDefault();
+            get => convertedImages.FirstOrDefault().Photo;
         }
 
         public async void ConvertImages()
         {
-            convertedImages = new List<WriteableBitmap>();
-            foreach (TravelListItemImage image in Images) 
+            convertedImages = new List<CarouselImage>();
+            foreach (TravelListItemImage image in Images)
             {
                 StorageFile sfile = await LocalStorage.AsStorageFile(image.ImageData, image.ImageName);
-                convertedImages.Add(await LocalStorage.getImageFromStorageFile(sfile));
+                CarouselImage cImage = new CarouselImage(image)
+                {
+                    Photo = await LocalStorage.getImageFromStorageFile(sfile)
+                };
+                convertedImages.Add(cImage);
             }
         }
 
         public async Task ConvertImagesTask()
         {
-            convertedImages = new List<WriteableBitmap>();
-            foreach (TravelListItemImage image in Images)
+            convertedImages = new List<CarouselImage>();
+            foreach(TravelListItemImage image in Images)
             {
                 StorageFile sfile = await LocalStorage.AsStorageFile(image.ImageData, image.ImageName);
-                convertedImages.Add(await LocalStorage.getImageFromStorageFile(sfile));
+                CarouselImage cImage = new CarouselImage(image)
+                {
+                    Photo = await LocalStorage.getImageFromStorageFile(sfile)
+                };
+                convertedImages.Add(cImage);
             }
+        }
+
+        public async Task<CarouselImage> ConvertImageTask(TravelListItemImage image)
+        {
+                StorageFile sfile = await LocalStorage.AsStorageFile(image.ImageData, image.ImageName);
+                CarouselImage cImage = new CarouselImage(image)
+                {
+                    Photo = await LocalStorage.getImageFromStorageFile(sfile)
+                };
+                return cImage;
         }
 
         /// <summary>
@@ -321,7 +339,7 @@ namespace TravelListApp.ViewModels
             }
 
             // Compare two properties.
-            if (c.Images.Count == 0 && (c.imageChanges.Count == 0 || c.imageChanges.FindAll(image => image.IsSet).Count == 0))
+            if (c.Images.Count == 0 && (c.imageChanges.Count == 0 || c.imageChanges.FindAll(image => image.IsNew).Count == 0) || (c.Images.Count == c.imageChanges.FindAll(image => image.ToRemove).Count && c.Images.Count == c.imageChanges.Count))
             {
                 // Unfortunately errors have to be assigned to a property.
                 c.Properties[nameof(c.Images)].Errors.Add("Image is mandatory.");
@@ -342,7 +360,7 @@ namespace TravelListApp.ViewModels
                 var item = await App.Repository.TravelLists.CreateTravelList(Model);
                 this.TravelListItemID = item.TravelListItemID;
                 App.ViewModel.TravelListItems.Add(this);
-                foreach (ListItemImage ic in imageChanges)
+                foreach (CarouselImage ic in imageChanges)
                 {
                     if (ic.IsNew)
                     {
@@ -365,7 +383,7 @@ namespace TravelListApp.ViewModels
                 {
                     item.Model = _model;
                 }
-                foreach (ListItemImage ic in imageChanges)
+                foreach (CarouselImage ic in imageChanges)
                 {
                     if (ic.IsNew)
                     {
@@ -381,6 +399,36 @@ namespace TravelListApp.ViewModels
                 var newModel = await App.Repository.TravelLists.GetTravelListById(Model.TravelListItemID);
                 this.Model = newModel;
             }
+            IsSaving = false;
+        }
+
+        /// <summary>
+        /// Saves travellist data that has been edited.
+        /// </summary>
+        public async Task SaveImagesAsync()
+        {
+            IsSaving = true;
+            IsModified = false;
+            var item = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == Model.TravelListItemID).First();
+            if (item != null)
+            {
+                item.Model = _model;
+            }
+            foreach (CarouselImage ic in imageChanges)
+            {
+                if (ic.IsNew)
+                {
+                    ic.TravelListItemID = this.TravelListItemID;
+                    await App.Repository.TravelListImages.CreateTravelListImage(ic);
+                }
+                if (ic.ToRemove)
+                {
+                    await App.Repository.TravelListImages.DeleteTravelListImage(ic);
+                }
+            }
+            imageChanges.Clear();
+            var newModel = await App.Repository.TravelLists.GetTravelListById(Model.TravelListItemID);
+            this.Model = newModel;
             IsSaving = false;
         }
 
