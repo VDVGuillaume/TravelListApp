@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\CarouselImage.cs" />
     <Compile Include="Models\ListItemImage.cs" />
     <Compile Include="Services\LocalStorage.cs" />
     <Compile Include="Services\Validation\IPropertyList.cs" />
@@ -277,6 +278,9 @@
       <Version>6.2.8</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp">
+      <Version>6.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>6.1.1</Version>
     </PackageReference>
   </ItemGroup>

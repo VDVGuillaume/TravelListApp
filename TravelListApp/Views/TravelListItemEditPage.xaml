@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mvvm="using:TravelListApp.ViewModels"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -113,12 +114,38 @@
                     Grid.ColumnSpan="2"
                     Grid.Row="5" 
                     Grid.Column="0">
-                <Image x:Name="imgbit"
-                    Stretch="Fill"
-                    Source="{Binding ImageUri}" 
-                    Loaded="Image_Loaded"
-                    ImageFailed="Image_ImageFailed"
-                    HorizontalAlignment="Stretch"/>
+                <controls:Carousel x:Name="CarouselControl"
+                  InvertPositive="True"
+                  ItemDepth="300"
+                  ItemMargin="0"
+                  ItemRotationX="0"
+                  ItemRotationY="45"
+                  ItemRotationZ ="0"
+                  Orientation="Horizontal"
+                  SelectedIndex="0"
+                  >
+                    <controls:Carousel.EasingFunction>
+                        <CubicEase EasingMode="EaseOut" />
+                    </controls:Carousel.EasingFunction>
+                    <controls:Carousel.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Image
+                              Height="200"
+                              Width="200"
+                              Source="{Binding Photo}"
+                              Stretch="Uniform" />
+                                <StackPanel VerticalAlignment="Bottom">
+                                    <AppBarButton x:Name="DeleteImageCommandButton" Foreground="{StaticResource WhiteBrush}" Tag="{Binding ImageName}" Click="DeleteImageAppBar_Click" HorizontalAlignment="Right">
+                                        <AppBarButton.Icon>
+                                            <PathIcon Data="{Binding DeleteIcon.Glyph}" HorizontalAlignment="Center"/>
+                                        </AppBarButton.Icon>
+                                    </AppBarButton>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </controls:Carousel.ItemTemplate>
+                </controls:Carousel>
             </Border>
             <Grid Background="{StaticResource AlertForegroundBrush}"
                           Grid.Row="6"
