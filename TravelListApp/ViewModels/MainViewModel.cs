@@ -1,6 +1,7 @@
 ﻿using Microsoft.Toolkit.Uwp.Helpers;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using TravelListApp.Views;
 using TravelListModels;
 
 namespace TravelListApp.ViewModels
@@ -86,7 +87,7 @@ namespace TravelListApp.ViewModels
 
             TravelListItems = new ObservableCollection<TravelListItemViewModel>();
 
-            var travelLists = await App.Repository.TravelLists.GetAllTravelLists();
+            var travelLists = await App.Repository.TravelLists.GetAllTravelLists(LoginPage.account.Id);
             if (travelLists == null)
             {
                 return;

@@ -39,9 +39,9 @@ namespace TravelListRepository.Sql
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TravelListItem>> GetAllTravelLists()
+        public async Task<IEnumerable<TravelListItem>> GetAllTravelLists(string userId)
         {
-            return await _context.TravelLists.AsNoTracking().Include(x => x.Points).Include(x => x.Items).Include(x => x.Images).ToListAsync();
+            return await _context.TravelLists.AsNoTracking().Where(x=> x.UserId==userId).Include(x => x.Points).Include(x => x.Items).Include(x => x.Images).ToListAsync();
         }
 
         public async Task<TravelListItem> GetTravelListById(int id)

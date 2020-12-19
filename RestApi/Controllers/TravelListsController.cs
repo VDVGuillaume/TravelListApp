@@ -26,13 +26,12 @@ namespace RestApi.Controllers
         }
 
         //api/travellists
-        [HttpGet]
-        public async Task<IActionResult> GetAllTravelLists()
+        [HttpGet("GetAllTravelLists")]
+        public async Task<IActionResult> GetAllTravelLists(string value)
         {
 
-
-            var travelListItems = await _repo.GetAllTravelLists();
-
+            
+            var travelListItems = await _repo.GetAllTravelLists(value);
             return Ok(_mapper.Map<IEnumerable<TravelListReadDto>>(travelListItems));
         }
 

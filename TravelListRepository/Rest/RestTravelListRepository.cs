@@ -21,8 +21,8 @@ namespace TravelListRepository.Rest
         public async Task DeleteTravelList(TravelListItem tl) =>
             await _http.DeleteAsync("travellists", tl.TravelListItemID);
 
-        public async Task<IEnumerable<TravelListItem>> GetAllTravelLists() =>
-            await _http.GetAsync<IEnumerable<TravelListItem>>("travellists");
+        public async Task<IEnumerable<TravelListItem>> GetAllTravelLists(string userId) =>
+            await _http.GetAsync<IEnumerable<TravelListItem>>($"travellists/GetAllTravelLists?value={userId}");
 
         public async Task<TravelListItem> GetTravelListById(int id) =>
             await _http.GetAsync<TravelListItem>($"travellists/{id}");
