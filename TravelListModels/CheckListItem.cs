@@ -10,6 +10,7 @@ namespace TravelListModels
     {
         public int CheckListItemID { get; set; }
         public string Name { get; set; }
+        public bool Checked { get; set; }
         public int TravelListItemID { get; set; }
         // public virtual TravelListItem TravelListItem { get; set; }
     }
