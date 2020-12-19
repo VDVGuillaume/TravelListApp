@@ -4,7 +4,7 @@ using TravelListModels;
 
 namespace RestApi.Dtos
 {
-    public class TravelPointOfInterestReadDto
+    public class ChecklistItemReadDto
     {
         public int TravelPointOfInterestID { get; set; }
         public string Name { get; set; }

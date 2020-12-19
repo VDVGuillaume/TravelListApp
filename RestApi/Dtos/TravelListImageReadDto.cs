@@ -1,8 +1,4 @@
-﻿
-using System.Collections.Generic;
-using TravelListModels;
-
-namespace RestApi.Dtos
+﻿namespace RestApi.Dtos
 {
     public class TravelListImageReadDto
     {

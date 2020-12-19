@@ -44,6 +44,7 @@ namespace RestApi
             services.AddScoped<IBingRepo, RestBingRepo>();
             services.AddScoped<ITravelPointOfInterestRepo, SqlTravelPointOfInterestRepo>();
             services.AddScoped<ITravelListItemImageRepo, SqlTravelListItemImageRepo>();
+            services.AddScoped<ICheckListItemRepo,SqlCheckListItemRepo>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

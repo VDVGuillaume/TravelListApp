@@ -25,6 +25,8 @@ namespace TravelList.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("Checked");
+
                     b.Property<string>("Name");
 
                     b.Property<int>("TravelListItemID");
