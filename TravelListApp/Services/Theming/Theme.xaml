@@ -33,6 +33,10 @@
                      Color="#FFFFFFFF" />
     <SolidColorBrush x:Key="transBrush"
                      Color="#00FFFFFF" />
+    <SolidColorBrush x:Key="ActiveBrush"
+                     Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="NotActiveBrush"
+                     Color="#7DFF0000" />
 
 
     <!-- Header -->

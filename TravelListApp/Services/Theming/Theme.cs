@@ -81,5 +81,12 @@ namespace TravelListApp.Services.Theming
                 AccentColors[pageType] = accentColor;
             }
         }
+
+        public static SolidColorBrush GetResource(string name)
+        {
+            return (SolidColorBrush)Windows.UI.Xaml.Application.Current.Resources[name];
+        }
     }
+
+
 }

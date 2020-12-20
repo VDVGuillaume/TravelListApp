@@ -25,11 +25,11 @@ namespace TravelListApp.Views
             this.InitializeComponent();
 
             // Populate Menu.
-            Menu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("View"), Text = "View", NavigationDestination = typeof(TravelListItemPage) });
-            Menu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("Edit"), Text = "Edit", NavigationDestination = typeof(TravelListItemEditPage) });
-            Menu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("CheckList"), Text = "Checklist", NavigationDestination = typeof(TravelListItemChecklistPage) });
-            Menu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("Map"), Text = "Places", NavigationDestination = typeof(TravelListItemPlacesPage) });
-            Menu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("Route"), Text = "Routes", NavigationDestination = typeof(TravelListItemRoutesPage) });
+            TravelListMenu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("View"), Text = "View", NavigationDestination = typeof(TravelListItemPage) });
+            TravelListMenu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("Edit"), Text = "Edit", NavigationDestination = typeof(TravelListItemEditPage) });
+            TravelListMenu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("CheckList"), Text = "Checklist", NavigationDestination = typeof(TravelListItemChecklistPage) });
+            TravelListMenu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("Map"), Text = "Places", NavigationDestination = typeof(TravelListItemPlacesPage) });
+            TravelListMenu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("Route"), Text = "Routes", NavigationDestination = typeof(TravelListItemRoutesPage) });
 
             // Animate Menu.
             GridView.RegisterImplicitAnimations();
@@ -42,22 +42,43 @@ namespace TravelListApp.Views
         public void SetTab(Type pageType)
         {
             // Lookup destination type in menu(s)
-            var item = (from i in Menu.Items
+            var item = (from i in TravelListMenu.Items
                         where (i as MenuItem).NavigationDestination == pageType
                         select i).FirstOrDefault();
             if (item != null)
             {
-                Menu.SelectedItem = item;
+                TravelListMenu.SelectedItem = item;
             }
             else
             {
-                Menu.SelectedIndex = -1;
+                TravelListMenu.SelectedIndex = -1;
             }
         }
 
         public void SetModel(TravelListItemViewModel model)
         {
             _model = model;
+            if (_model.TravelListItemID > 0)
+            {
+                foreach (MenuItem item in TravelListMenu.Items)
+                {
+                    item.IsActive = true;
+                }
+            } else
+            {
+                foreach (MenuItem item in TravelListMenu.Items)
+                {
+                    if (item.Text == "Edit")
+                    {
+                        item.IsActive = true;
+                    } else
+                    {
+                        item.IsActive = false;
+                    }
+                    
+                }
+            }
+
         }
 
         private void Menu_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -105,6 +126,25 @@ namespace TravelListApp.Views
                 _itemsPanel.ItemWidth = ActualWidth;
                 _itemsPanel.Width = ActualWidth;
             }
+        }
+
+        private void ListView_DataContextChanged(Object sender, DataContextChangedEventArgs args)
+        {
+            //foreach (Object item in TravelListMenu.Items)
+            //{
+            //    var container = TravelListMenu.ContainerFromItem(item);
+            //    ListViewItem lvi = TravelListMenu.ContainerFromItem(item) as ListViewItem;
+            //    if (lvi == null)
+            //    {
+            //        TravelListMenu.UpdateLayout();
+            //        lvi = TravelListMenu.ContainerFromItem(item) as ListViewItem;
+            //    }
+            //    if (lvi != null)
+            //    {
+            //        lvi.IsHitTestVisible = false;
+            //        lvi.Margin = new Thickness(-32, 0, 0, 0);
+            //    }
+            //}
         }
     }
 }
