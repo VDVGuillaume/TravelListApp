@@ -69,9 +69,10 @@ namespace TravelListApp.Views
 
         }
 
+        private void ListBox_GettingFocus(UIElement sender, GettingFocusEventArgs args)
+        {
 
-
-
+        }
     }
       
 }
