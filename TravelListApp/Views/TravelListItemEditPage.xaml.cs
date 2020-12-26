@@ -55,6 +55,7 @@ namespace TravelListApp.Views
                 };
                 ViewModel.StartDate = DateTime.Today;
                 ViewModel.EndDate = DateTime.Today;
+                DeleteCommandButton.IsEnabled = false;
             }
             else
             {

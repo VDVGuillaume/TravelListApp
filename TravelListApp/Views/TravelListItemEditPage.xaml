@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mvvm="using:TravelListApp.ViewModels"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -20,12 +21,13 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <!--<RowDefinition Height="auto" />-->
         </Grid.RowDefinitions>
 
         <local:TravelListItemMenu x:Name="Menu" />
-
-        <Grid Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch">
+        <ScrollViewer x:Name="myScrollViewer" Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch">
+        <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
@@ -50,7 +52,8 @@
                              BorderBrush="{StaticResource WhiteBrush}"
                              Background="{StaticResource transBrush}"
                              Text="{x:Bind ViewModel.Name, Mode=TwoWay}"
-                             Margin="0 0 10 10"
+                             Margin="0 0 5 10"
+                             Grid.ColumnSpan="2"
                              Grid.Row="1"
                              Grid.Column="0" />
             <TextBox Header="Description"
@@ -59,9 +62,10 @@
                              BorderBrush="{StaticResource WhiteBrush}"
                              Background="{StaticResource transBrush}"
                              Text="{x:Bind ViewModel.Description, Mode=TwoWay}"
-                             Margin="5 0 5 10"
-                             Grid.Row="1"
-                             Grid.Column="1" />
+                             Margin="0 0 5 10"
+                             Grid.ColumnSpan="2"
+                             Grid.Row="2"
+                             Grid.Column="0" />
             <CalendarDatePicker Header="Start date"
                                 BorderThickness="0.5"
                                 Foreground="{StaticResource WhiteBrush}"
@@ -70,7 +74,7 @@
                                 Date="{x:Bind ViewModel.StartDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"
                                 HorizontalAlignment="Stretch"
                                 Margin="0 0 10 10"
-                                Grid.Row="2"
+                                Grid.Row="3"
                                 Grid.Column="0" 
                                 DateFormat="{}{month.full} {day.integer}, {year.full}" />
             <CalendarDatePicker Header="End date"
@@ -81,7 +85,7 @@
                                 Date="{x:Bind ViewModel.EndDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"
                                 HorizontalAlignment="Stretch"
                                 Margin="5 0 5 10"
-                                Grid.Row="2"
+                                Grid.Row="3"
                                 Grid.Column="1" 
                                 DateFormat="{}{month.full} {day.integer}, {year.full}" />
             <ComboBox Header="Country"
@@ -94,7 +98,7 @@
                               Margin="0 0 5 10"
                               HorizontalAlignment="Stretch"
                               Grid.ColumnSpan="2"
-                              Grid.Row="3"
+                              Grid.Row="4"
                               Grid.Column="0" />
             <Button x:Name="button" 
                     Click="Convert_Click"
@@ -106,15 +110,14 @@
                     HorizontalAlignment="Stretch"
                     Margin="0 0 5 10" 
                     Grid.ColumnSpan="2"
-                    Grid.Row="4" 
+                    Grid.Row="5" 
                     Grid.Column="0"/>
-            <Border BorderThickness="1"
-                    BorderBrush="{StaticResource WhiteBrush}"
+                <Border
                     Margin="0 0 5 10" 
                     Grid.ColumnSpan="2"
-                    Grid.Row="5" 
+                    Grid.Row="6" 
                     Grid.Column="0">
-                <controls:Carousel x:Name="CarouselControl"
+                    <controls:Carousel x:Name="CarouselControl"
                   InvertPositive="True"
                   ItemDepth="300"
                   ItemMargin="0"
@@ -124,55 +127,56 @@
                   Orientation="Horizontal"
                   SelectedIndex="0"
                   >
-                    <controls:Carousel.EasingFunction>
-                        <CubicEase EasingMode="EaseOut" />
-                    </controls:Carousel.EasingFunction>
-                    <controls:Carousel.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Image
+                        <controls:Carousel.EasingFunction>
+                            <CubicEase EasingMode="EaseOut" />
+                        </controls:Carousel.EasingFunction>
+                        <controls:Carousel.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Image
                               Height="200"
                               Width="200"
                               Source="{Binding Photo}"
                               Stretch="Uniform" />
-                                <StackPanel VerticalAlignment="Bottom">
-                                    <AppBarButton x:Name="DeleteImageCommandButton" Foreground="{StaticResource WhiteBrush}" Tag="{Binding ImageName}" Click="DeleteImageAppBar_Click" HorizontalAlignment="Right">
-                                        <AppBarButton.Icon>
-                                            <PathIcon Data="{Binding DeleteIcon.Glyph}" HorizontalAlignment="Center"/>
-                                        </AppBarButton.Icon>
-                                    </AppBarButton>
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </controls:Carousel.ItemTemplate>
-                </controls:Carousel>
-            </Border>
-            <Grid Background="{StaticResource AlertForegroundBrush}"
-                          Grid.Row="6"
-                          Grid.Column="0"
-                          Grid.ColumnSpan="2">
-                <ItemsControl ItemsSource="{x:Bind ViewModel.Errors, Mode=OneWay}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Foreground="{StaticResource WhiteBrush}" Text="{Binding}" Margin="10 5" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                                    <StackPanel VerticalAlignment="Bottom">
+                                        <AppBarButton x:Name="DeleteImageCommandButton" Foreground="{StaticResource WhiteBrush}" Tag="{Binding ImageName}" Click="DeleteImageAppBar_Click" HorizontalAlignment="Right">
+                                            <AppBarButton.Icon>
+                                                <PathIcon Data="{Binding DeleteIcon.Glyph}" HorizontalAlignment="Center"/>
+                                            </AppBarButton.Icon>
+                                        </AppBarButton>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </controls:Carousel.ItemTemplate>
+                    </controls:Carousel>
+                </Border>
             </Grid>
+        </ScrollViewer>
+        <Grid Background="{StaticResource AlertForegroundBrush}"
+                          Grid.Row="2"
+                          Grid.Column="0"
+                          >
+            <ItemsControl ItemsSource="{x:Bind ViewModel.Errors, Mode=OneWay}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="{StaticResource WhiteBrush}" Text="{Binding}" Margin="10 5" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Grid>
-        <CommandBar Grid.Column="0" Grid.Row="2" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" Background="{StaticResource TenPercentLighterBrush}" >
+        <CommandBar Grid.Column="0" Grid.Row="3" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" Background="{StaticResource TenPercentLighterBrush}" >
             <AppBarButton x:Name="SaveCommandButton" Label="Save" Foreground="{StaticResource WhiteBrush}" Click="SaveAppBar_Click">
                 <AppBarButton.Icon>
                     <PathIcon Data="{x:Bind SaveIcon.Glyph}" HorizontalAlignment="Center"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton x:Name="DeleteCommandButton" Label="Delet" Foreground="{StaticResource WhiteBrush}" Click="DeleteAppBar_Click">
+            <AppBarButton x:Name="DeleteCommandButton" Label="Delete" Foreground="{StaticResource WhiteBrush}" Click="DeleteAppBar_Click">
                 <AppBarButton.Icon>
                     <PathIcon Data="{x:Bind DeleteIcon.Glyph}" HorizontalAlignment="Center"/>
                 </AppBarButton.Icon>
             </AppBarButton>
         </CommandBar>
-        <Grid Name="MyProgressGrid" Grid.RowSpan="2" Background="{StaticResource MaskBackground}" Visibility="Collapsed">
+        <Grid Name="MyProgressGrid" Grid.RowSpan="3" Background="{StaticResource MaskBackground}" Visibility="Collapsed">
             <ProgressRing  Name="MyProgressRing" Grid.Row="1" Height="100" VerticalAlignment="Center" HorizontalAlignment="Center" Width="100" Foreground="Red" IsActive="{Binding IsLoading}" Visibility="Visible" />
         </Grid>
     </Grid>
