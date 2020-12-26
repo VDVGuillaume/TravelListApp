@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using TravelListApp.Models;
 using TravelListApp.Services.Icons;
 using TravelListApp.ViewModels;
 using TravelListModels;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
+using Windows.Graphics.Display;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
@@ -28,15 +30,16 @@ namespace TravelListApp.Views
             _pointOfInterests = new List<PointOfInterest>();
             _addPointMode = false;
             _removePointMode = false;
-            SaveIcon = new ButtonItem() { Glyph = Icon.GetIcon("Save"), Text = "Save" };
-            AddPointIcon = new ButtonItem() { Glyph = Icon.GetIcon("Pin"), Text = "Pin" };
-            RemovePointIcon = new ButtonItem() { Glyph = Icon.GetIcon("Clear"), Text = "Clear" };
             _placeNameTextBoxSize = SecondaryTileCommandBar.ActualWidth / 2;
+            Size s = GetCurrentDisplaySize();
+            MapItemsListViewer.Height = s.Height / 5;
         }
 
-        public ButtonItem SaveIcon { get; set; }
-        public ButtonItem AddPointIcon { get; set; }
-        public ButtonItem RemovePointIcon { get; set; }
+        public string Pin = "Pin";
+
+        public ButtonItem SaveIcon = new ButtonItem() { Glyph = Icon.GetIcon("Save"), Text = "Save" };
+        public ButtonItem AddPointIcon = new ButtonItem() { Glyph = Icon.GetIcon("Pin"), Text = "Pin" };
+        public ButtonItem RemovePointIcon = new ButtonItem() { Glyph = Icon.GetIcon("Clear"), Text = "Clear" };
         private double _placeNameTextBoxSize { get; set; }
         private Boolean _addPointMode { get; set; }
         private Boolean _removePointMode { get; set; }
@@ -80,8 +83,9 @@ namespace TravelListApp.Views
 
         private void AddPoints()
         {
-            MapItems.ItemsSource = new List<PointOfInterest>();
+            // MapItems.ItemsSource = new List<PointOfInterest>();
             MapItems.ItemsSource = ViewModel.syncPoints.FindAll(p => p.ToRemove == false);
+            MapItemsList.ItemsSource = ViewModel.syncPoints.FindAll(p => p.ToRemove == false);
         }
 
         private void MapUserTapped(MapControl sender, MapInputEventArgs args)
@@ -203,6 +207,28 @@ namespace TravelListApp.Views
             }
         }
 
+        public static Size GetCurrentDisplaySize()
+        {
+            var displayInformation = DisplayInformation.GetForCurrentView();
+            TypeInfo t = typeof(DisplayInformation).GetTypeInfo();
+            var props = t.DeclaredProperties.Where(x => x.Name.StartsWith("Screen") && x.Name.EndsWith("InRawPixels")).ToArray();
+            var w = props.Where(x => x.Name.Contains("Width")).First().GetValue(displayInformation);
+            var h = props.Where(x => x.Name.Contains("Height")).First().GetValue(displayInformation);
+            var size = new Size(System.Convert.ToDouble(w), System.Convert.ToDouble(h));
+            switch (displayInformation.CurrentOrientation)
+            {
+                case DisplayOrientations.Landscape:
+                case DisplayOrientations.LandscapeFlipped:
+                    size = new Size(Math.Max(size.Width, size.Height), Math.Min(size.Width, size.Height));
+                    break;
+                case DisplayOrientations.Portrait:
+                case DisplayOrientations.PortraitFlipped:
+                    size = new Size(Math.Min(size.Width, size.Height), Math.Max(size.Width, size.Height));
+                    break;
+            }
+            return size;
+        }
+
         ///// <summary>
         ///// Updates the search box items source when the user changes the search text.
         ///// </summary>
@@ -224,7 +250,7 @@ namespace TravelListApp.Views
         //        {
         //            await ViewModel.GetBingSearchResultsAsync(sender.Text);
         //            sender.ItemsSource = null;
-                    
+
         //        }
         //    }
         //}

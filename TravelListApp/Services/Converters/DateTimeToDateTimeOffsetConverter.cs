@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 
-namespace TravelListApp.ViewModels
+namespace TravelListApp.Services.Converters
 {
     public class DateTimeToDateTimeOffsetConverter : IValueConverter
     {

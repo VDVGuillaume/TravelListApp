@@ -17,5 +17,6 @@ namespace TravelListApp.Models
         public Boolean IsNew { get; set; }
         public Boolean IsUpdate { get; set; }
         public Boolean ToRemove { get; set; }
+        public String PinIconName { get; } = "Pin";
     }
 }

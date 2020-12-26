@@ -7,21 +7,23 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     xmlns:uc="using:TravelListApp.UserControls"
+    xmlns:mvvm="using:TravelListApp.Services.Converters"
     mc:Ignorable="d"
+    xmlns:sys="using:System"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <mvvm:IconConverter x:Key="IconConverter" />
+        <local:TravelListItemPlacesPage x:Key="localPage"/>
+    </Page.Resources>
 
     <Grid x:Name="Grid" Background="{StaticResource TravelBackground2}"
           Padding="10">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
@@ -59,7 +61,40 @@
             </maps:MapItemsControl>
         </maps:MapControl>
 
-        <CommandBar Grid.Row="3" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" SizeChanged="CommandBar_SizeChanged" Background="{StaticResource TenPercentLighterBrush}">
+        <ScrollViewer x:Name="MapItemsListViewer" Grid.Column="0" Grid.Row="3" VerticalAlignment="Stretch">
+            <Grid Margin="0,0,5,0">
+                <ItemsControl x:Name="MapItemsList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <AppBarButton Padding="0,0,0,0" Margin="0,0,0,0" Grid.Column="0" Foreground="{StaticResource WhiteBrush}" Tag="{Binding Name}" HorizontalAlignment="Center">
+                                    <AppBarButton.Icon >
+                                        <PathIcon Data="{Binding PinIconName, Converter={StaticResource IconConverter}, Mode=OneWay}" HorizontalAlignment="Center" />
+                                    </AppBarButton.Icon>
+                                </AppBarButton>
+                                <TextBox Grid.Column="1"
+                                HorizontalAlignment="Stretch"
+                                BorderThickness="0.5"
+                                Foreground="{StaticResource WhiteBrush}"
+                                BorderBrush="{StaticResource WhiteBrush}"
+                                Background="{StaticResource transBrush}"
+                                Text="{Binding Name}" Margin="0 2.5 0 2.5" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </ScrollViewer>
+
+        <CommandBar Grid.Row="4" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" SizeChanged="CommandBar_SizeChanged" Background="{StaticResource TenPercentLighterBrush}">
             <AppBarButton x:Name="AddPointCommandButton" Label="Add" Foreground="{StaticResource WhiteBrush}" Click="AddPointAppBar_Click" >
                 <AppBarButton.Icon >
                     <PathIcon Data="{x:Bind AddPointIcon.Glyph}" HorizontalAlignment="Center" />
