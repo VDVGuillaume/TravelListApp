@@ -26,19 +26,17 @@ namespace TravelListApp.Views
     public sealed partial class TravelListItemChecklistPage : Page
     {
 
-        public TravelListItemViewModel ViewModel { get; set; }
-        public ButtonItem SaveIcon { get; set; }
-        public ButtonItem AddItemIcon { get; set; }
-        public ButtonItem RemoveItemIcon { get; set; }
+        public TravelListItemViewModel ViewModel { get; set; }       
+        public ButtonItem AddItem { get; set; }
+        public ButtonItem RemoveItem { get; set; }       
         private List<CheckListItem> _checkListItems { get; set; }
 
         public TravelListItemChecklistPage()
         {
             this.InitializeComponent();
-            _checkListItems = new List<CheckListItem>();
-            SaveIcon = new ButtonItem() { Glyph = Icon.GetIcon("Save"), Text = "Save" };
-            AddItemIcon = new ButtonItem() { Glyph = Icon.GetIcon("Pin"), Text = "Pin" };
-            RemoveItemIcon = new ButtonItem() { Glyph = Icon.GetIcon("Clear"), Text = "Clear" };
+            _checkListItems = new List<CheckListItem>();            
+            AddItem = new ButtonItem() { Glyph = Icon.GetIcon("Pin"), Text = "Pin" };
+            RemoveItem = new ButtonItem() { Glyph = Icon.GetIcon("Clear"), Text = "Clear" };
         }
 
 
@@ -54,9 +52,16 @@ namespace TravelListApp.Views
         // saving when leaving view
 
 
-        private void AddItems()
+        private void AddItems(object sender, RoutedEventArgs e)
         {
-           
+            CheckBox checkbox = new CheckBox();
+            CheckListItem checkListItem = new CheckListItem();
+            checkListItem.Name = checkListItemInput.Text;
+            _checkListItems.Add(checkListItem);
+
+            checkList.Items.Add(checkbox);
+            checkbox.Content = checkListItem.Name;
+
         }
 
         private void RemoveItems()
@@ -64,15 +69,13 @@ namespace TravelListApp.Views
 
         }
 
-        private void CheckItem()
+
+        private void CheckList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
 
-        private void ListBox_GettingFocus(UIElement sender, GettingFocusEventArgs args)
-        {
-
-        }
+       
     }
       
 }

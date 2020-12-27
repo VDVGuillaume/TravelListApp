@@ -21,20 +21,17 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <local:TravelListItemMenu x:Name="Menu" />
 
-        <Grid Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch">
+        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" Margin="10,10,-10,60" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="2*" />
+
+
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="11*" />
@@ -44,38 +41,49 @@
                             Foreground="{StaticResource WhiteBrush}"
                             FontSize="24"
                             Margin="20 20 0 10"
-                            Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                            Grid.ColumnSpan="2" />
 
-            <Button         Content="Add New Item"
-                             BorderThickness="0.5"
-                             Foreground="{StaticResource WhiteBrush}"
-                             BorderBrush="{StaticResource WhiteBrush}"                                                          
-                             Margin="0,10,25,0"
-                             Grid.Row="1"
-                             Grid.Column="0" HorizontalAlignment="Right" Height="29" VerticalAlignment="Center" Width="106" />
+            <Button         
+                            x:Name="addItem"
+                            Click="AddItems"
+                            Content="Add New Item"
+                            BorderThickness="0.5"                            
+                            Foreground="{StaticResource WhiteBrush}"
+                            BorderBrush="{StaticResource WhiteBrush}"                                                          
+                            Margin="0,12,25,0"
+                            Grid.Row="1"
+                            Grid.Column="0" HorizontalAlignment="Right" Height="29" VerticalAlignment="Top" Width="106" />
 
-            <TextBox        PlaceholderText="name the item to be added"
-                             BorderThickness="0.5"
-                             Foreground="{StaticResource WhiteBrush}"
+            <TextBox         
+                             x:Name="checkListItemInput"
+                             PlaceholderText="name the item to be added"
+                             BorderThickness="0.5"                             
                              BorderBrush="{StaticResource WhiteBrush}"
                              Background="{StaticResource transBrush}"
                              Text="{x:Bind ViewModel.Description, Mode=TwoWay}"
-                             Margin="10,10,20,0"
+                             Margin="10,10,140,0"
                              Grid.Row="1"
                              Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
 
 
             <ListBox 
-                            HorizontalAlignment="Stretch" 
-                            Height="100" 
-                            Margin="10,20,20,0" 
+                            x:Name="checkList"                            
+                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                            ScrollViewer.IsVerticalRailEnabled="True"
+                            
+                            Margin="10,20,140,0" 
                             Background="Transparent"
                             Grid.Row="2" 
-                            Grid.Column="1"
-                            VerticalAlignment="Stretch"/>
+                            Grid.Column="1" 
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            SelectionChanged="CheckList_SelectionChanged" 
+                            
+                
+                />
 
         </Grid>
-        
+
 
 
 
