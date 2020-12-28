@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using TravelListApp.Models;
 using TravelListApp.Services.Icons;
+using TravelListApp.Services.Validation;
 using TravelListApp.ViewModels;
 using TravelListModels;
 using Windows.Devices.Geolocation;
@@ -28,40 +30,28 @@ namespace TravelListApp.Views
         {
             this.InitializeComponent();
             _pointOfInterests = new List<PointOfInterest>();
+            Errors = new ObservableUniqueCollection<string>();
+            ErrorsList.ItemsSource = Errors;
             _addPointMode = false;
+            PlaceNameTextBox.IsEnabled = false;
+            AddPointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["PageForegroundBrush"]);
             _removePointMode = false;
-            _placeNameTextBoxSize = SecondaryTileCommandBar.ActualWidth / 2;
-            Size s = GetCurrentDisplaySize();
-            MapItemsListViewer.Height = s.Height / 5;
+            RemovePointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["PageForegroundBrush"]);
+            MapItemsListViewer.Height = 0;
         }
-
-        public string Pin = "Pin";
 
         public ButtonItem SaveIcon = new ButtonItem() { Glyph = Icon.GetIcon("Save"), Text = "Save" };
         public ButtonItem AddPointIcon = new ButtonItem() { Glyph = Icon.GetIcon("Pin"), Text = "Pin" };
         public ButtonItem RemovePointIcon = new ButtonItem() { Glyph = Icon.GetIcon("Clear"), Text = "Clear" };
-        private double _placeNameTextBoxSize { get; set; }
+        public ButtonItem ShowListIcon = new ButtonItem() { Glyph = Icon.GetIcon("List"), Text = "List" };
         private Boolean _addPointMode { get; set; }
         private Boolean _removePointMode { get; set; }
         private Uri _pinUri { get; set; }
         private List<PointOfInterest> _pointOfInterests { get; set; }
         private PointOfInterest _selectedPointOfInterests { get; set; }
+        public ObservableUniqueCollection<string> Errors { get; set; }
 
-        public TravelListItemViewModel ViewModel { get; set; }
-
-        private void CommandBar_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (SecondaryTileCommandBar == null)
-            {
-                return;
-            }
-
-            // Only react to change in Width.
-            if (e.NewSize.Width != e.PreviousSize.Width)
-            {
-                PlaceNameTextBox.Width = SecondaryTileCommandBar.ActualWidth / 2;
-            }
-        }        
+        public TravelListItemViewModel ViewModel { get; set; }   
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -81,11 +71,35 @@ namespace TravelListApp.Views
             myMap.ZoomLevel = 5;
         }
 
+        private void ZoomTo_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            Geopoint location = (Geopoint)button.Tag;
+            myMap.Center = location;
+        }
+
         private void AddPoints()
         {
-            // MapItems.ItemsSource = new List<PointOfInterest>();
             MapItems.ItemsSource = ViewModel.syncPoints.FindAll(p => p.ToRemove == false);
             MapItemsList.ItemsSource = ViewModel.syncPoints.FindAll(p => p.ToRemove == false);
+        }
+
+        private void MapItemsList_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            var textbox = sender as TextBox;
+            Guid LocalId = (Guid)textbox.Tag;
+            PointOfInterest poi = ViewModel.syncPoints.Find(p => p.LocalId == LocalId);
+            if (!poi.Name.Equals(textbox.Text))
+            {
+               poi.IsUpdate = true;
+            }
+        }
+
+        public static string RemoveWhitespace(string input)
+        {
+            return new string(input.ToCharArray()
+                .Where(c => !Char.IsWhiteSpace(c))
+                .ToArray());
         }
 
         private void MapUserTapped(MapControl sender, MapInputEventArgs args)
@@ -93,32 +107,43 @@ namespace TravelListApp.Views
             _removePointMode = false;
             RemovePointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["PageForegroundBrush"]);
             _selectedPointOfInterests = null;
+
             if (!_addPointMode) { return; }
 
-            //to get a basicgeoposition of wherever the user clicks on the map
-            BasicGeoposition basgeo_edit_position = args.Location.Position;
-
-            PointOfInterest newPoint =
-            new PointOfInterest()
+            if (RemoveWhitespace(PlaceNameTextBox.Text).Length != 0)
             {
-                Name = PlaceNameTextBox.Text,
-                ImageSourceUri = new Uri("ms-appx:///Assets/MapPin.png"),
-                NormalizedAnchorPoint = new Point(0.5, 1),
-                Latitude = (decimal)basgeo_edit_position.Latitude,
-                Longitude = (decimal)basgeo_edit_position.Longitude,
-                Location = new Geopoint(new BasicGeoposition()
-                {
-                    Latitude = (double)basgeo_edit_position.Latitude,
-                    Longitude = (double)basgeo_edit_position.Longitude
-                }),
-                TravelListItemID = ViewModel.TravelListItemID,
-                IsNew = true
-            };
+                Errors.Clear();
 
-            ViewModel.syncPoints.Add(newPoint);
-            AddPoints();
-            PlaceNameTextBox.Text = "";
+                //to get a basicgeoposition of wherever the user clicks on the map
+                BasicGeoposition basgeo_edit_position = args.Location.Position;
+
+                PointOfInterest newPoint =
+                new PointOfInterest()
+                {
+                    Name = PlaceNameTextBox.Text,
+                    ImageSourceUri = new Uri("ms-appx:///Assets/MapPin.png"),
+                    NormalizedAnchorPoint = new Point(0.5, 1),
+                    Latitude = (decimal)basgeo_edit_position.Latitude,
+                    Longitude = (decimal)basgeo_edit_position.Longitude,
+                    Location = new Geopoint(new BasicGeoposition()
+                    {
+                        Latitude = (double)basgeo_edit_position.Latitude,
+                        Longitude = (double)basgeo_edit_position.Longitude
+                    }),
+                    TravelListItemID = ViewModel.TravelListItemID,
+                    IsNew = true
+                };
+
+                ViewModel.syncPoints.Add(newPoint);
+                AddPoints();
+                PlaceNameTextBox.Text = "";
+            } else
+            {
+                Errors.Add("Please add a placename");
+            }
         }
+
+
 
         private void AddPointAppBar_Click(object sender, RoutedEventArgs e)
         {
@@ -131,10 +156,10 @@ namespace TravelListApp.Views
                 AddPointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["ActionBrush"]);
             } else
             {
+                Errors.Clear();
                 PlaceNameTextBox.IsEnabled = false;
                 AddPointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["PageForegroundBrush"]);
             }
-            
         }
 
         private void RemovePointAppBar_Click(object sender, RoutedEventArgs e)
@@ -151,8 +176,28 @@ namespace TravelListApp.Views
 
         private async void SaveAppBar_Click(object sender, RoutedEventArgs e)
         {
+            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            MyProgressRing.IsActive = true;
             await ViewModel.SavePointsAsync();
+            AddPoints();
+            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            MyProgressRing.IsActive = false;
         }
+
+        private void ShowListAppBar_Click(object sender, RoutedEventArgs e)
+        {
+            if (MapItemsListViewer.Height == 0)
+            {
+                Size s = GetCurrentDisplaySize();
+                MapItemsListViewer.Height = s.Height / 5;
+            } else
+            {
+                MapItemsListViewer.Height = 0;
+            }
+
+        }
+
+        
 
         private void mapItemButton_Click(object sender, RoutedEventArgs e)
         {

@@ -21,6 +21,12 @@ namespace TravelListRepository.Rest
         public async Task<TravelPointOfInterest> GetTravelPointOfInterestById(int id) =>
             await _http.GetAsync<TravelPointOfInterest>($"TravelPointOfInterests/{id}");
 
+        public async Task DeleteTravelPointOfInterest(TravelPointOfInterest tl) =>
+            await _http.DeleteAsync("TravelPointOfInterests", tl.TravelPointOfInterestID);
+
+        public async Task UpdateTravelPointOfInterest(int id, TravelPointOfInterest tl) =>
+            await _http.PutAsync<TravelPointOfInterest, TravelPointOfInterest>($"TravelPointOfInterests/{id}", tl);
+
         public bool SaveChanges()
         {
             throw new NotImplementedException();

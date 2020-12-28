@@ -12,7 +12,7 @@ namespace TravelListRepository
         bool SaveChanges();
         Task<TravelPointOfInterest> GetTravelPointOfInterestById(int id);
         Task CreateTravelPointOfInterest(TravelPointOfInterest tl);
-        //Task UpdateTravelList(int id, TravelListItem tl);
-        //Task DeleteTravelList( TravelListItem tl);
+        Task UpdateTravelPointOfInterest(int id, TravelPointOfInterest tl);
+        Task DeleteTravelPointOfInterest(TravelPointOfInterest tl);
     }
 }

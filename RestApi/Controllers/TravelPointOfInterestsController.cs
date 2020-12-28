@@ -37,7 +37,7 @@ namespace RestApi.Controllers
             return NotFound();
         }
 
-        //api/travellists
+        //api/TravelPointOfInterests
         [HttpPost]
         public async Task<IActionResult> CreateTravelPointOfInterest([FromBody]TravelPointOfInterestCreateDto travelPointOfInterestCreateDto)
         {
@@ -50,42 +50,42 @@ namespace RestApi.Controllers
             return CreatedAtRoute(nameof(GetTravelPointOfInterestById), new { Id = travelPointOfInterestReadDto.TravelPointOfInterestID }, travelPointOfInterestReadDto);
         }
 
-        ////api/travellists/{id}
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> UpdateTravelList(int id, [FromBody]TravelListCreateDto travelListUpdateDto)
-        //{
-        //    var travelListModelFromRepo = await _repo.GetTravelListById(id);
-        //    if (travelListModelFromRepo == null)
-        //    {
-        //        return NotFound();
-        //    }
+        //DELETE api/TravelPointOfInterests/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTravelPointOfInterest(int id)
+        {
+            var travelPointOfInterestModel = await _repo.GetTravelPointOfInterestById(id);
+            if (travelPointOfInterestModel == null)
+            {
+                return NotFound();
+            }
 
-        //    _mapper.Map(travelListUpdateDto, travelListModelFromRepo);
+            await _repo.DeleteTravelPointOfInterest(travelPointOfInterestModel);
 
-        //    await _repo.UpdateTravelList(id, travelListModelFromRepo);
+            _repo.SaveChanges();
 
-        //    _repo.SaveChanges();
+            return NoContent();
+        }
 
-        //    return NoContent();
+        //api/TravelPointOfInterests/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateTravelList(int id, [FromBody]TravelPointOfInterestCreateDto travelPointOfInterestUpdateDto)
+        {
+            var travelPointOfInterestModel = await _repo.GetTravelPointOfInterestById(id);
+            if (travelPointOfInterestModel == null)
+            {
+                return NotFound();
+            }
 
-        //}
+            _mapper.Map(travelPointOfInterestUpdateDto, travelPointOfInterestModel);
 
-        ////DELETE api/travellists/{id}
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteTravelList(int id)
-        //{
-        //    var travelListModelFromRepo = await _repo.GetTravelListById(id);
-        //    if (travelListModelFromRepo == null)
-        //    {
-        //        return NotFound();
-        //    }
+            await _repo.UpdateTravelPointOfInterest(id, travelPointOfInterestModel);
 
-        //    await _repo.DeleteTravelList(travelListModelFromRepo);
+            _repo.SaveChanges();
 
-        //    _repo.SaveChanges();
+            return NoContent();
 
-        //    return NoContent();
-        //}
+        }
 
     }
 }

@@ -11,6 +11,7 @@ namespace TravelListApp.Models
 {
     public class PointOfInterest : TravelPointOfInterest
     {
+        public Guid LocalId { get; } = Guid.NewGuid();
         public Geopoint Location { get; set; }
         public Uri ImageSourceUri { get; set; }
         public Point NormalizedAnchorPoint { get; set; }

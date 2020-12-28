@@ -25,6 +25,8 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <local:TravelListItemMenu x:Name="Menu" />
@@ -75,7 +77,7 @@
                                     <RowDefinition Height="40" />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <AppBarButton Padding="0,0,0,0" Margin="0,0,0,0" Grid.Column="0" Foreground="{StaticResource WhiteBrush}" Tag="{Binding Name}" HorizontalAlignment="Center">
+                                <AppBarButton Padding="0,0,0,0" Margin="0,0,0,0" Grid.Column="0" Foreground="{StaticResource WhiteBrush}"  Click="ZoomTo_Click" Tag="{Binding Location}" HorizontalAlignment="Center">
                                     <AppBarButton.Icon >
                                         <PathIcon Data="{Binding PinIconName, Converter={StaticResource IconConverter}, Mode=OneWay}" HorizontalAlignment="Center" />
                                     </AppBarButton.Icon>
@@ -86,7 +88,9 @@
                                 Foreground="{StaticResource WhiteBrush}"
                                 BorderBrush="{StaticResource WhiteBrush}"
                                 Background="{StaticResource transBrush}"
-                                Text="{Binding Name}" Margin="0 2.5 0 2.5" />
+                                Tag="{Binding LocalId}"
+                                SelectionChanged="MapItemsList_SelectionChanged"
+                                Text="{Binding Name , Mode=TwoWay}" Margin="0 2.5 0 2.5" />
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -94,7 +98,33 @@
             </Grid>
         </ScrollViewer>
 
-        <CommandBar Grid.Row="4" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" SizeChanged="CommandBar_SizeChanged" Background="{StaticResource TenPercentLighterBrush}">
+        <Grid Background="{StaticResource AlertForegroundBrush}"
+                          Grid.Row="4"
+                          >
+            <ItemsControl x:Name="ErrorsList">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Foreground="{StaticResource WhiteBrush}" Text="{Binding}" Margin="10 5" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+
+        <TextBox Grid.Row="5"
+            x:Name="PlaceNameTextBox" PlaceholderText="Placename..."
+            HorizontalAlignment="Stretch"
+            BorderThickness="0.5"
+            Foreground="{StaticResource WhiteBrush}"
+            BorderBrush="{StaticResource WhiteBrush}"
+            Background="{StaticResource transBrush}"
+            Margin="0 2.5 0 2.5" />
+
+        <CommandBar Grid.Row="6" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" Background="{StaticResource TenPercentLighterBrush}">
+            <AppBarButton x:Name="ListCommandButton" Label="List" Foreground="{StaticResource WhiteBrush}" Click="ShowListAppBar_Click"  >
+                <AppBarButton.Icon >
+                    <PathIcon Data="{x:Bind ShowListIcon.Glyph}" HorizontalAlignment="Center" />
+                </AppBarButton.Icon>
+            </AppBarButton>
             <AppBarButton x:Name="AddPointCommandButton" Label="Add" Foreground="{StaticResource WhiteBrush}" Click="AddPointAppBar_Click" >
                 <AppBarButton.Icon >
                     <PathIcon Data="{x:Bind AddPointIcon.Glyph}" HorizontalAlignment="Center" />
@@ -110,9 +140,9 @@
                     <PathIcon Data="{x:Bind SaveIcon.Glyph}" HorizontalAlignment="Center"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <CommandBar.Content>
-                <TextBox x:Name="PlaceNameTextBox" PlaceholderText="Placename..."/>
-            </CommandBar.Content>
         </CommandBar>
+        <Grid Name="MyProgressGrid" Grid.RowSpan="6" Background="{StaticResource MaskBackground}" Visibility="Collapsed">
+            <ProgressRing  Name="MyProgressRing" Grid.Row="1" Height="100" VerticalAlignment="Center" HorizontalAlignment="Center" Width="100" Foreground="Red" IsActive="{Binding IsLoading}" Visibility="Visible" />
+        </Grid>
     </Grid>
 </Page>

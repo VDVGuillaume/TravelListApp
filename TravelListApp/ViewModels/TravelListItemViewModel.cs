@@ -441,17 +441,30 @@ namespace TravelListApp.ViewModels
             App.ViewModel.TravelListItems.Remove(this);
         }
 
-            /// <summary>
-            /// Saves travellist data that has been edited.
-            /// </summary>
-            public async Task SavePointsAsync()
+        /// <summary>
+        /// Saves travellist data that has been edited.
+        /// </summary>
+        public async Task SavePointsAsync()
         {
-            foreach (PointOfInterest point in syncPoints)
+            if (syncPoints.FindAll(p => p.IsNew == true || p.ToRemove == true || p.IsUpdate == true).Count > 0)
             {
-                if (point.IsNew)
+                foreach (PointOfInterest point in syncPoints)
                 {
-                    await App.Repository.Points.CreateTravelPointOfInterest(point);
+                    if (point.IsNew && !point.ToRemove)
+                    {
+                        await App.Repository.Points.CreateTravelPointOfInterest(point);
+                    }
+                    else if (point.ToRemove && !point.IsNew)
+                    {
+                        await App.Repository.Points.DeleteTravelPointOfInterest(point);
+                    }
+                    else if (point.IsUpdate && !point.ToRemove && !point.IsNew)
+                    {
+                        await App.Repository.Points.UpdateTravelPointOfInterest(point.TravelPointOfInterestID,point);
+                    }
                 }
+                var newModel = await App.Repository.TravelLists.GetTravelListById(Model.TravelListItemID);
+                this.Model = newModel;
             }
         }
 

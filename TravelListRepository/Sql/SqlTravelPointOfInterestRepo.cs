@@ -32,6 +32,28 @@ namespace TravelListRepository.Sql
             return await _context.Points.AsNoTracking().FirstOrDefaultAsync(p => p.TravelPointOfInterestID == id);
         }
 
+        public async Task DeleteTravelPointOfInterest(TravelPointOfInterest tl)
+        {
+            if (tl == null)
+            {
+                throw new ArgumentNullException(nameof(tl));
+            }
+            _context.Points.Remove(tl);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateTravelPointOfInterest(int id, TravelPointOfInterest tl)
+        {
+            if (tl == null)
+            {
+                throw new ArgumentNullException(nameof(tl));
+            }
+            _context.Points.Update(tl);
+            //TravelListItem travelList = await _context.TravelLists.FirstAsync(p => p.TravelListItemID == id);
+            //travelList = tl;
+            await _context.SaveChangesAsync();
+        }
+
         public bool SaveChanges()
         {
             return (_context.SaveChanges() >= 0);

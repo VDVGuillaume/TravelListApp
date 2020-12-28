@@ -127,6 +127,7 @@
     <Compile Include="Services\Validation\IPropertyListOfT.cs" />
     <Compile Include="Services\Validation\IPropertyT.cs" />
     <Compile Include="Services\Validation\ObservableDictionary.cs" />
+    <Compile Include="Services\Validation\ObservableUniqueCollection.cs" />
     <Compile Include="Services\Validation\PropertyList.cs" />
     <Compile Include="Services\Validation\Property.cs" />
     <Compile Include="Identity\Account.cs" />
