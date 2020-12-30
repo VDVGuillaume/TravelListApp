@@ -14,14 +14,20 @@ namespace TravelListRepository.Sql
         public DbSet<CheckListItem> Items { get; set; }
         public DbSet<TravelPointOfInterest> Points { get; set; }
         public DbSet<TravelListItemImage> TravelListImages { get; set; }
+        public DbSet<TravelRoute> Routes { get; set; }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<TravelPointOfInterest>()
-        //        .HasOne(p => p.TravelListItem)
-        //        .WithMany(b => b.Points)
-        //        .HasForeignKey(p => p.TravelListItemID);
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //modelBuilder.Entity<TravelPointOfInterest>()
+            //.HasMany(p => p.ConnectedStartRoutes)
+            //.WithOne(r => r.Start)
+            //.OnDelete(DeleteBehavior.SetNull);
+
+            //modelBuilder.Entity<TravelPointOfInterest>()
+            //.HasMany(p => p.ConnectedEndRoutes)
+            //.WithOne(r => r.End)
+            //.OnDelete(DeleteBehavior.SetNull);
+        }
 
         protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder)
         {

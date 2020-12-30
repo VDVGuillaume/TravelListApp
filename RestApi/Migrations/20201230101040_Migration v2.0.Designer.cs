@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelListRepository.Sql;
 
 namespace TravelList.Api.Migrations
 {
     [DbContext(typeof(TravelListContext))]
-    partial class TravelListContextModelSnapshot : ModelSnapshot
+    [Migration("20201230101040_Migration v2.0")]
+    partial class Migrationv20
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,17 +111,13 @@ namespace TravelList.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("EndTravelPointOfInterestID");
+                    b.Property<int>("EndTravelPointOfInterestID");
 
-                    b.Property<int?>("StartTravelPointOfInterestID");
+                    b.Property<int>("StartTravelPointOfInterestID");
 
                     b.Property<int>("TravelListItemID");
 
                     b.HasKey("TravelRouteID");
-
-                    b.HasIndex("EndTravelPointOfInterestID");
-
-                    b.HasIndex("StartTravelPointOfInterestID");
 
                     b.HasIndex("TravelListItemID");
 
@@ -152,14 +150,6 @@ namespace TravelList.Api.Migrations
 
             modelBuilder.Entity("TravelListModels.TravelRoute", b =>
                 {
-                    b.HasOne("TravelListModels.TravelPointOfInterest")
-                        .WithMany("ConnectedEndRoutes")
-                        .HasForeignKey("EndTravelPointOfInterestID");
-
-                    b.HasOne("TravelListModels.TravelPointOfInterest")
-                        .WithMany("ConnectedStartRoutes")
-                        .HasForeignKey("StartTravelPointOfInterestID");
-
                     b.HasOne("TravelListModels.TravelListItem")
                         .WithMany("Routes")
                         .HasForeignKey("TravelListItemID")

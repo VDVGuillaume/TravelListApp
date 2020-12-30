@@ -13,6 +13,7 @@ namespace TravelListModels
             this.Items = new List<CheckListItem>();
             this.Points = new List<TravelPointOfInterest>();
             this.Images = new List<TravelListItemImage>();
+            this.Routes = new List<TravelRoute>();
         }
 
         public string UserId { get; set; }
@@ -27,5 +28,6 @@ namespace TravelListModels
         public virtual ICollection<CheckListItem> Items { get; set; }
         public virtual ICollection<TravelPointOfInterest> Points { get; set; }
         public virtual ICollection<TravelListItemImage> Images { get; set; }
+        public virtual ICollection<TravelRoute> Routes { get; set; }
     }
 }

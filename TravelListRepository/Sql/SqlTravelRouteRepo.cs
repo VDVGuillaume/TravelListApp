@@ -8,49 +8,47 @@ using TravelListModels;
 
 namespace TravelListRepository.Sql
 {
-    public class SqlTravelPointOfInterestRepo : ITravelPointOfInterestRepo
+    public class SqlTravelRouteRepo : ITravelRouteRepo
     {
         private readonly TravelListContext _context;
 
-        public SqlTravelPointOfInterestRepo(TravelListContext context)
+        public SqlTravelRouteRepo(TravelListContext context)
         {
             _context = context;
         }
 
-        public async Task CreateTravelPointOfInterest(TravelPointOfInterest tl)
+        public async Task CreateTravelRoute(TravelRoute tl)
         {
             if (tl == null)
             {
                 throw new ArgumentNullException(nameof(tl));
             }
-            _context.Points.Add(tl);
+            _context.Routes.Add(tl);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<TravelPointOfInterest> GetTravelPointOfInterestById(int id)
+        public async Task<TravelRoute> GetTravelRouteById(int id)
         {
-            return await _context.Points.AsNoTracking().Include(x => x.ConnectedStartRoutes).Include(x => x.ConnectedEndRoutes).FirstOrDefaultAsync(p => p.TravelPointOfInterestID == id);
+            return await _context.Routes.AsNoTracking().FirstOrDefaultAsync(r => r.TravelRouteID == id);
         }
 
-        public async Task DeleteTravelPointOfInterest(TravelPointOfInterest tl)
+        public async Task DeleteTravelRoute(TravelRoute tl)
         {
             if (tl == null)
             {
                 throw new ArgumentNullException(nameof(tl));
             }
-            _context.Points.Remove(tl);
+            _context.Routes.Remove(tl);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateTravelPointOfInterest(int id, TravelPointOfInterest tl)
+        public async Task UpdateTravelRoute(int id, TravelRoute tl)
         {
             if (tl == null)
             {
                 throw new ArgumentNullException(nameof(tl));
             }
-            _context.Points.Update(tl);
-            //TravelListItem travelList = await _context.TravelLists.FirstAsync(p => p.TravelListItemID == id);
-            //travelList = tl;
+            _context.Routes.Update(tl);
             await _context.SaveChangesAsync();
         }
 

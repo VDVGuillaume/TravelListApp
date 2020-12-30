@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,6 +49,7 @@ namespace TravelListApp.ViewModels
                         this.Items = _model.Items.ToList();
                         this.Points = _model.Points.ToList();
                         this.Images = _model.Images.ToList();
+                        this.Routes = _model.Routes.ToList();
                     }
                 } else {
                     _model = new TravelListItem();
@@ -127,7 +129,7 @@ namespace TravelListApp.ViewModels
         }
 
         /// <summary>
-        /// Gets or sets the customer's first name.
+        /// Gets or sets Country.
         /// </summary>
         public string Country
         {
@@ -142,6 +144,9 @@ namespace TravelListApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets or sets Latitude.
+        /// </summary>
         public decimal Latitude
         {
             get => Read<decimal>();
@@ -152,6 +157,9 @@ namespace TravelListApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets or sets Longitude.
+        /// </summary>
         public decimal Longitude
         {
             get => Read<decimal>();
@@ -163,7 +171,7 @@ namespace TravelListApp.ViewModels
         }
 
         /// <summary>
-        /// Gets or sets the customer's first name.
+        /// Gets or sets Items.
         /// </summary>
         public List<CheckListItem> Items
         {
@@ -173,18 +181,10 @@ namespace TravelListApp.ViewModels
                 Model.Items = value;
                 WriteList(value);
             }
-            //set
-            //{
-            //    if (value != Model.Items)
-            //    {
-            //        Model.Items = value;
-            //        Write(value);
-            //    }
-            //}
         }
 
         /// <summary>
-        /// Gets or sets the customer's first name.
+        /// Gets or sets Points.
         /// </summary>
         public List<TravelPointOfInterest> Points
         {
@@ -195,19 +195,10 @@ namespace TravelListApp.ViewModels
                 WriteList(value);
                 FillSyncPoints();
             }
-            //get => Model.Points.ToList();
-            //set
-            //{
-            //    if (value != Model.Points)
-            //    {
-            //        Model.Points = value;
-            //        IsModified = true;
-            //    }
-            //}
         }
 
         /// <summary>
-        /// Gets or sets the customer's first name.
+        /// Gets or sets Images.
         /// </summary>
         public List<TravelListItemImage> Images
         {
@@ -215,18 +206,30 @@ namespace TravelListApp.ViewModels
             set
             {
                 Model.Images = value;
-                WriteList(value);
-                //if (!IsSaving)
-                //{
-                //    ConvertImages();
-                //}                    
+                WriteList(value);                  
             }
         }
 
         /// <summary>
-        /// Gets or sets the customer's first name.
+        /// Gets or sets Routes.
         /// </summary>
-        public List<CarouselImage> imageChangesCheck
+        public List<TravelRoute> Routes
+        {
+            get => ReadList<TravelRoute>().ToList();
+            set
+            {
+                Model.Routes = value;
+                WriteList(value);
+                FillSyncRoutes();
+            }
+        }
+
+        public List<String> Countries = App.ViewModel.Countries.Select(x => x.Name).ToList();
+
+        /// <summary>
+        /// Gets or sets Images for validation
+        /// </summary>
+        public List<CarouselImage> ImageChangesCheck
         {
             get => ReadList<CarouselImage>().ToList();
             set
@@ -237,9 +240,6 @@ namespace TravelListApp.ViewModels
 
         public List<CarouselImage> imageChanges = new List<CarouselImage>();
 
-        /// <summary>
-        /// Gets or sets convertImages.
-        /// </summary>
         public List<CarouselImage> convertedImages = new List<CarouselImage>();
 
         public WriteableBitmap firstConvertedImage
@@ -285,9 +285,6 @@ namespace TravelListApp.ViewModels
                 return cImage;
         }
 
-        /// <summary>
-        /// Gets or sets newPoints.
-        /// </summary>
         public List<PointOfInterest> syncPoints = new List<PointOfInterest>();
 
         public void FillSyncPoints()
@@ -295,24 +292,23 @@ namespace TravelListApp.ViewModels
             syncPoints = new List<PointOfInterest>();
             foreach (TravelPointOfInterest point in Points)
             {
-                syncPoints.Add(new PointOfInterest() {
-                    TravelPointOfInterestID = point.TravelPointOfInterestID,
-                    Name = point.Name,
-                    ImageSourceUri = new Uri("ms-appx:///Assets/MapPin.png"),
-                    NormalizedAnchorPoint = new Point(0.5, 1),
-                    Latitude = (decimal)point.Latitude,
-                    Longitude = (decimal)point.Longitude,
-                    Location = new Geopoint(new BasicGeoposition()
-                    {
-                        Latitude = (double)point.Latitude,
-                        Longitude = (double)point.Longitude
-                    }),
-                    TravelListItemID = point.TravelListItemID
-                });
+                syncPoints.Add(new PointOfInterest(point));
             }
         }
 
-        public List<String> Countries = App.ViewModel.Countries.Select(x => x.Name).ToList();
+        public ObservableCollection<RoutesOfPointOfInterest> syncRoutes = new ObservableCollection<RoutesOfPointOfInterest>();
+
+        public void FillSyncRoutes()
+        {
+            syncRoutes.Clear();
+            foreach (TravelRoute route in Routes)
+            {
+                RoutesOfPointOfInterest syncRoute = new RoutesOfPointOfInterest(route);
+                syncRoute.Start = Points.Find(p => p.TravelPointOfInterestID == route.StartTravelPointOfInterestID);
+                syncRoute.End = Points.Find(p => p.TravelPointOfInterestID == route.EndTravelPointOfInterestID);
+                syncRoutes.Add(syncRoute);
+            }
+        }
 
         private void Validation_Executed(TravelListItemViewModel c)
         {
@@ -403,7 +399,16 @@ namespace TravelListApp.ViewModels
         }
 
         /// <summary>
-        /// Saves travellist data that has been edited.
+        /// Delete travellist.
+        /// </summary>
+        public async Task DeleteAsync()
+        {
+            await App.Repository.TravelLists.DeleteTravelList(Model);
+            App.ViewModel.TravelListItems.Remove(this);
+        }
+
+        /// <summary>
+        /// Saves travellist images that has been edited.
         /// </summary>
         public async Task SaveImagesAsync()
         {
@@ -433,16 +438,7 @@ namespace TravelListApp.ViewModels
         }
 
         /// <summary>
-        /// Delete travellist.
-        /// </summary>
-        public async Task DeleteAsync()
-        {
-            await App.Repository.TravelLists.DeleteTravelList(Model);
-            App.ViewModel.TravelListItems.Remove(this);
-        }
-
-        /// <summary>
-        /// Saves travellist data that has been edited.
+        /// Saves travellist points data that has been edited.
         /// </summary>
         public async Task SavePointsAsync()
         {
@@ -456,6 +452,14 @@ namespace TravelListApp.ViewModels
                     }
                     else if (point.ToRemove && !point.IsNew)
                     {
+                        foreach (TravelRoute route in point.ConnectedStartRoutes)
+                        {
+                            await App.Repository.Routes.DeleteTravelRoute(route);
+                        }
+                        foreach (TravelRoute route in point.ConnectedEndRoutes)
+                        {
+                            await App.Repository.Routes.DeleteTravelRoute(route);
+                        }
                         await App.Repository.Points.DeleteTravelPointOfInterest(point);
                     }
                     else if (point.IsUpdate && !point.ToRemove && !point.IsNew)
@@ -468,9 +472,36 @@ namespace TravelListApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Saves travellist routes data that has been edited.
+        /// </summary>
+        public async Task SaveRoutesAsync()
+        {
+            if (syncRoutes.Where(p => p.IsNew == true || p.ToRemove == true || p.IsUpdate == true).Count() > 0)
+            {
+                foreach (RoutesOfPointOfInterest route in syncRoutes)
+                {
+                    if (route.IsNew && !route.ToRemove)
+                    {
+                        await App.Repository.Routes.CreateTravelRoute(route);
+                    }
+                    else if (route.ToRemove && !route.IsNew)
+                    {
+                        await App.Repository.Routes.DeleteTravelRoute(route);
+                    }
+                    else if (route.IsUpdate && !route.ToRemove && !route.IsNew)
+                    {
+                        await App.Repository.Routes.UpdateTravelRoute(route.TravelRouteID, route);
+                    }
+                }
+                var newModel = await App.Repository.TravelLists.GetTravelListById(Model.TravelListItemID);
+                this.Model = newModel;
+            }
+        }
+
 
         /// <summary>
-        /// Saves travellist data that has been edited.
+        /// Search Bing and return location object.
         /// </summary>
         public async Task<Location> GetBingSearchResultsAsync(string search)
         {
@@ -511,7 +542,7 @@ namespace TravelListApp.ViewModels
         }
 
         /// <summary>
-        /// Reloads all of the customer data.
+        /// Reloads all of the TravelList data.
         /// </summary>
         public async Task RefreshAsync()
         {
@@ -521,7 +552,7 @@ namespace TravelListApp.ViewModels
         // private bool _isNewTravelList;
 
         /// <summary>
-        /// Gets or sets a value that indicates whether this is a new customer.
+        /// Gets or sets a value that indicates whether this is a new TravelList.
         /// </summary>
         public bool IsNewTravelList
         {
@@ -540,7 +571,7 @@ namespace TravelListApp.ViewModels
         public async void CancelEdit() => await CancelEditsAsync();
 
         /// <summary>
-        /// Called when a bound DataGrid control commits the edits that have been made to a customer.
+        /// Called when a bound DataGrid control commits the edits that have been made to a travellist.
         /// </summary>
         public async void EndEdit() => await SaveAsync();
     }

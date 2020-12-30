@@ -19,7 +19,6 @@
           Padding="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -29,18 +28,11 @@
 
         <local:TravelListItemMenu x:Name="Menu" />
 
-        <uc:CollapsibleSearchBox
-                x:Name="BingSearchBox"
-                Margin="0 0 0 0"
-                Grid.Row="1"
-                Loaded="BingSearchBox_Loaded"
-                RelativePanel.AlignRightWithPanel="True"/>
-
-        <maps:MapControl x:Name="myMap" Loaded="MyMap_Loaded" MapTapped="MapUserTapped" Grid.Row="2" >
+        <maps:MapControl x:Name="myMap" Loaded="MyMap_Loaded" Grid.Row="1" >
             <maps:MapItemsControl x:Name="MapItems">
                 <maps:MapItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button x:Name="mapItemButton" Click="mapItemButton_Click" Background="Transparent">
+                        <Button x:Name="mapItemButton" Background="Transparent">
                             <StackPanel>
                                 <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                                     <TextBlock Text="{Binding Name}"/>
@@ -61,41 +53,94 @@
             </maps:MapItemsControl>
         </maps:MapControl>
 
+        <Grid Margin="0,0,5,0" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="40" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+            </Grid.RowDefinitions>
+            <ComboBox
+                PlaceholderText="StartPoint..."
+                x:Name="StartPoint"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                BorderThickness="0.5"
+                Foreground="{StaticResource WhiteBrush}"
+                BorderBrush="{StaticResource WhiteBrush}"
+                Background="{StaticResource transBrush}"
+                DisplayMemberPath="Name"
+                SelectedItem="{x:Bind Start, Mode=TwoWay}"
+                Grid.Column="0" />
+            <AppBarButton Grid.Column="1" Foreground="{StaticResource WhiteBrush}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <AppBarButton.Icon  >
+                    <PathIcon Data="{x:Bind PathIcon.Glyph}" VerticalAlignment="Center" HorizontalAlignment="Center"  />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <ComboBox
+                PlaceholderText="EndPoint..."
+                x:Name="EndPoint"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                BorderThickness="0.5"
+                Foreground="{StaticResource WhiteBrush}"
+                BorderBrush="{StaticResource WhiteBrush}"
+                Background="{StaticResource transBrush}"
+                DisplayMemberPath="Name"
+                SelectedItem="{x:Bind End, Mode=TwoWay}"
+                Grid.Column="2" />
+            <AppBarButton Grid.Column="3" Foreground="{StaticResource WhiteBrush}"  Click="AddRoute_Click" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <AppBarButton.Icon >
+                    <PathIcon Data="{x:Bind AddIcon.Glyph}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </Grid>
+
         <ScrollViewer x:Name="MapItemsListViewer" Grid.Row="3" VerticalAlignment="Stretch">
             <Grid Margin="0,0,5,0">
                 <ItemsControl x:Name="MapItemsList">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="40" />
-                                    <ColumnDefinition Width="40" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="40" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <AppBarButton Padding="0,0,0,0" Margin="0,0,0,0" Grid.Column="0" Foreground="{StaticResource WhiteBrush}"  Click="Up_Click" Tag="{Binding Location}" HorizontalAlignment="Center">
-                                    <AppBarButton.Icon >
-                                        <PathIcon Data="{Binding UpIconName, Converter={StaticResource IconConverter}, Mode=OneWay}" HorizontalAlignment="Center" />
-                                    </AppBarButton.Icon>
-                                </AppBarButton>
-                                <AppBarButton Padding="0,0,0,0" Margin="0,0,0,0" Grid.Column="1" Foreground="{StaticResource WhiteBrush}"  Click="Down_Click" Tag="{Binding Location}" HorizontalAlignment="Center">
-                                    <AppBarButton.Icon >
-                                        <PathIcon Data="{Binding DownIconName, Converter={StaticResource IconConverter}, Mode=OneWay}" HorizontalAlignment="Center" />
-                                    </AppBarButton.Icon>
-                                </AppBarButton>
-                                <TextBox Grid.Column="2"
-                                HorizontalAlignment="Stretch"
-                                BorderThickness="0.5"
-                                Foreground="{StaticResource WhiteBrush}"
-                                BorderBrush="{StaticResource WhiteBrush}"
-                                Background="{StaticResource transBrush}"
-                                Tag="{Binding LocalId}"
-                                SelectionChanged="MapItemsList_SelectionChanged"
-                                Text="{Binding Name , Mode=TwoWay}" Margin="0 2.5 0 2.5" />
-                            </Grid>
+                            <Border 
+                                Margin="0 5 0 0" 
+                                BorderThickness="0.5" 
+                                BorderBrush="{StaticResource WhiteBrush}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="40" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Column="0"
+                                    TextAlignment="Center"
+                                    HorizontalAlignment="Stretch"
+                                    Foreground="{StaticResource WhiteBrush}"
+                                    Text="{Binding Start.Name , Mode=OneWay}" Margin="0 2.5 0 2.5" />
+                                    <AppBarButton Padding="0,0,0,0" Margin="0,0,0,0" Grid.Column="1" Foreground="{StaticResource WhiteBrush}" Tag="{Binding LocalId}" HorizontalAlignment="Center">
+                                        <AppBarButton.Icon >
+                                            <PathIcon Data="{Binding PathIconName, Converter={StaticResource IconConverter}, Mode=OneWay}" HorizontalAlignment="Center" />
+                                        </AppBarButton.Icon>
+                                    </AppBarButton>
+                                    <TextBlock Grid.Column="2"
+                                    TextAlignment="Center"
+                                    HorizontalAlignment="Stretch"
+                                    Foreground="{StaticResource WhiteBrush}"
+                                    Text="{Binding End.Name , Mode=OneWay}" Margin="0 2.5 0 2.5" />
+                                    <AppBarButton Padding="0,0,0,0" Margin="0,0,0,0" Grid.Column="3" Foreground="{StaticResource WhiteBrush}" Click="RemoveRoute_Click" Tag="{Binding LocalId}" HorizontalAlignment="Center">
+                                        <AppBarButton.Icon >
+                                            <PathIcon Data="{Binding ClearIconName, Converter={StaticResource IconConverter}, Mode=OneWay}" HorizontalAlignment="Center" />
+                                        </AppBarButton.Icon>
+                                    </AppBarButton>
+                                </Grid>
+                            </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -114,29 +159,10 @@
             </ItemsControl>
         </Grid>
 
-        <TextBox Grid.Row="5"
-            x:Name="PlaceNameTextBox" PlaceholderText="Placename..."
-            HorizontalAlignment="Stretch"
-            BorderThickness="0.5"
-            Foreground="{StaticResource WhiteBrush}"
-            BorderBrush="{StaticResource WhiteBrush}"
-            Background="{StaticResource transBrush}"
-            Margin="0 2.5 0 2.5" />
-
-        <CommandBar Grid.Row="6" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" Background="{StaticResource TenPercentLighterBrush}">
+        <CommandBar Grid.Row="5" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" Background="{StaticResource TenPercentLighterBrush}">
             <AppBarButton x:Name="ListCommandButton" Label="List" Foreground="{StaticResource WhiteBrush}" Click="ShowListAppBar_Click"  >
                 <AppBarButton.Icon >
                     <PathIcon Data="{x:Bind ShowListIcon.Glyph}" HorizontalAlignment="Center" />
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <AppBarButton x:Name="AddPointCommandButton" Label="Add" Foreground="{StaticResource WhiteBrush}" Click="AddPointAppBar_Click" >
-                <AppBarButton.Icon >
-                    <PathIcon Data="{x:Bind AddPointIcon.Glyph}" HorizontalAlignment="Center" />
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <AppBarButton x:Name="RemovePointCommandButton" Label="Remove" Foreground="{StaticResource WhiteBrush}" Click="RemovePointAppBar_Click">
-                <AppBarButton.Icon>
-                    <PathIcon Data="{x:Bind RemovePointIcon.Glyph}" HorizontalAlignment="Center"/>
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarButton x:Name="SaveCommandButton" Label="Save" Foreground="{StaticResource WhiteBrush}" Click="SaveAppBar_Click">

@@ -132,8 +132,8 @@ namespace TravelListApp.Views
                     ViewModel.imageChanges.Add(imageToDelete);
                     
                 }
-                ViewModel.imageChangesCheck = new List<CarouselImage>();
-                ViewModel.imageChangesCheck = ViewModel.imageChanges;
+                ViewModel.ImageChangesCheck = new List<CarouselImage>();
+                ViewModel.ImageChangesCheck = ViewModel.imageChanges;
                 cImages.Remove(imageToDelete);
             }
         }
@@ -176,8 +176,8 @@ namespace TravelListApp.Views
             CarouselImage cImage = await ViewModel.ConvertImageTask(liImage);
             cImage.IsNew = true;
             ViewModel.imageChanges.Add(cImage);
-            ViewModel.imageChangesCheck = new List<CarouselImage>();
-            ViewModel.imageChangesCheck = ViewModel.imageChanges;
+            ViewModel.ImageChangesCheck = new List<CarouselImage>();
+            ViewModel.ImageChangesCheck = ViewModel.imageChanges;
             cImages.Add(cImage);
         }
 

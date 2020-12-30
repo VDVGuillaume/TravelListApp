@@ -11,5 +11,7 @@ namespace RestApi.Dtos
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
         public int TravelListItemID { get; set; }
+        public virtual ICollection<TravelRoute> ConnectedStartRoutes { get; set; }
+        public virtual ICollection<TravelRoute> ConnectedEndRoutes { get; set; }
     }
 }
