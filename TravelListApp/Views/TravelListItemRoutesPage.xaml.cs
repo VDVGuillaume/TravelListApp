@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using TravelListApp.Models;
 using TravelListApp.Services.Icons;
 using TravelListApp.Services.Validation;
@@ -54,22 +55,35 @@ namespace TravelListApp.Views
 
         public TravelListItemViewModel ViewModel { get; set; }
 
-        private async void ShowRouteOnMap(RoutesOfPointOfInterest route)
+        private async Task<bool> ShowRouteOnMap(RoutesOfPointOfInterest route, bool driving)
         {
-
             // Start at Microsoft in Redmond, Washington.
             BasicGeoposition startLocation = new BasicGeoposition() { Latitude = (double)route.Start.Latitude, Longitude = (double)route.Start.Longitude };
 
             // End at the city of Seattle, Washington.
             BasicGeoposition endLocation = new BasicGeoposition() { Latitude = (double)route.End.Latitude, Longitude = (double)route.End.Longitude };
 
+
             // Get the route between the points.
-            MapRouteFinderResult routeResult =
+            MapRouteFinderResult routeResult = null;
+            if (driving)
+            {
+                routeResult =
                   await MapRouteFinder.GetDrivingRouteAsync(
                   new Geopoint(startLocation),
                   new Geopoint(endLocation),
                   MapRouteOptimization.Time,
                   MapRouteRestrictions.None);
+            } else
+            {
+                routeResult =
+                  await MapRouteFinder.GetWalkingRouteAsync(
+                  new Geopoint(startLocation),
+                  new Geopoint(endLocation));
+            }
+
+
+
 
             if (routeResult.Status == MapRouteFinderStatus.Success)
             {
@@ -90,6 +104,10 @@ namespace TravelListApp.Views
                       routeResult.Route.BoundingBox,
                       null,
                       Windows.UI.Xaml.Controls.Maps.MapAnimationKind.None);
+                return true;
+            } else
+            {
+                return false;
             }
         }
 
@@ -112,17 +130,24 @@ namespace TravelListApp.Views
             base.OnNavigatedTo(e);
         }
 
-        private void MyMap_Loaded(object sender, RoutedEventArgs e)
+        private async void MyMap_Loaded(object sender, RoutedEventArgs e)
         {
+            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            MyProgressRing.IsActive = true;
+
             foreach (RoutesOfPointOfInterest route in ViewModel.syncRoutes.Where(p => p.ToRemove == false))
             {
                 if (route.Start != null && route.End != null)
-                    ShowRouteOnMap(route);
+                    await ShowRouteOnMap(route,true);
             }
+
+            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            MyProgressRing.IsActive = false;
         }
 
-        private void AddRoute_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void AddRoute_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
+            Errors.Clear();
             RoutesOfPointOfInterest newRoute = new RoutesOfPointOfInterest();
             newRoute.TravelListItemID = ViewModel.TravelListItemID;
             newRoute.StartTravelPointOfInterestID = Start.TravelPointOfInterestID;
@@ -130,9 +155,41 @@ namespace TravelListApp.Views
             newRoute.EndTravelPointOfInterestID = End.TravelPointOfInterestID;
             newRoute.End = End;
             newRoute.IsNew = true;
-            ViewModel.syncRoutes.Add(newRoute);
-            Sync();
-            ShowRouteOnMap(newRoute);
+
+            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            MyProgressRing.IsActive = true;
+
+            bool result = await ShowRouteOnMap(newRoute,true);
+            if (result)
+            {
+                ViewModel.syncRoutes.Add(newRoute);
+                Sync();
+            } else
+            {
+                Errors.Add("Route not found");
+            }
+
+            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            MyProgressRing.IsActive = false;
+        }
+
+        
+
+        private async void ZoomToRoute_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            Guid LocalId = (Guid)button.Tag;
+
+            RoutesOfPointOfInterest rpoi = ViewModel.syncRoutes.Single(p => p.LocalId == LocalId);
+            if (rpoi != null)
+            {
+                // Fit the MapControl to the route.
+                await myMap.TrySetViewBoundsAsync(
+                      rpoi.ViewOfRoute.Route.BoundingBox,
+                      null,
+                      Windows.UI.Xaml.Controls.Maps.MapAnimationKind.None);
+            }
+
         }
 
         private void RemoveRoute_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -149,26 +206,12 @@ namespace TravelListApp.Views
             Sync();
         }
 
-        
-
         private void Sync()
         {
             MapItems.ItemsSource = ViewModel.syncPoints.FindAll(p => p.ToRemove == false);
             MapItemsList.ItemsSource = ViewModel.syncRoutes.Where(p => p.ToRemove == false);
             StartPoint.ItemsSource = ViewModel.syncPoints.FindAll(p => p.ToRemove == false);
             EndPoint.ItemsSource = ViewModel.syncPoints.FindAll(p => p.ToRemove == false);
-        }
-
-
-        private void MapItemsList_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-            var textbox = sender as TextBox;
-            Guid LocalId = (Guid)textbox.Tag;
-            PointOfInterest poi = ViewModel.syncPoints.Find(p => p.LocalId == LocalId);
-            if (!poi.Name.Equals(textbox.Text))
-            {
-                poi.IsUpdate = true;
-            }
         }
 
         public static string RemoveWhitespace(string input)
@@ -195,7 +238,12 @@ namespace TravelListApp.Views
 
         private async void SaveAppBar_Click(object sender, RoutedEventArgs e)
         {
+            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            MyProgressRing.IsActive = true;
             await ViewModel.SaveRoutesAsync();
+            Sync();
+            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            MyProgressRing.IsActive = false;
         }
 
         public static Size GetCurrentDisplaySize()

@@ -452,14 +452,6 @@ namespace TravelListApp.ViewModels
                     }
                     else if (point.ToRemove && !point.IsNew)
                     {
-                        foreach (TravelRoute route in point.ConnectedStartRoutes)
-                        {
-                            await App.Repository.Routes.DeleteTravelRoute(route);
-                        }
-                        foreach (TravelRoute route in point.ConnectedEndRoutes)
-                        {
-                            await App.Repository.Routes.DeleteTravelRoute(route);
-                        }
                         await App.Repository.Points.DeleteTravelPointOfInterest(point);
                     }
                     else if (point.IsUpdate && !point.ToRemove && !point.IsNew)

@@ -38,6 +38,14 @@ namespace TravelListRepository.Sql
             {
                 throw new ArgumentNullException(nameof(tl));
             }
+            foreach (TravelRoute route in tl.ConnectedStartRoutes)
+            {
+                _context.Routes.Remove(route);
+            }
+            foreach (TravelRoute route in tl.ConnectedEndRoutes)
+            {
+                _context.Routes.Remove(route);
+            }
             _context.Points.Remove(tl);
             await _context.SaveChangesAsync();
         }
