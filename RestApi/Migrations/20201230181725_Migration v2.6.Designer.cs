@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelListRepository.Sql;
 
 namespace TravelList.Api.Migrations
 {
     [DbContext(typeof(TravelListContext))]
-    partial class TravelListContextModelSnapshot : ModelSnapshot
+    [Migration("20201230181725_Migration v2.6")]
+    partial class Migrationv26
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,8 +110,6 @@ namespace TravelList.Api.Migrations
                     b.Property<int>("TravelRouteID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Driving");
 
                     b.Property<int?>("EndTravelPointOfInterestID");
 

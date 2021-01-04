@@ -19,6 +19,8 @@ namespace TravelListRepository.Rest
 
         public ITravelListItemImageRepo TravelListImages => new RestTravelListItemImageRepository(_url);
 
+        public ITravelRouteRepo Routes => new RestTravelRouteRepository(_url);
+
         public ICountryRepo Countries => new RestCountryRepository(_url);
 
         public IBingRepo Bing => new RestBingRepository(_url);

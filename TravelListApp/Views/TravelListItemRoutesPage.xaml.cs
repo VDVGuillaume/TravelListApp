@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using TravelListApp.Models;
 using TravelListApp.Services.Icons;
+using TravelListApp.Services.Validation;
 using TravelListApp.ViewModels;
 using TravelListModels;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
+using Windows.Graphics.Display;
 using Windows.Services.Maps;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -19,6 +23,12 @@ using Windows.UI.Xaml.Navigation;
 
 namespace TravelListApp.Views
 {
+    public enum RouteTypes
+    {
+        Driving = 0,
+        Walking = 1
+    }
+
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -28,49 +38,80 @@ namespace TravelListApp.Views
         {
             this.InitializeComponent();
             _pointOfInterests = new List<PointOfInterest>();
-            _addPointMode = false;
-            _removePointMode = false;
-            SaveIcon = new ButtonItem() { Glyph = Icon.GetIcon("Save"), Text = "Save" };
-            AddPointIcon = new ButtonItem() { Glyph = Icon.GetIcon("Pin"), Text = "Pin" };
-            RemovePointIcon = new ButtonItem() { Glyph = Icon.GetIcon("Clear"), Text = "Clear" };
-            _placeNameTextBoxSize = SecondaryTileCommandBar.ActualWidth / 2;
+            Errors = new ObservableUniqueCollection<string>();
+            ErrorsList.ItemsSource = Errors;
+            MapItemsListViewer.Height = 0;
+            // RouteType.SelectedItem = SelectedRouteType;
+            RouteType.ItemsSource = Enum.GetValues(typeof(RouteTypes));
         }
 
-        public ButtonItem SaveIcon { get; set; }
-        public ButtonItem AddPointIcon { get; set; }
-        public ButtonItem RemovePointIcon { get; set; }
-        private double _placeNameTextBoxSize { get; set; }
+        public ButtonItem SaveIcon = new ButtonItem() { Glyph = Icon.GetIcon("Save"), Text = "Save" };
+        public ButtonItem AddPointIcon = new ButtonItem() { Glyph = Icon.GetIcon("Pin"), Text = "Pin" };
+        public ButtonItem RemovePointIcon = new ButtonItem() { Glyph = Icon.GetIcon("Clear"), Text = "Clear" };
+        public ButtonItem ShowListIcon = new ButtonItem() { Glyph = Icon.GetIcon("List"), Text = "List" };
+        public ButtonItem PathIcon = new ButtonItem() { Glyph = Icon.GetIcon("Path"), Text = "Path" };
+        public ButtonItem AddIcon = new ButtonItem() { Glyph = Icon.GetIcon("Add"), Text = "Add" };
         private Boolean _addPointMode { get; set; }
         private Boolean _removePointMode { get; set; }
         private Uri _pinUri { get; set; }
         private List<PointOfInterest> _pointOfInterests { get; set; }
         private PointOfInterest _selectedPointOfInterests { get; set; }
+        public ObservableUniqueCollection<string> Errors { get; set; }
+
+        public PointOfInterest Start { get; set; }
+        public PointOfInterest End { get; set; }
+        public RouteTypes SelectedRouteType { get; set; } = RouteTypes.Driving;
 
         public TravelListItemViewModel ViewModel { get; set; }
 
-        private async void ShowRouteOnMap()
+        private async Task<bool> ShowRouteOnMap(RoutesOfPointOfInterest route)
         {
-            // Start at Microsoft in Redmond, Washington.
-            BasicGeoposition startLocation = new BasicGeoposition() { Latitude = 47.643, Longitude = -122.131 };
+            // Start.
+            BasicGeoposition startLocation = new BasicGeoposition() { Latitude = (double)route.Start.Latitude, Longitude = (double)route.Start.Longitude };
 
-            // End at the city of Seattle, Washington.
-            BasicGeoposition endLocation = new BasicGeoposition() { Latitude = 47.604, Longitude = -122.329 };
+            // End.
+            BasicGeoposition endLocation = new BasicGeoposition() { Latitude = (double)route.End.Latitude, Longitude = (double)route.End.Longitude };
 
 
             // Get the route between the points.
-            MapRouteFinderResult routeResult =
+            MapRouteFinderResult routeResult = null;
+            if (route.Driving)
+            {
+                routeResult =
                   await MapRouteFinder.GetDrivingRouteAsync(
                   new Geopoint(startLocation),
                   new Geopoint(endLocation),
                   MapRouteOptimization.Time,
                   MapRouteRestrictions.None);
+            } else
+            {
+                routeResult =
+                  await MapRouteFinder.GetWalkingRouteAsync(
+                  new Geopoint(startLocation),
+                  new Geopoint(endLocation));
+            }
+
+
+
 
             if (routeResult.Status == MapRouteFinderStatus.Success)
             {
                 // Use the route to initialize a MapRouteView.
                 MapRouteView viewOfRoute = new MapRouteView(routeResult.Route);
-                viewOfRoute.RouteColor = Colors.Yellow;
-                viewOfRoute.OutlineColor = Colors.Black;
+                if (route.Driving)
+                {
+                    viewOfRoute.RouteColor = Colors.Yellow;
+                    viewOfRoute.OutlineColor = Colors.Black;
+                }
+                else
+                {
+                    viewOfRoute.RouteColor = Colors.Blue;
+                    viewOfRoute.OutlineColor = Colors.Black;
+                }
+
+
+                // Assign viewOfRoute to Route object
+                route.ViewOfRoute = viewOfRoute;
 
                 // Add the new MapRouteView to the Routes collection
                 // of the MapControl.
@@ -81,22 +122,19 @@ namespace TravelListApp.Views
                       routeResult.Route.BoundingBox,
                       null,
                       Windows.UI.Xaml.Controls.Maps.MapAnimationKind.None);
+                return true;
+            } else
+            {
+                return false;
             }
         }
 
-        private void CommandBar_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void RemoveRouteOnMap(RoutesOfPointOfInterest route)
         {
-            if (SecondaryTileCommandBar == null)
-            {
-                return;
-            }
-
-            // Only react to change in Width.
-            if (e.NewSize.Width != e.PreviousSize.Width)
-            {
-                PlaceNameTextBox.Width = SecondaryTileCommandBar.ActualWidth / 2;
-            }
-        }        
+            // Add the new MapRouteView to the Routes collection
+            // of the MapControl.
+            myMap.Routes.Remove(route.ViewOfRoute);
+        }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -105,165 +143,153 @@ namespace TravelListApp.Views
             // Send page type to menu.
             Menu.SetTab(GetType());
             myMap.MapServiceToken = App.ViewModel.MapServiceToken;
-            AddPoints();
+            Sync();
             base.OnNavigatedTo(e);
         }
 
-        private void MyMap_Loaded(object sender, RoutedEventArgs e)
+        private async void MyMap_Loaded(object sender, RoutedEventArgs e)
         {
-            ShowRouteOnMap();
-        }
+            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            MyProgressRing.IsActive = true;
 
-        private void AddPoints()
-        {
-            MapItems.ItemsSource = new List<PointOfInterest>();
-            MapItems.ItemsSource = ViewModel.syncPoints.FindAll(p => p.ToRemove == false);
-        }
-
-        private void MapUserTapped(MapControl sender, MapInputEventArgs args)
-        {
-            _removePointMode = false;
-            RemovePointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["PageForegroundBrush"]);
-            _selectedPointOfInterests = null;
-            if (!_addPointMode) { return; }
-
-            //to get a basicgeoposition of wherever the user clicks on the map
-            BasicGeoposition basgeo_edit_position = args.Location.Position;
-
-            PointOfInterest newPoint =
-            new PointOfInterest()
+            foreach (RoutesOfPointOfInterest route in ViewModel.syncRoutes.Where(p => p.ToRemove == false))
             {
-                Name = PlaceNameTextBox.Text,
-                ImageSourceUri = new Uri("ms-appx:///Assets/MapPin.png"),
-                NormalizedAnchorPoint = new Point(0.5, 1),
-                Latitude = (decimal)basgeo_edit_position.Latitude,
-                Longitude = (decimal)basgeo_edit_position.Longitude,
-                Location = new Geopoint(new BasicGeoposition()
-                {
-                    Latitude = (double)basgeo_edit_position.Latitude,
-                    Longitude = (double)basgeo_edit_position.Longitude
-                }),
-                TravelListItemID = ViewModel.TravelListItemID,
-                IsNew = true
-            };
+                if (route.Start != null && route.End != null)
+                    await ShowRouteOnMap(route);
+            }
 
-            ViewModel.syncPoints.Add(newPoint);
-            AddPoints();
-            PlaceNameTextBox.Text = "";
+            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            MyProgressRing.IsActive = false;
         }
 
-        private void AddPointAppBar_Click(object sender, RoutedEventArgs e)
+        private async void AddRoute_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            _addPointMode = !_addPointMode;
-            _removePointMode = false;
-            _selectedPointOfInterests = null;
-            if (_addPointMode)
+            Errors.Clear();
+            if (Start.TravelPointOfInterestID == End.TravelPointOfInterestID)
             {
-                PlaceNameTextBox.IsEnabled = true;
-                AddPointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["ActionBrush"]);
+                Errors.Add("Start and End can't be the same");
+                return;
+            }
+            RoutesOfPointOfInterest newRoute = new RoutesOfPointOfInterest();
+            newRoute.TravelListItemID = ViewModel.TravelListItemID;
+            newRoute.StartTravelPointOfInterestID = Start.TravelPointOfInterestID;
+            newRoute.Start = Start;
+            newRoute.EndTravelPointOfInterestID = End.TravelPointOfInterestID;
+            newRoute.End = End;
+            newRoute.Driving = SelectedRouteType.Equals(RouteTypes.Driving);
+            newRoute.IsNew = true;
+
+            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            MyProgressRing.IsActive = true;
+
+            bool result = await ShowRouteOnMap(newRoute);
+            if (result)
+            {
+                ViewModel.syncRoutes.Add(newRoute);
+                Sync();
             } else
             {
-                PlaceNameTextBox.IsEnabled = false;
-                AddPointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["PageForegroundBrush"]);
+                Errors.Add("Route not found");
             }
-            
+
+            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            MyProgressRing.IsActive = false;
         }
 
-        private void RemovePointAppBar_Click(object sender, RoutedEventArgs e)
+        
+
+        private async void ZoomToRoute_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            if (_removePointMode && _selectedPointOfInterests != null)
+            var button = sender as Button;
+            Guid LocalId = (Guid)button.Tag;
+
+            RoutesOfPointOfInterest rpoi = ViewModel.syncRoutes.Single(p => p.LocalId == LocalId);
+            if (rpoi != null)
             {
-                _removePointMode = false;
-                RemovePointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["PageForegroundBrush"]);
-                _selectedPointOfInterests.ToRemove = true;
-                AddPoints();
-                _selectedPointOfInterests = null;
+                // Fit the MapControl to the route.
+                await myMap.TrySetViewBoundsAsync(
+                      rpoi.ViewOfRoute.Route.BoundingBox,
+                      null,
+                      Windows.UI.Xaml.Controls.Maps.MapAnimationKind.None);
             }
+
+        }
+
+        private void RemoveRoute_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            Guid LocalId = (Guid)button.Tag;
+
+            RoutesOfPointOfInterest rpoi = ViewModel.syncRoutes.Single(p => p.LocalId == LocalId);
+            if (rpoi != null)
+            {
+                rpoi.ToRemove = true;
+                RemoveRouteOnMap(rpoi);
+            }
+            Sync();
+        }
+
+        private void Sync()
+        {
+            MapItems.ItemsSource = ViewModel.syncPoints.FindAll(p => p.ToRemove == false);
+            MapItemsList.ItemsSource = ViewModel.syncRoutes.Where(p => p.ToRemove == false);
+            StartPoint.ItemsSource = ViewModel.syncPoints.FindAll(p => p.ToRemove == false);
+            EndPoint.ItemsSource = ViewModel.syncPoints.FindAll(p => p.ToRemove == false);
+        }
+
+        public static string RemoveWhitespace(string input)
+        {
+            return new string(input.ToCharArray()
+                .Where(c => !Char.IsWhiteSpace(c))
+                .ToArray());
+        }
+
+
+        private void ShowListAppBar_Click(object sender, RoutedEventArgs e)
+        {
+            if (MapItemsListViewer.Height == 0)
+            {
+                Size s = GetCurrentDisplaySize();
+                MapItemsListViewer.Height = s.Height / 5;
+            }
+            else
+            {
+                MapItemsListViewer.Height = 0;
+            }
+
         }
 
         private async void SaveAppBar_Click(object sender, RoutedEventArgs e)
         {
-            await ViewModel.SavePointsAsync();
+            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            MyProgressRing.IsActive = true;
+            await ViewModel.SaveRoutesAsync();
+            Sync();
+            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            MyProgressRing.IsActive = false;
         }
 
-        private void mapItemButton_Click(object sender, RoutedEventArgs e)
+        public static Size GetCurrentDisplaySize()
         {
-            var buttonSender = sender as Button;
-            _selectedPointOfInterests = buttonSender.DataContext as PointOfInterest;
-            _addPointMode = false;
-            AddPointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["PageForegroundBrush"]);
-            _removePointMode = true;
-            RemovePointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["ActionBrush"]);
-        }
-
-        /// <summary>
-        /// Initializes the AutoSuggestBox portion of the search box.
-        /// </summary>
-        private void BingSearchBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (BingSearchBox != null)
+            var displayInformation = DisplayInformation.GetForCurrentView();
+            TypeInfo t = typeof(DisplayInformation).GetTypeInfo();
+            var props = t.DeclaredProperties.Where(x => x.Name.StartsWith("Screen") && x.Name.EndsWith("InRawPixels")).ToArray();
+            var w = props.Where(x => x.Name.Contains("Width")).First().GetValue(displayInformation);
+            var h = props.Where(x => x.Name.Contains("Height")).First().GetValue(displayInformation);
+            var size = new Size(System.Convert.ToDouble(w), System.Convert.ToDouble(h));
+            switch (displayInformation.CurrentOrientation)
             {
-                BingSearchBox.AutoSuggestBox.QuerySubmitted += BingSearchBox_QuerySubmitted;
-                // BingSearchBox.AutoSuggestBox.TextChanged += BingSearchBox_TextChanged;
-                BingSearchBox.AutoSuggestBox.PlaceholderText = "Search address...";
+                case DisplayOrientations.Landscape:
+                case DisplayOrientations.LandscapeFlipped:
+                    size = new Size(Math.Max(size.Width, size.Height), Math.Min(size.Width, size.Height));
+                    break;
+                case DisplayOrientations.Portrait:
+                case DisplayOrientations.PortraitFlipped:
+                    size = new Size(Math.Min(size.Width, size.Height), Math.Max(size.Width, size.Height));
+                    break;
             }
+            return size;
         }
-
-        /// <summary>
-        /// Filters the customer list based on the search text.
-        /// </summary>
-        private async void BingSearchBox_QuerySubmitted(AutoSuggestBox sender,
-            AutoSuggestBoxQuerySubmittedEventArgs args)
-        {
-            if (String.IsNullOrEmpty(args.QueryText))
-            {
-                sender.ItemsSource = null;
-            }
-            else
-            {
-                Location location = await ViewModel.GetBingSearchResultsAsync(args.QueryText);
-                List<Resources> resourceSets = location.resourceSets.ToList();
-                List<Resource> resources = resourceSets[0].resources.OrderByDescending(r => r.confidence == "High")
-                .ThenByDescending(r => r.confidence == "Medium")
-                .ThenByDescending(r => r.confidence == "Low").ToList();
-                List<string> names = resources.Select(x => x.name).ToList();
-                sender.ItemsSource = names;
-
-                if (resources.Count > 0)
-                {
-                    Geopoint zoomPoint = new Geopoint(new BasicGeoposition() { Latitude = (double)resources[0].point.coordinates[0], Longitude = (double)resources[0].point.coordinates[1] });
-                    myMap.Center = zoomPoint;
-                    myMap.ZoomLevel = 12;
-                }
-
-            }
-        }
-
-        ///// <summary>
-        ///// Updates the search box items source when the user changes the search text.
-        ///// </summary>
-        //private async void BingSearchBox_TextChanged(AutoSuggestBox sender,
-        //    AutoSuggestBoxTextChangedEventArgs args)
-        //{
-        //    // We only want to get results when it was a user typing,
-        //    // otherwise we assume the value got filled in by TextMemberPath
-        //    // or the handler for SuggestionChosen.
-        //    if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
-        //    {
-        //        // If no search query is entered, refresh the complete list.
-        //        if (String.IsNullOrEmpty(sender.Text))
-        //        {
-
-        //            sender.ItemsSource = null;
-        //        }
-        //        else
-        //        {
-        //            await ViewModel.GetBingSearchResultsAsync(sender.Text);
-        //            sender.ItemsSource = null;
-                    
-        //        }
-        //    }
-        //}
 
     }
 

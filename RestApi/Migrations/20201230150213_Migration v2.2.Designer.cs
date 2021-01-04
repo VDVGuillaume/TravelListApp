@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelListRepository.Sql;
 
 namespace TravelList.Api.Migrations
 {
     [DbContext(typeof(TravelListContext))]
-    partial class TravelListContextModelSnapshot : ModelSnapshot
+    [Migration("20201230150213_Migration v2.2")]
+    partial class Migrationv22
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,21 +111,19 @@ namespace TravelList.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Driving");
+                    b.Property<int>("EndTravelPointOfInterestID");
 
-                    b.Property<int?>("EndTravelPointOfInterestID");
-
-                    b.Property<int?>("StartTravelPointOfInterestID");
+                    b.Property<int>("StartTravelPointOfInterestID");
 
                     b.Property<int>("TravelListItemID");
 
+                    b.Property<int?>("TravelPointOfInterestID");
+
                     b.HasKey("TravelRouteID");
 
-                    b.HasIndex("EndTravelPointOfInterestID");
-
-                    b.HasIndex("StartTravelPointOfInterestID");
-
                     b.HasIndex("TravelListItemID");
+
+                    b.HasIndex("TravelPointOfInterestID");
 
                     b.ToTable("Routes");
                 });
@@ -154,18 +154,14 @@ namespace TravelList.Api.Migrations
 
             modelBuilder.Entity("TravelListModels.TravelRoute", b =>
                 {
-                    b.HasOne("TravelListModels.TravelPointOfInterest")
-                        .WithMany("ConnectedEndRoutes")
-                        .HasForeignKey("EndTravelPointOfInterestID");
-
-                    b.HasOne("TravelListModels.TravelPointOfInterest")
-                        .WithMany("ConnectedStartRoutes")
-                        .HasForeignKey("StartTravelPointOfInterestID");
-
                     b.HasOne("TravelListModels.TravelListItem")
                         .WithMany("Routes")
                         .HasForeignKey("TravelListItemID")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TravelListModels.TravelPointOfInterest")
+                        .WithMany("ConnectedRoutes")
+                        .HasForeignKey("TravelPointOfInterestID");
                 });
 #pragma warning restore 612, 618
         }
