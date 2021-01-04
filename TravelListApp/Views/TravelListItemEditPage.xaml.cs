@@ -18,6 +18,7 @@ using TravelListApp.Services.Navigation;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using TravelListModels;
+using Windows.UI.Core;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -77,6 +78,45 @@ namespace TravelListApp.Views
             Menu.SetTab(GetType());
             base.OnNavigatedTo(e);
             
+        }
+
+        private bool navigateFlag = false;
+        protected async override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            if (!navigateFlag)
+            {
+                e.Cancel = true;
+                var result = await ShowDialog();
+                if (result)
+                {
+                    navigateFlag = true;
+                    this.Frame.Navigate(e.SourcePageType, e.Parameter);
+                }
+            }
+        }
+
+        private async Task<bool> ShowDialog()
+        {
+            var dialog = new Windows.UI.Popups.MessageDialog(
+             "Do you like to continue? you have unsaved changes.",
+             "Unsaved changes");
+
+            dialog.Commands.Add(new Windows.UI.Popups.UICommand("Yes") { Id = 0 });
+            dialog.Commands.Add(new Windows.UI.Popups.UICommand("No") { Id = 1 });
+
+            dialog.DefaultCommandIndex = 0;
+            dialog.CancelCommandIndex = 1;
+
+            var result = await dialog.ShowAsync();
+
+            if (result.Id.Equals(0))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private async void SaveAppBar_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
