@@ -16,6 +16,7 @@ namespace TravelListApp.Models
         {
             TravelRouteID = route.TravelRouteID;
             TravelListItemID = route.TravelListItemID;
+            Driving = route.Driving;
             StartTravelPointOfInterestID = route.StartTravelPointOfInterestID;
             EndTravelPointOfInterestID = route.EndTravelPointOfInterestID;
         }

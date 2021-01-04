@@ -23,6 +23,12 @@ using Windows.UI.Xaml.Navigation;
 
 namespace TravelListApp.Views
 {
+    public enum RouteTypes
+    {
+        Driving = 0,
+        Walking = 1
+    }
+
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -35,6 +41,8 @@ namespace TravelListApp.Views
             Errors = new ObservableUniqueCollection<string>();
             ErrorsList.ItemsSource = Errors;
             MapItemsListViewer.Height = 0;
+            // RouteType.SelectedItem = SelectedRouteType;
+            RouteType.ItemsSource = Enum.GetValues(typeof(RouteTypes));
         }
 
         public ButtonItem SaveIcon = new ButtonItem() { Glyph = Icon.GetIcon("Save"), Text = "Save" };
@@ -52,21 +60,22 @@ namespace TravelListApp.Views
 
         public PointOfInterest Start { get; set; }
         public PointOfInterest End { get; set; }
+        public RouteTypes SelectedRouteType { get; set; } = RouteTypes.Driving;
 
         public TravelListItemViewModel ViewModel { get; set; }
 
-        private async Task<bool> ShowRouteOnMap(RoutesOfPointOfInterest route, bool driving)
+        private async Task<bool> ShowRouteOnMap(RoutesOfPointOfInterest route)
         {
-            // Start at Microsoft in Redmond, Washington.
+            // Start.
             BasicGeoposition startLocation = new BasicGeoposition() { Latitude = (double)route.Start.Latitude, Longitude = (double)route.Start.Longitude };
 
-            // End at the city of Seattle, Washington.
+            // End.
             BasicGeoposition endLocation = new BasicGeoposition() { Latitude = (double)route.End.Latitude, Longitude = (double)route.End.Longitude };
 
 
             // Get the route between the points.
             MapRouteFinderResult routeResult = null;
-            if (driving)
+            if (route.Driving)
             {
                 routeResult =
                   await MapRouteFinder.GetDrivingRouteAsync(
@@ -89,8 +98,17 @@ namespace TravelListApp.Views
             {
                 // Use the route to initialize a MapRouteView.
                 MapRouteView viewOfRoute = new MapRouteView(routeResult.Route);
-                viewOfRoute.RouteColor = Colors.Yellow;
-                viewOfRoute.OutlineColor = Colors.Black;
+                if (route.Driving)
+                {
+                    viewOfRoute.RouteColor = Colors.Yellow;
+                    viewOfRoute.OutlineColor = Colors.Black;
+                }
+                else
+                {
+                    viewOfRoute.RouteColor = Colors.Blue;
+                    viewOfRoute.OutlineColor = Colors.Black;
+                }
+
 
                 // Assign viewOfRoute to Route object
                 route.ViewOfRoute = viewOfRoute;
@@ -113,7 +131,6 @@ namespace TravelListApp.Views
 
         private void RemoveRouteOnMap(RoutesOfPointOfInterest route)
         {
-
             // Add the new MapRouteView to the Routes collection
             // of the MapControl.
             myMap.Routes.Remove(route.ViewOfRoute);
@@ -138,7 +155,7 @@ namespace TravelListApp.Views
             foreach (RoutesOfPointOfInterest route in ViewModel.syncRoutes.Where(p => p.ToRemove == false))
             {
                 if (route.Start != null && route.End != null)
-                    await ShowRouteOnMap(route,true);
+                    await ShowRouteOnMap(route);
             }
 
             MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
@@ -148,18 +165,24 @@ namespace TravelListApp.Views
         private async void AddRoute_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             Errors.Clear();
+            if (Start.TravelPointOfInterestID == End.TravelPointOfInterestID)
+            {
+                Errors.Add("Start and End can't be the same");
+                return;
+            }
             RoutesOfPointOfInterest newRoute = new RoutesOfPointOfInterest();
             newRoute.TravelListItemID = ViewModel.TravelListItemID;
             newRoute.StartTravelPointOfInterestID = Start.TravelPointOfInterestID;
             newRoute.Start = Start;
             newRoute.EndTravelPointOfInterestID = End.TravelPointOfInterestID;
             newRoute.End = End;
+            newRoute.Driving = SelectedRouteType.Equals(RouteTypes.Driving);
             newRoute.IsNew = true;
 
             MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
             MyProgressRing.IsActive = true;
 
-            bool result = await ShowRouteOnMap(newRoute,true);
+            bool result = await ShowRouteOnMap(newRoute);
             if (result)
             {
                 ViewModel.syncRoutes.Add(newRoute);
