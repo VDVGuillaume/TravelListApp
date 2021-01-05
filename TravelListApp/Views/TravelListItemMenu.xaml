@@ -49,6 +49,7 @@
             </Setter>
         </Style>
         <DataTemplate x:Key="TravelListMenuItemTemplate">
+
             <StackPanel Orientation="Vertical"
                     Height="72"
                     Width="80"
@@ -129,8 +130,9 @@
                      VerticalAlignment="Bottom"
                      Margin="0">
                 <ListView x:Name="TravelListMenu"
-                          SelectionChanged="Menu_OnSelectionChanged"
-                          DataContextChanged="ListView_DataContextChanged"
+                          IsItemClickEnabled="True"
+                          ItemClick="Menu_ItemClick"
+                          SelectionMode="Single"
                           Style="{StaticResource MenuListViewStyle}"
                           ItemContainerStyle="{StaticResource TravelListMenuListViewItemStyle}"
                           ItemTemplate="{StaticResource TravelListMenuItemTemplate}"

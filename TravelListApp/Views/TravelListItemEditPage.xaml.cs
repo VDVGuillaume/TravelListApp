@@ -91,6 +91,9 @@ namespace TravelListApp.Views
                 {
                     navigateFlag = true;
                     this.Frame.Navigate(e.SourcePageType, e.Parameter);
+                } else
+                {
+                    Menu.SetTab(GetType());
                 }
             }
         }

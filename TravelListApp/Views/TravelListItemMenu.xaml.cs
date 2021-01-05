@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using TravelListApp.Controls;
 using TravelListApp.Services.Icons;
 using TravelListApp.Services.Navigation;
@@ -82,9 +81,9 @@ namespace TravelListApp.Views
 
         }
 
-        private void Menu_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Menu_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (e.AddedItems.First() is MenuItem menuItem && menuItem.IsNavigation)
+            if (e.ClickedItem is MenuItem menuItem && menuItem.IsNavigation)
             {
                 Navigation.Navigate(menuItem.NavigationDestination, _model.TravelListItemID);
             }
@@ -127,25 +126,6 @@ namespace TravelListApp.Views
                 _itemsPanel.ItemWidth = ActualWidth;
                 _itemsPanel.Width = ActualWidth;
             }
-        }
-
-        private void ListView_DataContextChanged(Object sender, DataContextChangedEventArgs args)
-        {
-            //foreach (Object item in TravelListMenu.Items)
-            //{
-            //    var container = TravelListMenu.ContainerFromItem(item);
-            //    ListViewItem lvi = TravelListMenu.ContainerFromItem(item) as ListViewItem;
-            //    if (lvi == null)
-            //    {
-            //        TravelListMenu.UpdateLayout();
-            //        lvi = TravelListMenu.ContainerFromItem(item) as ListViewItem;
-            //    }
-            //    if (lvi != null)
-            //    {
-            //        lvi.IsHitTestVisible = false;
-            //        lvi.Margin = new Thickness(-32, 0, 0, 0);
-            //    }
-            //}
         }
     }
 }
