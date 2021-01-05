@@ -34,13 +34,13 @@
 
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="11*" />
-                <ColumnDefinition Width="63*" />
+                <ColumnDefinition Width="45*" />
+                <ColumnDefinition Width="103*" />
             </Grid.ColumnDefinitions>
             <TextBlock Text="Checklist Editor"
                             Foreground="{StaticResource WhiteBrush}"
                             FontSize="24"
-                            Margin="20 20 0 10"
+                            Margin="82,20,0,10"
                             Grid.ColumnSpan="2" />
 
             <Button         
@@ -50,34 +50,51 @@
                             BorderThickness="0.5"                            
                             Foreground="{StaticResource WhiteBrush}"
                             BorderBrush="{StaticResource WhiteBrush}"                                                          
-                            Margin="0,12,25,0"
+                            Margin="0,5,10,0"
                             Grid.Row="1"
-                            Grid.Column="0" HorizontalAlignment="Right" Height="29" VerticalAlignment="Top" Width="106" />
+                            Grid.Column="0" 
+                            HorizontalAlignment="Right" 
+                            Height="29" 
+                            VerticalAlignment="Top" 
+                            Width="175" />
+
+
+            <Button         
+                            x:Name="deleteItem"
+                            Visibility="Visible"
+                            Click="DeleteItem"
+                            Content="Delete selected items"                            
+                            BorderThickness="0.5"                            
+                            Foreground="{StaticResource WhiteBrush}"
+                            BorderBrush="{StaticResource WhiteBrush}"                                                          
+                            Margin="0,20,10,0"
+                            Grid.Row="2" 
+                            HorizontalAlignment="Right" 
+                            Height="33" 
+                            VerticalAlignment="Top" 
+                            Width="175" />
 
             <TextBox         
-                             x:Name="checkListItemInput"
-                             PlaceholderText="name the item to be added"
-                             BorderThickness="0.5"                             
-                             BorderBrush="{StaticResource WhiteBrush}"
-                             Background="{StaticResource transBrush}"
-                             Text="{x:Bind ViewModel.Description, Mode=TwoWay}"
-                             Margin="10,10,140,0"
-                             Grid.Row="1"
-                             Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                            x:Name="checkListItemInput"
+                            PlaceholderText="name the item to be added"
+                            BorderThickness="0.5"                           
+                            BorderBrush="{StaticResource WhiteBrush}"
+                            Background="{StaticResource transBrush}"
+                            Text="{x:Bind viewModel.Description, Mode=TwoWay}"
+                            Margin="66,5,264,4"
+                            Grid.Row="1"
+                            Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
 
 
             <ListBox 
                             x:Name="checkList"                            
                             ScrollViewer.VerticalScrollBarVisibility="Auto"
-                            ScrollViewer.IsVerticalRailEnabled="True"
-                            
-                            Margin="10,20,140,0" 
+                            ScrollViewer.IsVerticalRailEnabled="True"                            
+                            Margin="64,20,266,0" 
                             Background="Transparent"
                             Grid.Row="2" 
-                            Grid.Column="1" 
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            SelectionChanged="CheckList_SelectionChanged" 
+                            Grid.Column="1"
+                            SelectionChanged="CheckList_SelectionChanged" SelectionMode="Multiple" 
                             
                 
                 />

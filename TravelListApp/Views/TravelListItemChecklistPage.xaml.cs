@@ -26,24 +26,22 @@ namespace TravelListApp.Views
     public sealed partial class TravelListItemChecklistPage : Page
     {
 
-        public TravelListItemViewModel ViewModel { get; set; }       
-        public ButtonItem AddItem { get; set; }
-        public ButtonItem RemoveItem { get; set; }       
+        public TravelListItemViewModel viewModel { get; set; }    
         private List<CheckListItem> _checkListItems { get; set; }
 
         public TravelListItemChecklistPage()
         {
             this.InitializeComponent();
-            _checkListItems = new List<CheckListItem>();            
-            AddItem = new ButtonItem() { Glyph = Icon.GetIcon("Pin"), Text = "Pin" };
-            RemoveItem = new ButtonItem() { Glyph = Icon.GetIcon("Clear"), Text = "Clear" };
+            _checkListItems = new List<CheckListItem>();
+            ShowDeleteItem();
+            
         }
 
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
-            Menu.SetModel(ViewModel);
+            viewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
+            Menu.SetModel(viewModel);
             // Send page type to menu.
             Menu.SetTab(GetType());
             base.OnNavigatedTo(e);
@@ -52,23 +50,40 @@ namespace TravelListApp.Views
         // saving when leaving view
 
 
-        private void AddItems(object sender, RoutedEventArgs e)
+        private async void AddItems(object sender, RoutedEventArgs e)
         {
             CheckBox checkbox = new CheckBox();
             CheckListItem checkListItem = new CheckListItem();
             checkListItem.Name = checkListItemInput.Text;
             _checkListItems.Add(checkListItem);
-
+            
             checkList.Items.Add(checkbox);
-            checkbox.Content = checkListItem.Name;
+            checkbox.Content = checkListItem;
+
+            ShowDeleteItem();
+
+            await viewModel.SaveAsync();
 
         }
 
-        private void RemoveItems()
+        private void DeleteItem(object sender, RoutedEventArgs e)
         {
+            List<CheckBox> checkboxList = checkList.SelectedItems.Cast<CheckBox>().ToList();
 
+            foreach(CheckBox checkBox in checkboxList)
+            {
+                checkList.Items.Remove(checkBox);
+            }
+
+           // CheckListItem checkListItem = (CheckListItem) checkbox.Content;           
+            // checkList.Items.Remove(checkList.SelectedItem);
+            ShowDeleteItem();
         }
 
+        private void ShowDeleteItem()
+        {
+            deleteItem.Visibility = checkList.Items.Count > 0 ?  Visibility.Visible : Visibility.Collapsed;            
+        }
 
         private void CheckList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
