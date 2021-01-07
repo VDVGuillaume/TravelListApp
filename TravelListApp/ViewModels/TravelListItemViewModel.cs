@@ -56,6 +56,8 @@ namespace TravelListApp.ViewModels
                     _model.UserId = LoginPage.account.Id;
                 }
 
+                this.PlacesOrRoutesAreUpdated = false;
+
                 this.Validator = that => { Validation_Executed(that as TravelListItemViewModel); };
             }
         }
@@ -310,6 +312,30 @@ namespace TravelListApp.ViewModels
             }
         }
 
+        public async Task<bool> ShowDialog()
+        {
+            var dialog = new Windows.UI.Popups.MessageDialog(
+             "Do you like to continue? you have unsaved changes.",
+             "Unsaved changes");
+
+            dialog.Commands.Add(new Windows.UI.Popups.UICommand("Yes") { Id = 0 });
+            dialog.Commands.Add(new Windows.UI.Popups.UICommand("No") { Id = 1 });
+
+            dialog.DefaultCommandIndex = 0;
+            dialog.CancelCommandIndex = 1;
+
+            var result = await dialog.ShowAsync();
+
+            if (result.Id.Equals(0))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private void Validation_Executed(TravelListItemViewModel c)
         {
             if (string.IsNullOrEmpty(c.Name))
@@ -348,8 +374,6 @@ namespace TravelListApp.ViewModels
         /// </summary>
         public async Task SaveAsync()
         {
-            IsSaving = true;
-            IsModified = false;
             if (IsNewTravelList)
             {
                 IsNewTravelList = false;
@@ -371,6 +395,7 @@ namespace TravelListApp.ViewModels
                 imageChanges.Clear();
                 var newModel = await App.Repository.TravelLists.GetTravelListById(item.TravelListItemID);
                 this.Model = newModel;
+                MarkAsClean();
             } else
             {
                 await App.Repository.TravelLists.UpdateTravelList(Model.TravelListItemID, Model);
@@ -392,10 +417,8 @@ namespace TravelListApp.ViewModels
                     }
                 }
                 imageChanges.Clear();
-                var newModel = await App.Repository.TravelLists.GetTravelListById(Model.TravelListItemID);
-                this.Model = newModel;
+                await RefreshAsync();
             }
-            IsSaving = false;
         }
 
         /// <summary>
@@ -412,8 +435,6 @@ namespace TravelListApp.ViewModels
         /// </summary>
         public async Task SaveImagesAsync()
         {
-            IsSaving = true;
-            IsModified = false;
             var item = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == Model.TravelListItemID).First();
             if (item != null)
             {
@@ -432,9 +453,7 @@ namespace TravelListApp.ViewModels
                 }
             }
             imageChanges.Clear();
-            var newModel = await App.Repository.TravelLists.GetTravelListById(Model.TravelListItemID);
-            this.Model = newModel;
-            IsSaving = false;
+            await RefreshAsync();
         }
 
         /// <summary>
@@ -459,8 +478,7 @@ namespace TravelListApp.ViewModels
                         await App.Repository.Points.UpdateTravelPointOfInterest(point.TravelPointOfInterestID,point);
                     }
                 }
-                var newModel = await App.Repository.TravelLists.GetTravelListById(Model.TravelListItemID);
-                this.Model = newModel;
+                await RefreshAsync();
             }
         }
 
@@ -486,8 +504,7 @@ namespace TravelListApp.ViewModels
                         await App.Repository.Routes.UpdateTravelRoute(route.TravelRouteID, route);
                     }
                 }
-                var newModel = await App.Repository.TravelLists.GetTravelListById(Model.TravelListItemID);
-                this.Model = newModel;
+                await RefreshAsync();
             }
         }
 
@@ -526,10 +543,9 @@ namespace TravelListApp.ViewModels
         /// </summary>
         public async Task RevertChangesAsync()
         {
-            if (IsModified)
+            if (IsDirty)
             {
                 await RefreshAsync();
-                IsModified = false;
             }
         }
 
@@ -539,6 +555,7 @@ namespace TravelListApp.ViewModels
         public async Task RefreshAsync()
         {
             Model = await App.Repository.TravelLists.GetTravelListById(Model.TravelListItemID);
+            MarkAsClean();
         }
 
         // private bool _isNewTravelList;
@@ -553,9 +570,15 @@ namespace TravelListApp.ViewModels
             // set => SetProperty(ref _isNewTravelList, value);
         }
 
-        public bool IsSaving { get; set; }
-
-        public bool IsModified { get; set; }
+        /// <summary>
+        /// Gets or sets a value that indicates whether Places Or Routes Are Dirty.
+        /// </summary>
+        public bool PlacesOrRoutesAreUpdated
+        {
+            get => Read<bool>();
+            set => Write(value);
+            // set => SetProperty(ref _isNewTravelList, value);
+        }
 
         /// <summary>
         /// Called when a bound DataGrid control cancels the edits that have been made to a travellist.

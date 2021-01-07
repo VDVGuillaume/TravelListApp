@@ -80,68 +80,55 @@ namespace TravelListApp.Views
             
         }
 
-        private bool navigateFlag = false;
         protected async override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            if (!navigateFlag)
+            if (ViewModel.IsDirty)
             {
+                SetLoader();
                 e.Cancel = true;
-                var result = await ShowDialog();
+                var result = await ViewModel.ShowDialog();
                 if (result)
                 {
-                    navigateFlag = true;
+                    await ViewModel.RevertChangesAsync();
                     this.Frame.Navigate(e.SourcePageType, e.Parameter);
                 } else
                 {
                     Menu.SetTab(GetType());
                 }
+                SetLoader();
             }
         }
 
-        private async Task<bool> ShowDialog()
+        private void SetLoader()
         {
-            var dialog = new Windows.UI.Popups.MessageDialog(
-             "Do you like to continue? you have unsaved changes.",
-             "Unsaved changes");
-
-            dialog.Commands.Add(new Windows.UI.Popups.UICommand("Yes") { Id = 0 });
-            dialog.Commands.Add(new Windows.UI.Popups.UICommand("No") { Id = 1 });
-
-            dialog.DefaultCommandIndex = 0;
-            dialog.CancelCommandIndex = 1;
-
-            var result = await dialog.ShowAsync();
-
-            if (result.Id.Equals(0))
+            if (MyProgressRing.IsActive)
             {
-                return true;
-            }
-            else
+                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                MyProgressRing.IsActive = false;
+            } else
             {
-                return false;
+                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                MyProgressRing.IsActive = true;
             }
+
         }
 
         private async void SaveAppBar_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             if (ViewModel.IsNewTravelList || ViewModel.IsDirty)
             {
-                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                MyProgressRing.IsActive = true;
+                SetLoader();
                 await ViewModel.SaveAsync();
                 await ViewModel.ConvertImagesTask();
-                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-                MyProgressRing.IsActive = false;
+                SetLoader();
                 Navigation.Navigate(typeof(TravelListItemPage), ViewModel.TravelListItemID);
             }
             else if (ViewModel.imageChanges.Count > 0)
             {
-                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                MyProgressRing.IsActive = true;
+                SetLoader();
                 await ViewModel.SaveImagesAsync();
                 await ViewModel.ConvertImagesTask();
-                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-                MyProgressRing.IsActive = false;
+                SetLoader();
             }
         }
 
@@ -149,11 +136,9 @@ namespace TravelListApp.Views
         {
             if (!ViewModel.IsNewTravelList)
             {
-                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                MyProgressRing.IsActive = true;
+                SetLoader();
                 await ViewModel.DeleteAsync();
-                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                MyProgressRing.IsActive = false;
+                SetLoader();
                 Navigation.Navigate(typeof(TravelListPage));
             }
         }

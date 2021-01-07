@@ -147,10 +147,44 @@ namespace TravelListApp.Views
             base.OnNavigatedTo(e);
         }
 
+        protected async override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            if (ViewModel.IsDirty)
+            {
+                SetLoader();
+                e.Cancel = true;
+                var result = await ViewModel.ShowDialog();
+                if (result)
+                {
+                    await ViewModel.RevertChangesAsync();
+                    this.Frame.Navigate(e.SourcePageType, e.Parameter);
+                }
+                else
+                {
+                    Menu.SetTab(GetType());
+                }
+                SetLoader();
+            }
+        }
+
+        private void SetLoader()
+        {
+            if (MyProgressRing.IsActive)
+            {
+                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                MyProgressRing.IsActive = false;
+            }
+            else
+            {
+                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                MyProgressRing.IsActive = true;
+            }
+
+        }
+
         private async void MyMap_Loaded(object sender, RoutedEventArgs e)
         {
-            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            MyProgressRing.IsActive = true;
+            SetLoader();
 
             foreach (RoutesOfPointOfInterest route in ViewModel.syncRoutes.Where(p => p.ToRemove == false))
             {
@@ -158,13 +192,17 @@ namespace TravelListApp.Views
                     await ShowRouteOnMap(route);
             }
 
-            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            MyProgressRing.IsActive = false;
+            SetLoader();
         }
 
         private async void AddRoute_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             Errors.Clear();
+            if (Start == null || End == null)
+            {
+                Errors.Add("Start or End is null");
+                return;
+            }
             if (Start.TravelPointOfInterestID == End.TravelPointOfInterestID)
             {
                 Errors.Add("Start and End can't be the same");
@@ -179,21 +217,20 @@ namespace TravelListApp.Views
             newRoute.Driving = SelectedRouteType.Equals(RouteTypes.Driving);
             newRoute.IsNew = true;
 
-            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            MyProgressRing.IsActive = true;
+            SetLoader();
 
             bool result = await ShowRouteOnMap(newRoute);
             if (result)
             {
                 ViewModel.syncRoutes.Add(newRoute);
+                ViewModel.PlacesOrRoutesAreUpdated = true;
                 Sync();
             } else
             {
                 Errors.Add("Route not found");
             }
 
-            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            MyProgressRing.IsActive = false;
+            SetLoader();
         }
 
         
@@ -224,6 +261,7 @@ namespace TravelListApp.Views
             if (rpoi != null)
             {
                 rpoi.ToRemove = true;
+                ViewModel.PlacesOrRoutesAreUpdated = true;
                 RemoveRouteOnMap(rpoi);
             }
             Sync();
@@ -261,12 +299,10 @@ namespace TravelListApp.Views
 
         private async void SaveAppBar_Click(object sender, RoutedEventArgs e)
         {
-            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            MyProgressRing.IsActive = true;
+            SetLoader();
             await ViewModel.SaveRoutesAsync();
             Sync();
-            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            MyProgressRing.IsActive = false;
+            SetLoader();
         }
 
         public static Size GetCurrentDisplaySize()
