@@ -64,6 +64,41 @@ namespace TravelListApp.Views
             base.OnNavigatedTo(e);
         }
 
+        protected async override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            if (ViewModel.IsDirty)
+            {
+                SetLoader();
+                e.Cancel = true;
+                var result = await ViewModel.ShowDialog();
+                if (result)
+                {
+                    await ViewModel.RevertChangesAsync();
+                    this.Frame.Navigate(e.SourcePageType, e.Parameter);
+                }
+                else
+                {
+                    Menu.SetTab(GetType());
+                }
+                SetLoader();
+            }
+        }
+
+        private void SetLoader()
+        {
+            if (MyProgressRing.IsActive)
+            {
+                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                MyProgressRing.IsActive = false;
+            }
+            else
+            {
+                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                MyProgressRing.IsActive = true;
+            }
+
+        }
+
         private void MyMap_Loaded(object sender, RoutedEventArgs e)
         {
             Geopoint zoomPoint = new Geopoint(new BasicGeoposition() { Latitude = (double)ViewModel.Latitude, Longitude = (double)ViewModel.Longitude });
@@ -92,6 +127,7 @@ namespace TravelListApp.Views
             if (!poi.Name.Equals(textbox.Text))
             {
                poi.IsUpdate = true;
+               ViewModel.PlacesOrRoutesAreUpdated = true;
             }
         }
 
@@ -135,6 +171,7 @@ namespace TravelListApp.Views
                 };
 
                 ViewModel.syncPoints.Add(newPoint);
+                ViewModel.PlacesOrRoutesAreUpdated = true;
                 AddPoints();
                 PlaceNameTextBox.Text = "";
             } else
@@ -169,6 +206,7 @@ namespace TravelListApp.Views
                 _removePointMode = false;
                 RemovePointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["PageForegroundBrush"]);
                 _selectedPointOfInterests.ToRemove = true;
+                ViewModel.PlacesOrRoutesAreUpdated = true;
                 AddPoints();
                 _selectedPointOfInterests = null;
             }
@@ -176,12 +214,10 @@ namespace TravelListApp.Views
 
         private async void SaveAppBar_Click(object sender, RoutedEventArgs e)
         {
-            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            MyProgressRing.IsActive = true;
+            SetLoader();
             await ViewModel.SavePointsAsync();
             AddPoints();
-            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            MyProgressRing.IsActive = false;
+            SetLoader();
         }
 
         private void ShowListAppBar_Click(object sender, RoutedEventArgs e)

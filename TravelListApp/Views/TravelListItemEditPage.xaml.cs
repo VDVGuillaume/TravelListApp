@@ -18,6 +18,7 @@ using TravelListApp.Services.Navigation;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using TravelListModels;
+using Windows.UI.Core;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -79,26 +80,55 @@ namespace TravelListApp.Views
             
         }
 
+        protected async override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            if (ViewModel.IsDirty)
+            {
+                SetLoader();
+                e.Cancel = true;
+                var result = await ViewModel.ShowDialog();
+                if (result)
+                {
+                    await ViewModel.RevertChangesAsync();
+                    this.Frame.Navigate(e.SourcePageType, e.Parameter);
+                } else
+                {
+                    Menu.SetTab(GetType());
+                }
+                SetLoader();
+            }
+        }
+
+        private void SetLoader()
+        {
+            if (MyProgressRing.IsActive)
+            {
+                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                MyProgressRing.IsActive = false;
+            } else
+            {
+                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                MyProgressRing.IsActive = true;
+            }
+
+        }
+
         private async void SaveAppBar_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             if (ViewModel.IsNewTravelList || ViewModel.IsDirty)
             {
-                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                MyProgressRing.IsActive = true;
+                SetLoader();
                 await ViewModel.SaveAsync();
                 await ViewModel.ConvertImagesTask();
-                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-                MyProgressRing.IsActive = false;
+                SetLoader();
                 Navigation.Navigate(typeof(TravelListItemPage), ViewModel.TravelListItemID);
             }
             else if (ViewModel.imageChanges.Count > 0)
             {
-                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                MyProgressRing.IsActive = true;
+                SetLoader();
                 await ViewModel.SaveImagesAsync();
                 await ViewModel.ConvertImagesTask();
-                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-                MyProgressRing.IsActive = false;
+                SetLoader();
             }
         }
 
@@ -106,11 +136,9 @@ namespace TravelListApp.Views
         {
             if (!ViewModel.IsNewTravelList)
             {
-                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                MyProgressRing.IsActive = true;
+                SetLoader();
                 await ViewModel.DeleteAsync();
-                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                MyProgressRing.IsActive = false;
+                SetLoader();
                 Navigation.Navigate(typeof(TravelListPage));
             }
         }
