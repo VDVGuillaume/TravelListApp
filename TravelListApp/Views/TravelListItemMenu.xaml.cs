@@ -116,15 +116,15 @@ namespace TravelListApp.Views
         {
             if (ActualWidth > 800)
             {
-                // Two rows.
+                // one rows. two columns
                 _itemsPanel.ItemWidth = ActualWidth / 2;
                 _itemsPanel.MinWidth = ActualWidth;
             }
             else
             {
-                // One row.
+                // Two row. one column
                 _itemsPanel.ItemWidth = ActualWidth;
-                _itemsPanel.Width = ActualWidth;
+                _itemsPanel.MinWidth = ActualWidth;
             }
         }
     }
