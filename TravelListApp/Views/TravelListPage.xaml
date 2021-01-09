@@ -16,7 +16,7 @@
             Source="{Binding Items}"
             IsSourceGrouped="true"
             ItemsPath="Items"/>
-        
+
         <!-- Grid-appropriate 250 pixel square item template as seen in the GroupedItemsPage and ItemsPage -->
         <DataTemplate x:Key="Standard250x250ItemTemplate">
             <Button
@@ -31,8 +31,28 @@
                         <TextBlock Text="{Binding Description}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
                     </StackPanel>
                 </Grid>
-           </Button>
+            </Button>
         </DataTemplate>
+
+        <Flyout x:Name="TravelFlyout" x:Key="TravelFlyout"
+                OverlayInputPassThroughElement="{x:Bind MenuBar}">
+            <StackPanel>
+                <TextBlock Text="Group by"/>
+                <ListView
+                    IsItemClickEnabled="True"
+                    SelectionChanged="Pref_SelectionChanged"
+                    SelectionMode="Single"
+                    ItemsSource="{x:Bind Prefs}"
+                    SelectedItem="{x:Bind SelectedPref, Mode=TwoWay}"
+                   >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </Flyout>
 
     </Page.Resources>
 
@@ -42,25 +62,39 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Column="0" Grid.Row="0" >
+        <Grid Grid.Column="0" Grid.Row="0" x:Name="MenuBar" >
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+            <AppBarButton Grid.Row="0" Grid.Column="0"
+                Margin="50 0 0 0"
+                HorizontalAlignment="Right"
+                Label="{x:Bind SettingsIcon.Text}"
+                IsCompact="False" 
+                Flyout="{StaticResource TravelFlyout}">
+                <AppBarButton.Icon>
+                    <PathIcon Data="{x:Bind SettingsIcon.Glyph}" HorizontalAlignment="Center"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
             <uc:CollapsibleSearchBox
                 x:Name="TravelSearchBox"
-                Margin="50 0 0 0"
-                Grid.Row="0" Grid.Column="0"
+                Grid.Row="0" Grid.Column="1"
                 Loaded="TravelSearchBox_Loaded"
                 RelativePanel.AlignRightWithPanel="True"/>
-            <AppBarButton Grid.Row="0" Grid.Column="1" Icon="Add"
+            <AppBarButton Grid.Row="0" Grid.Column="2"
                 Click="AddButton_Click"
                 HorizontalAlignment="Right"
-                Label="Add"
-                IsCompact="False" />
+                Label="{x:Bind AddIcon.Text}"
+                IsCompact="False">
+                <AppBarButton.Icon>
+                    <PathIcon Data="{x:Bind AddIcon.Glyph}" HorizontalAlignment="Center"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
         </Grid>
         <Grid Grid.Column="0" Grid.Row="1">
             <SemanticZoom x:Name="Zoom" ScrollViewer.ZoomMode="Enabled">

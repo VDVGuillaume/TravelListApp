@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
@@ -12,13 +14,16 @@ namespace TravelListApp.ViewModels
     public class TravelListViewModel : BindableBase
     {
 
-        // public ObservableCollection<TravelListByCountry> Items { get; set; }
-
         public MainViewModel ViewModel => App.ViewModel;
 
         public TravelListViewModel()
         {
-            getTravelListsItemsByCountry();
+            Prefs = new ObservableCollection<PrefItem>();
+            SelectedPref = new PrefItem { Name = "Country" };
+            Prefs.Add(SelectedPref);
+            Prefs.Add(new PrefItem { Name = "StartDate" });
+            Search = "";
+            GetTravelListsItemsGroupedByParam();
             ViewModel.TravelListItems.CollectionChanged += Name_CollectionChanged;
         }
 
@@ -26,8 +31,7 @@ namespace TravelListApp.ViewModels
         {
             IsLoading = true;
             await App.ViewModel.GetAllDataTravelListAsync();
-            getTravelListsItemsByCountry();
-            //ViewModel.TravelListItems.CollectionChanged += Name_CollectionChanged;
+            GetTravelListsItemsGroupedByParam();
             IsLoading = false;
         }
 
@@ -43,9 +47,45 @@ namespace TravelListApp.ViewModels
             }
         }
 
-        private ObservableCollection<TravelListByCountry> _Items;
+        private string _search;
 
-        public ObservableCollection<TravelListByCountry> Items
+        public string Search
+        {
+            get => _search;
+            set
+            {
+                SetProperty(ref _search, value);
+                OnPropertyChanged(nameof(Search));
+            }
+        }
+
+        private ObservableCollection<PrefItem> _Prefs;
+
+        public ObservableCollection<PrefItem> Prefs
+        {
+            get => _Prefs;
+            set
+            {
+                SetProperty(ref _Prefs, value);
+                OnPropertyChanged(nameof(Prefs));
+            }
+        }
+
+        private PrefItem _selectedPref;
+
+        public PrefItem SelectedPref
+        {
+            get => _selectedPref;
+            set
+            {
+                SetProperty(ref _selectedPref, value);
+                OnPropertyChanged(nameof(SelectedPref));
+            }
+        }
+
+        private ObservableCollection<TravelListByParam> _Items;
+
+        public ObservableCollection<TravelListByParam> Items
         {
             get => _Items;
             set
@@ -57,39 +97,42 @@ namespace TravelListApp.ViewModels
 
         private void Name_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-             getTravelListsItemsByCountry();
+            GetTravelListsItemsGroupedByParam();
         }
 
-        public void getTravelListsItemsByCountry()
+        public void GetTravelListsItemsGroupedByParam()
         {
-            var travelListsByCountry = ViewModel.TravelListItems.OrderBy(x => x.Country).GroupBy(x => x.Country)
-                .Select(x => new TravelListByCountry { Name = x.Key, Items = new ObservableCollection<TravelListItemViewModel>(x.ToList()) });
+            var propertyInfo = typeof(TravelListItemViewModel).GetProperty(SelectedPref.Name);
 
-            Items = new ObservableCollection<TravelListByCountry>(travelListsByCountry.ToList());
-        }
+            var travelListsSearch = ViewModel.TravelListItems
+                .Where(w =>
+                w.Name.IndexOf(Search, StringComparison.OrdinalIgnoreCase) >= 0 |
+                w.Description.IndexOf(Search, StringComparison.OrdinalIgnoreCase) >= 0);
 
-        public void GetFilterTravelListsItemsByCountry(System.Collections.Generic.IEnumerable<TravelListItemViewModel> filter)
-        {
-            var travelListsByCountry = filter.OrderBy(x => x.Country).GroupBy(x => x.Country)
-                .Select(x => new TravelListByCountry { Name = x.Key, Items = new ObservableCollection<TravelListItemViewModel>(x.ToList()) });
-
-            Items = new ObservableCollection<TravelListByCountry>(travelListsByCountry.ToList());
-        }
-
-        public void SearchTravelListsItems(string search)
-        {
-            var travelLists = ViewModel.TravelListItems
-                .Where(w => 
-                w.Name.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 | 
-                w.Description.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0);
-            GetFilterTravelListsItemsByCountry(travelLists);
+            IEnumerable<TravelListByParam> travelListsByParam;
+            if (propertyInfo.PropertyType == typeof(System.DateTime))
+            {
+                travelListsByParam = travelListsSearch.OrderBy(x => propertyInfo.GetValue(x, null)).GroupBy(x => propertyInfo.GetValue(x, null))
+                .Select(x => new TravelListByParam { Name = ((DateTime)x.Key).ToString("D", DateTimeFormatInfo.InvariantInfo), Items = new ObservableCollection<TravelListItemViewModel>(x.ToList()) });
+            } else
+            {
+                travelListsByParam = travelListsSearch.OrderBy(x => propertyInfo.GetValue(x, null)).GroupBy(x => propertyInfo.GetValue(x, null))
+                .Select(x => new TravelListByParam { Name = x.Key.ToString(), Items = new ObservableCollection<TravelListItemViewModel>(x.ToList()) });
+            }
+            
+            Items = new ObservableCollection<TravelListByParam>(travelListsByParam.ToList());
         }
 
     }
 
-    public class TravelListByCountry
+    public class TravelListByParam
     {
         public string Name { get; set; }
         public ObservableCollection<TravelListItemViewModel> Items { get; set; }
+    }
+
+    public class PrefItem
+    {
+        public string Name { get; set; }
     }
 }
