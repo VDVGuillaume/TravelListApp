@@ -96,7 +96,6 @@ namespace TravelListApp.Views
                 MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 MyProgressRing.IsActive = true;
             }
-
         }
 
         private void MyMap_Loaded(object sender, RoutedEventArgs e)
