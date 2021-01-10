@@ -2,7 +2,9 @@
 using System.Diagnostics;
 using System.Linq;
 using TravelListApp.Services.Navigation;
+using TravelListApp.Services.Theming;
 using TravelListApp.ViewModels;
+using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -15,8 +17,9 @@ namespace TravelListApp.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class Shell
+    public sealed partial class Shell : Page
     {
+        public ThemeSelectionViewModel ThemeViewModel { get; } = App.ThemeViewModel;
         public Shell()
         {
             InitializeComponent();
@@ -72,6 +75,11 @@ namespace TravelListApp.Views
         {
             Navigation.EnableBackButton();
             base.OnNavigatedTo(e);
+        }
+
+        private void OnLeavingBackground(object sender, LeavingBackgroundEventArgs e)
+        {
+            // Your code here.
         }
 
         // Swipe to open the splitview panel.

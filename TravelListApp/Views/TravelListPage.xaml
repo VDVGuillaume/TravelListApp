@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="using:TravelListApp.UserControls"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource PageBackgroundColor}">
 
     <Page.Resources>
 
@@ -57,7 +57,7 @@
     </Page.Resources>
 
 
-    <Grid Background="{StaticResource TravelBackground2}">
+    <Grid Background="{StaticResource TravelBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
@@ -73,12 +73,13 @@
             </Grid.RowDefinitions>
             <AppBarButton Grid.Row="0" Grid.Column="0"
                 Margin="50 0 0 0"
+                Foreground="{ThemeResource ContentBrush}"
                 HorizontalAlignment="Right"
                 Label="{x:Bind SettingsIcon.Text}"
                 IsCompact="False" 
                 Flyout="{StaticResource TravelFlyout}">
                 <AppBarButton.Icon>
-                    <PathIcon Data="{x:Bind SettingsIcon.Glyph}" HorizontalAlignment="Center"/>
+                    <PathIcon Data="{x:Bind SettingsIcon.Glyph}"   HorizontalAlignment="Center"/>
                 </AppBarButton.Icon>
             </AppBarButton>
             <uc:CollapsibleSearchBox
@@ -89,6 +90,7 @@
             <AppBarButton Grid.Row="0" Grid.Column="2"
                 Click="AddButton_Click"
                 HorizontalAlignment="Right"
+                Foreground="{ThemeResource ContentBrush}"
                 Label="{x:Bind AddIcon.Text}"
                 IsCompact="False">
                 <AppBarButton.Icon>

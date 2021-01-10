@@ -9,13 +9,13 @@
     xmlns:uc="using:TravelListApp.UserControls"
     xmlns:mvvm="using:TravelListApp.Services.Converters"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource PageBackgroundColor}">
 
     <Page.Resources>
         <mvvm:IconConverter x:Key="IconConverter" />
     </Page.Resources>
 
-    <Grid x:Name="Grid" Background="{StaticResource TravelBackground2}"
+    <Grid x:Name="Grid" Background="{StaticResource TravelBackground}"
           Padding="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -34,7 +34,7 @@
                     <DataTemplate>
                         <Button x:Name="mapItemButton" Background="Transparent">
                             <StackPanel>
-                                <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                                <Border Background="{ThemeResource PageBackgroundColor}">
                                     <TextBlock Text="{Binding Name}"/>
                                 </Border>
                                 <Image Source="{Binding ImageSourceUri}"
@@ -69,8 +69,8 @@
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Center"
                 BorderThickness="0.5"
-                Foreground="{StaticResource WhiteBrush}"
-                BorderBrush="{StaticResource WhiteBrush}"
+                Foreground="{ThemeResource ContentBrush}"
+                BorderBrush="{ThemeResource ContentBrush}"
                 Background="{StaticResource transBrush}"
                 DisplayMemberPath="Name"
                 SelectedItem="{x:Bind Start, Mode=TwoWay}"
@@ -81,8 +81,8 @@
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Center"
                 BorderThickness="0.5"
-                Foreground="{StaticResource WhiteBrush}"
-                BorderBrush="{StaticResource WhiteBrush}"
+                Foreground="{ThemeResource ContentBrush}"
+                BorderBrush="{ThemeResource ContentBrush}"
                 Background="{StaticResource transBrush}"
                 SelectedItem="{x:Bind SelectedRouteType, Mode=TwoWay}"
                 Grid.Column="1" />
@@ -92,13 +92,13 @@
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Center"
                 BorderThickness="0.5"
-                Foreground="{StaticResource WhiteBrush}"
-                BorderBrush="{StaticResource WhiteBrush}"
+                Foreground="{ThemeResource ContentBrush}"
+                BorderBrush="{ThemeResource ContentBrush}"
                 Background="{StaticResource transBrush}"
                 DisplayMemberPath="Name"
                 SelectedItem="{x:Bind End, Mode=TwoWay}"
                 Grid.Column="2" />
-            <AppBarButton Grid.Column="3" Foreground="{StaticResource WhiteBrush}"  Click="AddRoute_Click" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <AppBarButton Grid.Column="3" Foreground="{ThemeResource ContentBrush}"  Click="AddRoute_Click" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <AppBarButton.Icon >
                     <PathIcon Data="{x:Bind AddIcon.Glyph}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </AppBarButton.Icon>
@@ -113,7 +113,7 @@
                             <Border 
                                 Margin="0 5 0 0" 
                                 BorderThickness="0.5" 
-                                BorderBrush="{StaticResource WhiteBrush}">
+                                BorderBrush="{ThemeResource ContentBrush}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -128,9 +128,9 @@
                                     <TextBlock Grid.Column="0"
                                     TextAlignment="Center"
                                     HorizontalAlignment="Stretch"
-                                    Foreground="{StaticResource WhiteBrush}"
+                                    Foreground="{ThemeResource ContentBrush}"
                                     Text="{Binding Start.Name , Mode=OneWay}" Margin="0 2.5 0 2.5" />
-                                    <AppBarButton Padding="0,0,0,0" Margin="0,0,0,0" Grid.Column="1" Foreground="{StaticResource WhiteBrush}" Tag="{Binding LocalId}" Click="ZoomToRoute_Click" HorizontalAlignment="Center">
+                                    <AppBarButton Padding="0,0,0,0" Margin="0,0,0,0" Grid.Column="1" Foreground="{ThemeResource ContentBrush}" Tag="{Binding LocalId}" Click="ZoomToRoute_Click" HorizontalAlignment="Center">
                                         <AppBarButton.Icon >
                                             <PathIcon Data="{Binding PathIconName, Converter={StaticResource IconConverter}, Mode=OneWay}" HorizontalAlignment="Center" />
                                         </AppBarButton.Icon>
@@ -138,9 +138,9 @@
                                     <TextBlock Grid.Column="2"
                                     TextAlignment="Center"
                                     HorizontalAlignment="Stretch"
-                                    Foreground="{StaticResource WhiteBrush}"
+                                    Foreground="{ThemeResource ContentBrush}"
                                     Text="{Binding End.Name , Mode=OneWay}" Margin="0 2.5 0 2.5" />
-                                    <AppBarButton Padding="0,0,0,0" Margin="0,0,0,0" Grid.Column="3" Foreground="{StaticResource WhiteBrush}" Click="RemoveRoute_Click" Tag="{Binding LocalId}" HorizontalAlignment="Center">
+                                    <AppBarButton Padding="0,0,0,0" Margin="0,0,0,0" Grid.Column="3" Foreground="{ThemeResource ContentBrush}" Click="RemoveRoute_Click" Tag="{Binding LocalId}" HorizontalAlignment="Center">
                                         <AppBarButton.Icon >
                                             <PathIcon Data="{Binding ClearIconName, Converter={StaticResource IconConverter}, Mode=OneWay}" HorizontalAlignment="Center" />
                                         </AppBarButton.Icon>
@@ -159,19 +159,19 @@
             <ItemsControl x:Name="ErrorsList">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Foreground="{StaticResource WhiteBrush}" Text="{Binding}" Margin="10 5" />
+                        <TextBlock Foreground="{ThemeResource ContentBrush}" Text="{Binding}" Margin="10 5" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Grid>
 
         <CommandBar Grid.Row="5" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" Background="{StaticResource TenPercentLighterBrush}">
-            <AppBarButton x:Name="ListCommandButton" Label="List" Foreground="{StaticResource WhiteBrush}" Click="ShowListAppBar_Click"  >
+            <AppBarButton x:Name="ListCommandButton" Label="List" Foreground="{ThemeResource ContentBrush}" Click="ShowListAppBar_Click"  >
                 <AppBarButton.Icon >
                     <PathIcon Data="{x:Bind ShowListIcon.Glyph}" HorizontalAlignment="Center" />
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton x:Name="SaveCommandButton" Label="Save" Foreground="{StaticResource WhiteBrush}" Click="SaveAppBar_Click">
+            <AppBarButton x:Name="SaveCommandButton" Label="Save" Foreground="{ThemeResource ContentBrush}" Click="SaveAppBar_Click">
                 <AppBarButton.Icon>
                     <PathIcon Data="{x:Bind SaveIcon.Glyph}" HorizontalAlignment="Center"/>
                 </AppBarButton.Icon>

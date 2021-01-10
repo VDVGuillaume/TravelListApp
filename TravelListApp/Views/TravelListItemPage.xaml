@@ -8,13 +8,13 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:local1="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource PageBackgroundColor}">
 
     <Page.Resources>
 
     </Page.Resources>
 
-        <Grid Background="{StaticResource TravelBackground2}"
+        <Grid Background="{StaticResource TravelBackground}"
           Padding="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />

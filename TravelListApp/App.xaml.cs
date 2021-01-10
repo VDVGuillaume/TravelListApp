@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using TravelListApp.Services.Theming;
+using TravelListApp.ViewModels;
+using TravelListApp.Views;
+using TravelListRepository;
+using TravelListRepository.Rest;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using TravelListRepository;
-using TravelListApp.Views;
-using TravelListRepository.Rest;
-using TravelListApp.ViewModels;
 
 namespace TravelListApp
 {
@@ -28,6 +19,7 @@ namespace TravelListApp
     {
 
         public static MainViewModel ViewModel { get; } = new MainViewModel();
+        public static ThemeSelectionViewModel ThemeViewModel { get; } = new ThemeSelectionViewModel();
         /// <summary>
         /// Pipeline for interacting with backend service or database.
         /// </summary>
@@ -39,6 +31,10 @@ namespace TravelListApp
         public App()
         {
             this.InitializeComponent();
+
+            //It is necessary to load the theme when the app launches. It identifies the last selected/stored theme and based on that, it loads the proper theme resources.
+            // ThemeManager.LoadTheme();
+
             this.Suspending += OnSuspending;
         }
 
@@ -49,6 +45,9 @@ namespace TravelListApp
         /// <param name="e">Details about the launch request and process.</param>
         protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            //It is necessary to load the theme when the app launches. It identifies the last selected/stored theme and based on that, it loads the proper theme resources.
+            ThemeManager.LoadTheme();
+
             DotNetEnv.Env.Load();
 
             ViewModel.MapServiceToken = System.Environment.GetEnvironmentVariable("MAP_SERVICE_TOKEN");

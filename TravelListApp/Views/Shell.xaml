@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:TravelListApp.ViewModels"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    RequestedTheme="{x:Bind ThemeViewModel.SelectedThemeName, Mode=OneWay}"
+    Background="{ThemeResource PageBackgroundColor}">
 
     <Page.DataContext>
         <vm:ShellViewModel />
@@ -43,12 +44,12 @@
                           HorizontalAlignment="Center"
                           Height="24"
                           Width="24"
-                          Fill="{StaticResource WhiteBrush}"
+                          Fill="{ThemeResource ContentBrush}"
                           Stretch="Uniform" />
                 </Border>
                 <TextBlock Text="{x:Bind Text}"
                            Margin="12 0 0 0"
-                           Foreground="{StaticResource WhiteBrush}"
+                           Foreground="{ThemeResource ContentBrush}"
                            VerticalAlignment="Center" />
             </StackPanel>
         </DataTemplate>
@@ -59,7 +60,6 @@
                    IsPaneOpen="False"
                    CompactPaneLength="48"
                    OpenPaneLength="200"
-                   PaneBackground="{StaticResource SplitViewBackgroundBrush}"
                    DisplayMode="Overlay">
             <SplitView.Pane>
                 <Grid x:Name="SplitViewPane"
@@ -67,7 +67,7 @@
                       HorizontalAlignment="Stretch"
                       ManipulationMode="TranslateX"
                       ManipulationCompleted="SplitViewPane_ManipulationCompleted"
-                      Background="{StaticResource TravelBackground2}">
+                      Background="{StaticResource TravelBackground}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
@@ -91,7 +91,7 @@
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
-                <Grid Background="{StaticResource TravelBackground2}">
+                <Grid Background="{StaticResource TravelBackground}">
                     <!-- Navigation Frame -->
                     <Frame x:Name="SplitViewFrame"
                            Navigated="SplitViewFrame_OnNavigated"
@@ -131,7 +131,7 @@
                 BorderThickness="0"
                 Click="HamburgerButton_Click">
             <Path Data="{StaticResource HamburgerIcon}"
-                  Fill="{StaticResource WhiteBrush}"
+                  Fill="{ThemeResource ContentBrush}"
                   VerticalAlignment="Center"
                   HorizontalAlignment="Center"
                   Height="24"

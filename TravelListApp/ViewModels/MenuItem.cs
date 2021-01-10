@@ -47,7 +47,7 @@ namespace TravelListApp.ViewModels
 
         public SolidColorBrush Resource
         {
-            get { return Theme.GetResource(_color); }
+            get { return ThemeManager.GetResource(_color); }
         }
 
         public ICommand Command

@@ -119,10 +119,24 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\AppTheme.cs" />
     <Compile Include="Models\CarouselImage.cs" />
     <Compile Include="Models\RoutesOfPointOfInterest.cs" />
     <Compile Include="Services\Converters\IconConverter.cs" />
+    <Compile Include="Services\Icons\IconsTheme.xaml.cs">
+      <DependentUpon>IconsTheme.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\LocalStorage.cs" />
+    <Compile Include="Services\ThemeResources\LightTheme.xaml.cs">
+      <DependentUpon>LightTheme.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Services\ThemeResources\DarkTheme.xaml.cs">
+      <DependentUpon>DarkTheme.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Services\ThemeResources\Theme.xaml.cs">
+      <DependentUpon>Theme.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Services\Theming\ThemeManager.cs" />
     <Compile Include="Services\Validation\IPropertyList.cs" />
     <Compile Include="Services\Validation\IProperty.cs" />
     <Compile Include="Services\Validation\IPropertyListOfT.cs" />
@@ -137,17 +151,19 @@
     </Compile>
     <Compile Include="Controls\ItemsControlExtensions.cs" />
     <Compile Include="Models\PointOfInterest.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BindableBase.cs" />
     <Compile Include="Services\Converters\DateTimeToDateTimeOffsetConverter.cs" />
     <Compile Include="ViewModels\DelegateCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Icons\Icon.cs" />
     <Compile Include="Services\Navigation\Navigation.cs" />
-    <Compile Include="Services\Theming\Theme.cs" />
     <Compile Include="Services\Validation\IBindable.cs" />
     <Compile Include="Services\Validation\IValidatableModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ButtonItem.cs" />
+    <Compile Include="ViewModels\ObservableObject.cs" />
+    <Compile Include="ViewModels\ThemeSelectionViewModel.cs" />
     <Compile Include="ViewModels\TravelListItemCmd.cs" />
     <Compile Include="ViewModels\MenuItem.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
@@ -157,6 +173,9 @@
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ThemeSelectionPage.xaml.cs">
+      <DependentUpon>ThemeSelectionPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TravelListItemEditPage.xaml.cs">
       <DependentUpon>TravelListItemEditPage.xaml</DependentUpon>
@@ -201,8 +220,7 @@
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\mappin.png" />
-    <Content Include="Assets\TravelBackground1.png" />
-    <Content Include="Assets\TravelBackground2.png" />
+    <Content Include="Assets\TravelBackground.png" />
     <Content Include="..\RestApi\.env">
       <Link>.env</Link>
     </Content>
@@ -212,23 +230,31 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Services\Icons\IconsTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Services\ThemeResources\LightTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Services\ThemeResources\DarkTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Services\ThemeResources\Theme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\CollapsibleSearchBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Services\Icons\Icons.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Services\Theming\SecondaryMenu.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Services\Theming\Theme.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ThemeSelectionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

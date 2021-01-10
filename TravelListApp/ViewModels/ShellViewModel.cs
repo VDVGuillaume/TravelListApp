@@ -22,7 +22,7 @@ namespace TravelListApp.ViewModels
 
                 SecondMenu.Clear();
                 SecondMenu.Add(new MenuItem() { Glyph = Icon.GetIcon("User"), Text = "User", NavigationDestination = typeof(LoginPage) });
-                SecondMenu.Add(new MenuItem() { Glyph = Icon.GetIcon("Settings"), Text = "Settings", NavigationDestination = typeof(HomePage) });
+                SecondMenu.Add(new MenuItem() { Glyph = Icon.GetIcon("Settings"), Text = "Settings", NavigationDestination = typeof(ThemeSelectionPage) });
           
             
         }

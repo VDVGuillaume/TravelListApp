@@ -9,7 +9,10 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    DataContext="{Binding RelativeSource={RelativeSource Self}}"
+    RequestedTheme="{x:Bind ThemeViewModel.SelectedThemeName, Mode=OneWay}"
+    Background="{ThemeResource PageBackgroundColor}">
+    
     <!--DataContext="{Binding RelativeSource={RelativeSource Self}}">-->
 
     <!--<UserControl.Resources>
@@ -17,7 +20,9 @@
         <AcrylicBrush x:Key="MaskBackground" BackgroundSource="Backdrop" TintColor="White" TintOpacity="0.1" FallbackColor="White"/>
     </UserControl.Resources>-->
 
-    <UserControl.Resources>
+
+        <UserControl.Resources>
+        <SolidColorBrush x:Key="MyBorderBrush" Color="{ThemeResource SystemAccentColor}"/>
         <Style x:Key="MenuListViewStyle"
            TargetType="ListView">
             <Setter Property="ItemsPanel">
@@ -62,13 +67,13 @@
                       HorizontalAlignment="Center"
                       Height="40"
                       Width="40"
-                      Fill="{Binding Resource}"
+                      Fill="{Binding Resource}" 
                       Stretch="Uniform">
                     </Path>
                 </Border>
                 <TextBlock Text="{Binding Text}"
                        Margin="0 4 0 0"
-                       Foreground="{StaticResource WhiteBrush}"
+                       Foreground="{ThemeResource ContentBrush}"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
             </StackPanel>
@@ -105,7 +110,7 @@
                      StretchDirection="DownOnly"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Center">
-                <TextBlock Foreground="{StaticResource WhiteBrush}"
+                <TextBlock Foreground="{ThemeResource ContentBrush}"
                            FontSize="48"
                            FontWeight="Light"
                            VerticalAlignment="Top"
