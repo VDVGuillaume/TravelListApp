@@ -10,8 +10,8 @@ using TravelListRepository.Sql;
 namespace TravelList.Api.Migrations
 {
     [DbContext(typeof(TravelListContext))]
-    [Migration("20201205091843_Migration v1.7")]
-    partial class Migrationv17
+    [Migration("20210110220751_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,17 +21,38 @@ namespace TravelList.Api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("TravelListModels.CheckListItem", b =>
+            modelBuilder.Entity("TravelListModels.Category", b =>
                 {
-                    b.Property<int>("CheckListItemID")
+                    b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name");
 
+                    b.Property<string>("UserId");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("TravelListModels.TravelCheckListItem", b =>
+                {
+                    b.Property<int>("TravelCheckListItemID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Amount");
+
+                    b.Property<string>("Category");
+
+                    b.Property<bool>("Checked");
+
+                    b.Property<string>("Name");
+
                     b.Property<int>("TravelListItemID");
 
-                    b.HasKey("CheckListItemID");
+                    b.HasKey("TravelCheckListItemID");
 
                     b.HasIndex("TravelListItemID");
 
@@ -50,8 +71,6 @@ namespace TravelList.Api.Migrations
 
                     b.Property<DateTime>("EndDate");
 
-                    b.Property<string>("Image");
-
                     b.Property<decimal>("Latitude");
 
                     b.Property<decimal>("Longitude");
@@ -59,6 +78,8 @@ namespace TravelList.Api.Migrations
                     b.Property<string>("Name");
 
                     b.Property<DateTime>("StartDate");
+
+                    b.Property<string>("UserId");
 
                     b.HasKey("TravelListItemID");
 
@@ -105,7 +126,7 @@ namespace TravelList.Api.Migrations
                     b.ToTable("Points");
                 });
 
-            modelBuilder.Entity("TravelListModels.CheckListItem", b =>
+            modelBuilder.Entity("TravelListModels.TravelCheckListItem", b =>
                 {
                     b.HasOne("TravelListModels.TravelListItem")
                         .WithMany("Items")

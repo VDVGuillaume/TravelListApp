@@ -32,7 +32,7 @@ namespace RestApi.Controllers
             var travelPointOfInterest = await _repo.GetTravelPointOfInterestById(id);
             if (travelPointOfInterest != null)
             {
-                return Ok(_mapper.Map<TravelPointOfInterestReadDto>(travelPointOfInterest));
+                return Ok(_mapper.Map<TravelChecklistItemReadDto>(travelPointOfInterest));
             }
             return NotFound();
         }
@@ -45,7 +45,7 @@ namespace RestApi.Controllers
             await _repo.CreateTravelPointOfInterest(travelPointOfInterestModel);
             _repo.SaveChanges();
 
-            var travelPointOfInterestReadDto = _mapper.Map<TravelPointOfInterestReadDto>(travelPointOfInterestModel);
+            var travelPointOfInterestReadDto = _mapper.Map<TravelChecklistItemReadDto>(travelPointOfInterestModel);
 
             return CreatedAtRoute(nameof(GetTravelPointOfInterestById), new { Id = travelPointOfInterestReadDto.TravelPointOfInterestID }, travelPointOfInterestReadDto);
         }

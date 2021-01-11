@@ -10,7 +10,7 @@ namespace TravelListModels
     {
         public TravelListItem()
         {
-            this.Items = new List<CheckListItem>();
+            this.Items = new List<TravelCheckListItem>();
             this.Points = new List<TravelPointOfInterest>();
             this.Images = new List<TravelListItemImage>();
             this.Routes = new List<TravelRoute>();
@@ -25,7 +25,7 @@ namespace TravelListModels
         public string Country { get; set; }
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
-        public virtual ICollection<CheckListItem> Items { get; set; }
+        public virtual ICollection<TravelCheckListItem> Items { get; set; }
         public virtual ICollection<TravelPointOfInterest> Points { get; set; }
         public virtual ICollection<TravelListItemImage> Images { get; set; }
         public virtual ICollection<TravelRoute> Routes { get; set; }

@@ -1,21 +1,102 @@
 ﻿<Page
-    x:Class="TravelListApp.Views.TravelListItemChecklistPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:TravelListApp.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x1="using:TravelListApp.Models"
+    xmlns:local="using:TravelListApp.Views"
+    x:Class="TravelListApp.Views.TravelListItemChecklistPage"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Background="{StaticResource TravelBackground2}"
-          Padding="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
 
-        <local:TravelListItemMenu x:Name="Menu" />
+    <StackPanel Background="{StaticResource TravelBackground2}">
 
-    </Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <local:TravelListItemMenu x:Name="Menu" Grid.Row="0"/>
+            <TextBlock  Text="CheckList" FontSize="20" Margin="41,48,-41,2" Grid.RowSpan="2"  />
+        </Grid>
+
+
+        <Grid Width ="550" HorizontalAlignment="Left" Padding="20,20,0,0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Check" HorizontalAlignment="Left"  Grid.ColumnSpan="2" VerticalAlignment="Stretch"/>
+            <TextBlock Grid.Column="1" Text="Item" HorizontalAlignment="Center" />
+            <TextBlock Grid.Column="2" Text="Amount" HorizontalAlignment="Center" />
+            <TextBlock Grid.Column="3" Text="Category" HorizontalAlignment="Center" />
+        </Grid>
+        <Grid x:Name="addList" Width ="550" HorizontalAlignment="Left" Padding="20,20,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="19*"/>
+
+            </Grid.RowDefinitions>
+            <CheckBox x:Name="NewCheck" Grid.Column="0" HorizontalAlignment="Left"  VerticalAlignment="Center" Width="50"/>
+            <TextBox x:Name="NewItem" Grid.Row="0" Grid.Column="1" Text="" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" PlaceholderText="Type in item name"  />
+            <TextBox x:Name="NewAmount" Grid.Row="0" Grid.Column="2" Text="" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" InputScope="Number" PlaceholderText="Give amount" />
+            <ComboBox x:Name="NewCategory" Grid.Row="0" Grid.Column="3" Text="Data" HorizontalAlignment="Stretch"  
+                      VerticalAlignment="Stretch" SelectionChanged="AddCategory" PlaceholderText="choose category" />
+
+            <Button Grid.Row ="0" Grid.Column="4" Background="Transparent" Click="AddItem" >
+                <SymbolIcon Symbol="Add" HorizontalAlignment="Center" />
+            </Button>
+
+
+        </Grid>
+
+        <GridView  x:Name="CheckListTable" ItemsSource="{x:Bind ObservablecheckListItems}" Width ="550" HorizontalAlignment="Left" Padding="20,20,0,0" Height="500" ScrollViewer.VerticalScrollBarVisibility="Visible">
+
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="x1:CheckListItem">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox  Grid.Row="0" Grid.Column="0" IsChecked="{Binding Checked}"  Content="{Binding TravelCheckListItemId }"  HorizontalAlignment="Left" VerticalAlignment="Center"  Width="50" Grid.ColumnSpan="2" Checked="CheckBox_CheckedChanged" Unchecked="CheckBox_CheckedChanged"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center"  />
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Amount}" HorizontalAlignment="Center"  VerticalAlignment="Center" />
+                        <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding Category}" HorizontalAlignment="Center"  VerticalAlignment="Center"  />
+                        <Button Grid.Row ="0" Grid.Column="4" Background="Transparent" Tag="{Binding TravelCheckListItemId}" Click="DeleteItem" >
+                            <SymbolIcon Symbol="Delete" HorizontalAlignment="Center" />
+                        </Button>
+
+
+                    </Grid>
+
+                </DataTemplate>
+                
+            </GridView.ItemTemplate>
+            
+
+        </GridView>
+        <TextBlock Text="The progress of your checklist" FontSize="20" Width="550" HorizontalAlignment="Left" TextAlignment="Center"/>
+        <ProgressBar x:Name="Progress"  Width="550" Height="50" HorizontalAlignment="Left" VerticalAlignment="Stretch" />
+    </StackPanel>
+
+
+
+
+
 </Page>

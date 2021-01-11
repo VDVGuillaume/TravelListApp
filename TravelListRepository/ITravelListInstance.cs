@@ -12,5 +12,7 @@ namespace TravelListRepository
         ITravelRouteRepo Routes { get; }
         ICountryRepo Countries { get; }
         IBingRepo Bing { get; }
-    }
+        ICategoryRepo Categories { get; }
+        ICheckListItemRepo CheckLists { get; }
+     }
 }

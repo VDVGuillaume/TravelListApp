@@ -11,9 +11,10 @@ namespace TravelListRepository.Sql
 
         }
         public DbSet<TravelListItem> TravelLists { get; set; }
-        public DbSet<CheckListItem> Items { get; set; }
+        public DbSet<TravelCheckListItem> Items { get; set; }
         public DbSet<TravelPointOfInterest> Points { get; set; }
         public DbSet<TravelListItemImage> TravelListImages { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<TravelRoute> Routes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
