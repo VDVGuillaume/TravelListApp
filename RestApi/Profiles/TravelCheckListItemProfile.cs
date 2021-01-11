@@ -9,7 +9,7 @@ namespace RestApi.Profiles
         public TravelCheckListItemProfile()
         {
             //Source -> Target
-            CreateMap<TravelCheckListItem, TravelChecklistItemReadDto>();
+            CreateMap<TravelCheckListItem, TravelCheckListItemReadDto>();
             CreateMap<TravelCheckListItemCreateDto, TravelCheckListItem>();
 
         }

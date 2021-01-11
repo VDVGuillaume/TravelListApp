@@ -483,10 +483,8 @@ namespace TravelListApp.ViewModels
         /// Saves travellist data that has been edited.
         /// </summary>
         public async Task SaveChecklistAsync(CheckListItem ci)
-        {
-            IsSaving = true;      
+        {           
        
-            
                 if (ci.IsNew)
                 {
                     ci.TravelListItemID = _model.TravelListItemID;                    
@@ -501,8 +499,6 @@ namespace TravelListApp.ViewModels
                     await App.Repository.CheckLists.UpdateCheckListItemAsync(ci.TravelCheckListItemID, ci);
                 }
             
-
-            IsSaving = false;
         }
 
 
