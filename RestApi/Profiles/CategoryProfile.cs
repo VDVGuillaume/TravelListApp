@@ -2,7 +2,7 @@
 using RestApi.Dtos;
 using TravelListModels;
 
-namespace TravelList.Api.Profiles
+namespace RestApi.Profiles
 {
     public class CategoryProfile : Profile
     {

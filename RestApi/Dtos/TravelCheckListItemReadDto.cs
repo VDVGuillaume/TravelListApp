@@ -2,7 +2,8 @@
 {
     public class TravelCheckListItemReadDto
     {
-        public int CheckListItemID { get; set; }
+        
+        public int TravelCheckListItemID { get; set; }
         public string Name { get; set; }
         public int Amount { get; set; }
         public string Category { get; set; }      

@@ -5,6 +5,7 @@ using System.Linq;
 using TravelListApp.Models;
 using TravelListApp.ViewModels;
 using TravelListModels;
+using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -22,7 +23,7 @@ namespace TravelListApp.Views
         public TravelListItemViewModel ViewModel { get; set; }
         public CheckBox Checkbox;
         public ObservableCollection<string> ListOfCategories { get; set; }
-        private ObservableCollection<CheckListItem> ObservablecheckListItems = new ObservableCollection<CheckListItem>();
+        private ObservableCollection<CheckListItem> ObservablecheckListItems; 
 
         public TravelListItemChecklistPage()
         {
@@ -43,17 +44,25 @@ namespace TravelListApp.Views
 
             Menu.SetModel(ViewModel);
             Menu.SetTab(GetType());
-            base.OnNavigatedTo(e);
-
-            foreach (var item in ViewModel.Items)
-            {
-                CheckListItem checkListItem = new CheckListItem() { Name = item.Name, Amount = item.Amount, Checked = item.Checked, Category = item.Category, TravelCheckListItemID = item.TravelCheckListItemID, TravelListItemID = item.TravelListItemID };
-                ObservablecheckListItems.Add(checkListItem);
-            }
+            base.OnNavigatedTo(e);           
 
             LoadCategories();
-
+            LoadItems();
+            
         }
+
+        private async void LoadItems()
+        {
+            ObservablecheckListItems = new ObservableCollection<CheckListItem>();
+            List<TravelCheckListItem> Items = await ViewModel.GetTravelCheckListItems();
+            Progress.Maximum = Items.Count;
+            foreach (TravelCheckListItem item in Items)
+            {
+                LoadProgress(item);
+                ObservablecheckListItems.Add(new CheckListItem() { Name = item.Name, Amount = item.Amount, Category = item.Category, Checked = item.Checked, TravelCheckListItemID = item.TravelCheckListItemID });
+            }
+        }
+
 
         private async void LoadCategories()
         {
@@ -66,6 +75,18 @@ namespace TravelListApp.Views
                 }
 
         }
+
+        private void LoadProgress(TravelCheckListItem item)
+        {
+            
+            if (item.Checked)
+            {
+                Progress.Value++;
+            }
+            
+        }
+
+
 
 
 
@@ -118,12 +139,15 @@ namespace TravelListApp.Views
             {
                 CheckBox cbx = sender as CheckBox;
                 CheckListItem ItemToUpdate = (CheckListItem)cbx.DataContext;
-                ItemToUpdate.Checked = (bool)cbx.IsChecked;                
+                ItemToUpdate.Checked = (bool)cbx.IsChecked;               
                 await ViewModel.SaveChecklistAsync(ItemToUpdate);
             }
         }
 
+        private void ProgressBar_ValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+        {
 
+        }
     }
 
 }

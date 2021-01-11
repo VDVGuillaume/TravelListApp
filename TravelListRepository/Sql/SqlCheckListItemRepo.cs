@@ -49,7 +49,7 @@ namespace TravelListRepository.Sql
 
         public async Task<IEnumerable<TravelCheckListItem>> GetCheckList(int travelListItemId)
         {
-            return await _context.Items.AsNoTracking().Where(checkListItem => checkListItem.TravelListItemID == travelListItemId).Include(x => x.Category).ToListAsync();
+            return await _context.Items.AsNoTracking().Where(checkListItem => checkListItem.TravelListItemID == travelListItemId).ToListAsync();
 
 
         }

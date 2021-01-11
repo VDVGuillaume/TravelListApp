@@ -453,6 +453,12 @@ namespace TravelListApp.ViewModels
             await App.Repository.Categories.CreateCategory(category);
         }
 
+        public async Task<List<TravelCheckListItem>> GetTravelCheckListItems()
+        {
+            IEnumerable<TravelCheckListItem> checkListItems = await App.Repository.CheckLists.GetCheckList(_model.TravelListItemID);
+            return checkListItems.ToList();
+        }
+
        
         /// <summary>
         /// Saves travellist data that has been edited.
