@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using TravelListApp.Models;
@@ -33,7 +32,8 @@ namespace TravelListApp.ViewModels
             get => _model;
             set
             {
-                if (value != null) {
+                if (value != null)
+                {
                     if (_model != value)
                     {
                         _model = value;
@@ -48,8 +48,11 @@ namespace TravelListApp.ViewModels
                         this.Items = _model.Items.ToList();
                         this.Points = _model.Points.ToList();
                         this.Images = _model.Images.ToList();
+
                     }
-                } else {
+                }
+                else
+                {
                     _model = new TravelListItem();
                     _model.UserId = LoginPage.account.Id;
                 }
@@ -59,7 +62,7 @@ namespace TravelListApp.ViewModels
         }
 
 
-    
+
 
         /// <summary>
         /// Gets or sets the TravelListItemID's.
@@ -165,9 +168,9 @@ namespace TravelListApp.ViewModels
         /// <summary>
         /// Gets or sets the customer's first name.
         /// </summary>
-        public List<CheckListItem> Items
+        public List<TravelCheckListItem> Items
         {
-            get => ReadList<CheckListItem>().ToList();
+            get => ReadList<TravelCheckListItem>().ToList();
             set
             {
                 Model.Items = value;
@@ -264,7 +267,7 @@ namespace TravelListApp.ViewModels
         public async Task ConvertImagesTask()
         {
             convertedImages = new List<CarouselImage>();
-            foreach(TravelListItemImage image in Images)
+            foreach (TravelListItemImage image in Images)
             {
                 StorageFile sfile = await LocalStorage.AsStorageFile(image.ImageData, image.ImageName);
                 CarouselImage cImage = new CarouselImage(image)
@@ -277,12 +280,12 @@ namespace TravelListApp.ViewModels
 
         public async Task<CarouselImage> ConvertImageTask(TravelListItemImage image)
         {
-                StorageFile sfile = await LocalStorage.AsStorageFile(image.ImageData, image.ImageName);
-                CarouselImage cImage = new CarouselImage(image)
-                {
-                    Photo = await LocalStorage.getImageFromStorageFile(sfile)
-                };
-                return cImage;
+            StorageFile sfile = await LocalStorage.AsStorageFile(image.ImageData, image.ImageName);
+            CarouselImage cImage = new CarouselImage(image)
+            {
+                Photo = await LocalStorage.getImageFromStorageFile(sfile)
+            };
+            return cImage;
         }
 
         /// <summary>
@@ -295,7 +298,8 @@ namespace TravelListApp.ViewModels
             syncPoints = new List<PointOfInterest>();
             foreach (TravelPointOfInterest point in Points)
             {
-                syncPoints.Add(new PointOfInterest() {
+                syncPoints.Add(new PointOfInterest()
+                {
                     TravelPointOfInterestID = point.TravelPointOfInterestID,
                     Name = point.Name,
                     ImageSourceUri = new Uri("ms-appx:///Assets/MapPin.png"),
@@ -347,6 +351,9 @@ namespace TravelListApp.ViewModels
 
         }
 
+
+
+
         /// <summary>
         /// Saves travellist data that has been edited.
         /// </summary>
@@ -375,7 +382,8 @@ namespace TravelListApp.ViewModels
                 imageChanges.Clear();
                 var newModel = await App.Repository.TravelLists.GetTravelListById(item.TravelListItemID);
                 this.Model = newModel;
-            } else
+            }
+            else
             {
                 await App.Repository.TravelLists.UpdateTravelList(Model.TravelListItemID, Model);
                 var item = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == Model.TravelListItemID).First();
@@ -432,6 +440,49 @@ namespace TravelListApp.ViewModels
             IsSaving = false;
         }
 
+
+
+        public async Task<List<Category>> GetCategoriesAsync()
+        {            
+            IEnumerable<Category> categories = await App.Repository.Categories.GetAllCategories(LoginPage.account.Id);
+            return categories.ToList();
+        }
+
+        public async Task SaveCategoryAsync(Category category)
+        {
+            await App.Repository.Categories.CreateCategory(category);
+        }
+
+       
+        /// <summary>
+        /// Saves travellist data that has been edited.
+        /// </summary>
+        public async Task SaveChecklistAsync(CheckListItem ci)
+        {
+            IsSaving = true;      
+       
+            
+                if (ci.IsNew)
+                {
+                    ci.TravelListItemID = _model.TravelListItemID;                    
+                    await App.Repository.CheckLists.CreateCheckListItemAsync(ci);
+                }
+                if (ci.ToRemove)
+                {
+                    await App.Repository.CheckLists.DeleteCheckListItemAsync(ci);
+                }
+                else
+                {
+                    await App.Repository.CheckLists.UpdateCheckListItemAsync(ci.TravelCheckListItemID, ci);
+                }
+            
+
+            IsSaving = false;
+        }
+
+
+
+
         /// <summary>
         /// Delete travellist.
         /// </summary>
@@ -441,10 +492,10 @@ namespace TravelListApp.ViewModels
             App.ViewModel.TravelListItems.Remove(this);
         }
 
-            /// <summary>
-            /// Saves travellist data that has been edited.
-            /// </summary>
-            public async Task SavePointsAsync()
+        /// <summary>
+        /// Saves travellist data that has been edited.
+        /// </summary>
+        public async Task SavePointsAsync()
         {
             foreach (PointOfInterest point in syncPoints)
             {
@@ -533,8 +584,8 @@ namespace TravelListApp.ViewModels
         /// Called when a bound DataGrid control commits the edits that have been made to a customer.
         /// </summary>
         public async void EndEdit() => await SaveAsync();
-        
-        
-               
+
+
+
     }
 }

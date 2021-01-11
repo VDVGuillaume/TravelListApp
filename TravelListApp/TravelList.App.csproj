@@ -120,6 +120,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\CarouselImage.cs" />
+    <Compile Include="Models\CheckListItem.cs" />
     <Compile Include="Models\ListItemImage.cs" />
     <Compile Include="Services\LocalStorage.cs" />
     <Compile Include="Services\Validation\IPropertyList.cs" />

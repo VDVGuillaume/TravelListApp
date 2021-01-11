@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using TravelListApp.Services.Icons;
+using TravelListApp.Models;
 using TravelListApp.ViewModels;
 using TravelListModels;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -26,71 +19,111 @@ namespace TravelListApp.Views
     public sealed partial class TravelListItemChecklistPage : Page
     {
 
-        public TravelListItemViewModel viewModel { get; set; }    
-        private List<CheckListItem> _checkListItems { get; set; }
+        public TravelListItemViewModel ViewModel { get; set; }
+        public CheckBox Checkbox;
+        public ObservableCollection<string> ListOfCategories { get; set; }
+        private ObservableCollection<CheckListItem> ObservablecheckListItems = new ObservableCollection<CheckListItem>();
 
         public TravelListItemChecklistPage()
         {
             this.InitializeComponent();
-            _checkListItems = new List<CheckListItem>();
-            ShowDeleteItem();
-            
+
+            ListOfCategories = new ObservableCollection<string>()
+            {
+                new Category("Add New Category").Name
+            };
+            NewCategory.ItemsSource = ListOfCategories;
+
         }
 
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            viewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
-            Menu.SetModel(viewModel);
-            // Send page type to menu.
+            ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
+
+            Menu.SetModel(ViewModel);
             Menu.SetTab(GetType());
             base.OnNavigatedTo(e);
-        }
 
-        // saving when leaving view
-
-
-        private async void AddItems(object sender, RoutedEventArgs e)
-        {
-            CheckBox checkbox = new CheckBox();
-            CheckListItem checkListItem = new CheckListItem();
-            checkListItem.Name = checkListItemInput.Text;
-            _checkListItems.Add(checkListItem);
-            
-            checkList.Items.Add(checkbox);
-            checkbox.Content = checkListItem;
-
-            ShowDeleteItem();
-
-            await viewModel.SaveAsync();
-
-        }
-
-        private void DeleteItem(object sender, RoutedEventArgs e)
-        {
-            List<CheckBox> checkboxList = checkList.SelectedItems.Cast<CheckBox>().ToList();
-
-            foreach(CheckBox checkBox in checkboxList)
+            foreach (var item in ViewModel.Items)
             {
-                checkList.Items.Remove(checkBox);
+                CheckListItem checkListItem = new CheckListItem() { Name = item.Name, Amount = item.Amount, Checked = item.Checked, Category = item.Category, TravelCheckListItemID = item.TravelCheckListItemID, TravelListItemID = item.TravelListItemID };
+                ObservablecheckListItems.Add(checkListItem);
             }
 
-           // CheckListItem checkListItem = (CheckListItem) checkbox.Content;           
-            // checkList.Items.Remove(checkList.SelectedItem);
-            ShowDeleteItem();
+            LoadCategories();
+
         }
 
-        private void ShowDeleteItem()
+        private async void LoadCategories()
         {
-            deleteItem.Visibility = checkList.Items.Count > 0 ?  Visibility.Visible : Visibility.Collapsed;            
+            List<Category> categories = await ViewModel.GetCategoriesAsync();
+
+            if (categories.Count > 0)
+                foreach (Category category in categories)
+                {
+                    ListOfCategories.Add(category.Name);
+                }
+
         }
 
-        private void CheckList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+
+        private async void AddItem(object sender, RoutedEventArgs e)
         {
 
+            Category category = new Category(NewCategory.Text);
+
+            if (!ListOfCategories.Contains(category.Name))
+            {
+                ListOfCategories.Add(category.Name);
+                category.UserId = LoginPage.account.Id;
+                await ViewModel.SaveCategoryAsync(category);
+            }
+
+            CheckListItem checkListItem = new CheckListItem() { Name = NewItem.Text, Amount = Convert.ToInt32(NewAmount.Text), Checked = (bool)NewCheck.IsChecked, Category = category.Name };
+            checkListItem.IsNew = true;            
+            await ViewModel.SaveChecklistAsync(checkListItem);
+            ObservablecheckListItems.Add(checkListItem);
+            checkListItem.IsNew = false;
+
         }
 
-       
+        private void AddCategory(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems[0].ToString() == "Add New Category")
+                NewCategory.IsEditable = true;
+            else
+                NewCategory.IsEditable = false;
+
+        }
+
+
+        private async void DeleteItem(object sender, RoutedEventArgs e)
+        {
+
+            Button btn = sender as Button;
+            CheckListItem itemToDelete = (CheckListItem)btn.DataContext;
+            itemToDelete.ToRemove = true;
+
+            await ViewModel.SaveChecklistAsync(itemToDelete);
+            ObservablecheckListItems.Remove(itemToDelete);
+        }
+
+
+
+        private async void CheckBox_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.CheckListTable.IsLoaded)
+            {
+                CheckBox cbx = sender as CheckBox;
+                CheckListItem ItemToUpdate = (CheckListItem)cbx.DataContext;
+                ItemToUpdate.Checked = (bool)cbx.IsChecked;                
+                await ViewModel.SaveChecklistAsync(ItemToUpdate);
+            }
+        }
+
+
     }
-      
+
 }

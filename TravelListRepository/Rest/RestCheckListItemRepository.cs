@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using TravelListModels;
-using TravelListRepository;
-using TravelListRepository.Rest;
 
-namespace TravelList.Repository.Rest
+namespace TravelListRepository.Rest
 {
     class RestCheckListItemRepository : ICheckListItemRepo
 
@@ -20,13 +17,21 @@ namespace TravelList.Repository.Rest
         }
 
 
-        public async Task CreateCheckListItem(CheckListItem checkListItem)
-        {
-            await _http.PostAsync<CheckListItem,CheckListItem>("CheckList", checkListItem);
-        }
+        public async Task CreateCheckListItemAsync(TravelCheckListItem checkListItem) =>
+            await _http.PostAsync<TravelCheckListItem, TravelCheckListItem>("travelchecklistitem", checkListItem);
 
-        public async Task<IEnumerable<CheckListItem>> GetCheckList(int travelListId) =>
-            await _http.GetAsync<IEnumerable<CheckListItem>>($"CheckList/{travelListId}");
+
+        public async Task DeleteCheckListItemAsync(TravelCheckListItem checkListItem) =>
+            await _http.DeleteAsync("travelchecklistitem",checkListItem.TravelCheckListItemID);
+
+        public async Task<IEnumerable<TravelCheckListItem>> GetCheckList(int travelListId) =>
+            await _http.GetAsync<IEnumerable<TravelCheckListItem>>($"travelchecklistitem/{travelListId}");
+
+        public async Task<TravelCheckListItem> GetCheckListItemById(int id) =>
+            await _http.GetAsync<TravelCheckListItem>($"travelchecklistitem/{id}");
+
+        public async Task UpdateCheckListItemAsync(int id, TravelCheckListItem checkListItem) =>
+         await _http.PutAsync<TravelCheckListItem, TravelCheckListItem>($"travelchecklistitem/{id}", checkListItem);
 
         public bool SaveChanges()
         {

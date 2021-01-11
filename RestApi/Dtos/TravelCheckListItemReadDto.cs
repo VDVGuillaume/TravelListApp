@@ -1,9 +1,11 @@
 ﻿namespace RestApi.Dtos
 {
-    public class CheckListItemCreateDto
+    public class TravelCheckListItemReadDto
     {
         public int CheckListItemID { get; set; }
         public string Name { get; set; }
+        public int Amount { get; set; }
+        public string Category { get; set; }      
         public bool Checked { get; set; }
         public int TravelListItemID { get; set; }
     }

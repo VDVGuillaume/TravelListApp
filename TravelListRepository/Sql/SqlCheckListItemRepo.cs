@@ -16,7 +16,7 @@ namespace TravelListRepository.Sql
             _context = context;
         }
 
-        public async Task CreateCheckListItem(CheckListItem checkListItem)
+        public async Task CreateCheckListItemAsync(TravelCheckListItem checkListItem)
         {
             if (checkListItem == null)
             {
@@ -24,17 +24,48 @@ namespace TravelListRepository.Sql
             }
             _context.Items.Add(checkListItem);
             await _context.SaveChangesAsync();
-           
+
         }
 
-        public async Task<IEnumerable<CheckListItem>> GetCheckList(int travelListItemId)
+        public async Task DeleteCheckListItemAsync(TravelCheckListItem checkListItem)
         {
-            return await _context.Items.AsNoTracking().Where(checkListItem => checkListItem.TravelListItemID == travelListItemId).ToListAsync();
+            if (checkListItem == null)
+            {
+                throw new ArgumentNullException(nameof(checkListItem));
+            }
+            _context.Items.Remove(checkListItem);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateCheckListItemAsync(int id, TravelCheckListItem checkListItem)
+        {
+            if (checkListItem == null)
+            {
+                throw new ArgumentNullException(nameof(checkListItem));
+            }
+            _context.Items.Update(checkListItem);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<TravelCheckListItem>> GetCheckList(int travelListItemId)
+        {
+            return await _context.Items.AsNoTracking().Where(checkListItem => checkListItem.TravelListItemID == travelListItemId).Include(x => x.Category).ToListAsync();
+
+
+        }
+
+
+        public async Task<TravelCheckListItem> GetCheckListItemById(int id)
+        {
+
+            return await _context.Items.AsNoTracking().FirstOrDefaultAsync(p => p.TravelCheckListItemID == id);
         }
 
         public bool SaveChanges()
         {
             return (_context.SaveChanges() >= 0);
         }
+
+
     }
 }

@@ -4,13 +4,14 @@ using TravelListModels;
 
 namespace TravelList.Api.Profiles
 {
-    public class CheckListItemProfile : Profile
+    public class TravelCheckListItemProfile : Profile
     {
-        public CheckListItemProfile()
+        public TravelCheckListItemProfile()
         {
             //Source -> Target
-            CreateMap<CheckListItem, ChecklistItemReadDto>();
-            CreateMap<CheckListItemCreateDto, CheckListItem>();
+            CreateMap<TravelCheckListItem, ChecklistItemReadDto>();
+            CreateMap<TravelCheckListItemCreateDto, TravelCheckListItem>();
+
         }
     }
 }

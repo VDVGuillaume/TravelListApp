@@ -22,5 +22,9 @@ namespace TravelListRepository.Rest
         public ICountryRepo Countries => new RestCountryRepository(_url);
 
         public IBingRepo Bing => new RestBingRepository(_url);
+
+        public ICategoryRepo Categories => new RestCategoryRepository(_url);
+
+        public ICheckListItemRepo CheckLists => new RestCheckListItemRepository(_url);
     }
 }

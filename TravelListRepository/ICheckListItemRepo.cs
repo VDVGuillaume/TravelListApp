@@ -7,8 +7,10 @@ namespace TravelListRepository
     public interface ICheckListItemRepo
     {
         bool SaveChanges();
-        Task<IEnumerable<CheckListItem>> GetCheckList(int travelListId);        
-        Task CreateCheckListItem(CheckListItem checkListItem);
-       
+        Task<IEnumerable<TravelCheckListItem>> GetCheckList(int travelListId);
+        Task CreateCheckListItemAsync(TravelCheckListItem checkListItem);
+        Task<TravelCheckListItem> GetCheckListItemById(int id);
+        Task DeleteCheckListItemAsync(TravelCheckListItem checkListItem);
+        Task UpdateCheckListItemAsync(int id, TravelCheckListItem checkListItem);
     }
 }
