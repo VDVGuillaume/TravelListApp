@@ -92,7 +92,7 @@
 
         </GridView>
         <TextBlock Text="The progress of your checklist" FontSize="20" Width="550" HorizontalAlignment="Left" TextAlignment="Center"/>
-        <ProgressBar x:Name="Progress"  Width="550" Height="50" HorizontalAlignment="Left" VerticalAlignment="Stretch" ValueChanged="ProgressBar_ValueChanged"/>
+        <ProgressBar x:Name="Progress"  Width="550" Height="50" HorizontalAlignment="Left" VerticalAlignment="Stretch" />
     </StackPanel>
 
 

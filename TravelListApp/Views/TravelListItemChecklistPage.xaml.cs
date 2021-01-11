@@ -59,7 +59,8 @@ namespace TravelListApp.Views
             foreach (TravelCheckListItem item in Items)
             {
                 LoadProgress(item);
-                ObservablecheckListItems.Add(new CheckListItem() { Name = item.Name, Amount = item.Amount, Category = item.Category, Checked = item.Checked, TravelCheckListItemID = item.TravelCheckListItemID });
+                ObservablecheckListItems.Add(new CheckListItem() { Name = item.Name, Amount = item.Amount, Category = item.Category,
+                    Checked = item.Checked, TravelCheckListItemID = item.TravelCheckListItemID,TravelListItemID = item.TravelListItemID });
             }
         }
 
@@ -78,12 +79,12 @@ namespace TravelListApp.Views
 
         private void LoadProgress(TravelCheckListItem item)
         {
-            
+
             if (item.Checked)
-            {
                 Progress.Value++;
-            }
-            
+            else
+                Progress.Value--;
+       
         }
 
 
@@ -103,8 +104,14 @@ namespace TravelListApp.Views
             }
 
             CheckListItem checkListItem = new CheckListItem() { Name = NewItem.Text, Amount = Convert.ToInt32(NewAmount.Text), Checked = (bool)NewCheck.IsChecked, Category = category.Name };
-            checkListItem.IsNew = true;            
-            await ViewModel.SaveChecklistAsync(checkListItem);
+            checkListItem.IsNew = true;
+            try
+            {
+                await ViewModel.SaveChecklistAsync(checkListItem);
+            }
+            catch { }
+         
+        
             ObservablecheckListItems.Add(checkListItem);
             checkListItem.IsNew = false;
 
@@ -139,15 +146,13 @@ namespace TravelListApp.Views
             {
                 CheckBox cbx = sender as CheckBox;
                 CheckListItem ItemToUpdate = (CheckListItem)cbx.DataContext;
-                ItemToUpdate.Checked = (bool)cbx.IsChecked;               
+                ItemToUpdate.Checked = (bool)cbx.IsChecked;
+                LoadProgress(ItemToUpdate);
                 await ViewModel.SaveChecklistAsync(ItemToUpdate);
             }
         }
 
-        private void ProgressBar_ValueChanged(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
-        {
-
-        }
+       
     }
 
 }
