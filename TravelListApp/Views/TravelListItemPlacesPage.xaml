@@ -103,7 +103,7 @@
             <ItemsControl x:Name="ErrorsList">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Foreground="{ThemeResource ContentBrush}" Text="{Binding}" Margin="10 5" />
+                        <TextBlock Text="{Binding}" Margin="10 5" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

@@ -128,7 +128,6 @@
                                     <TextBlock Grid.Column="0"
                                     TextAlignment="Center"
                                     HorizontalAlignment="Stretch"
-                                    Foreground="{ThemeResource ContentBrush}"
                                     Text="{Binding Start.Name , Mode=OneWay}" Margin="0 2.5 0 2.5" />
                                     <AppBarButton Padding="0,0,0,0" Margin="0,0,0,0" Grid.Column="1" Foreground="{ThemeResource ContentBrush}" Tag="{Binding LocalId}" Click="ZoomToRoute_Click" HorizontalAlignment="Center">
                                         <AppBarButton.Icon >
@@ -138,7 +137,6 @@
                                     <TextBlock Grid.Column="2"
                                     TextAlignment="Center"
                                     HorizontalAlignment="Stretch"
-                                    Foreground="{ThemeResource ContentBrush}"
                                     Text="{Binding End.Name , Mode=OneWay}" Margin="0 2.5 0 2.5" />
                                     <AppBarButton Padding="0,0,0,0" Margin="0,0,0,0" Grid.Column="3" Foreground="{ThemeResource ContentBrush}" Click="RemoveRoute_Click" Tag="{Binding LocalId}" HorizontalAlignment="Center">
                                         <AppBarButton.Icon >
@@ -159,7 +157,7 @@
             <ItemsControl x:Name="ErrorsList">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Foreground="{ThemeResource ContentBrush}" Text="{Binding}" Margin="10 5" />
+                        <TextBlock Text="{Binding}" Margin="10 5" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

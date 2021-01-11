@@ -6,217 +6,6 @@
         <ResourceDictionary x:Key="Light">
             <!-- Theme Resources -->
 
-    <!-- Default Accent Color -->
-    <Color x:Key="DefaultAccentColor">#8882A8</Color>
-
-    <!-- ImageBrush Color -->
-    <ImageBrush ImageSource="/Assets/TravelBackground.png" x:Key="TravelBackground" Stretch="UniformToFill"/>
-    <AcrylicBrush x:Key="MaskBackground" BackgroundSource="Backdrop" TintColor="Black" Opacity="0.90"  TintOpacity="0.01" FallbackColor="Black"/>
-
-    <!-- General Purpose -->
-    <SolidColorBrush x:Key="TenPercentDarkerBrush"
-                     Color="Black"
-                     Opacity=".1" />
-    <SolidColorBrush x:Key="TenPercentLighterBrush"
-                     Color="White"
-                     Opacity=".1" />
-    <SolidColorBrush x:Key="TenPercentGrayBrush"
-                     Color="Gray"
-                     Opacity=".1" />
-    <SolidColorBrush x:Key="TwintyPercentGrayBrush"
-                     Color="Gray"
-                     Opacity=".2" />
-    <SolidColorBrush x:Key="HighlightBrush"
-                     Color="#FFEFBF7D" />
-    <SolidColorBrush x:Key="BlackBrush"
-                     Color="#FF000000" />
-    <SolidColorBrush x:Key="WhiteBrush"
-                     Color="#FFFFFFFF" />
-    <SolidColorBrush x:Key="transBrush"
-                     Color="#00FFFFFF" />
-
-    <!-- Menu colors -->
-    <SolidColorBrush x:Key="ActiveBrush"
-                     Color="#FF000000" />
-    <SolidColorBrush x:Key="NotActiveBrush"
-                     Color="#7DFF0000" />
-
-    <!-- Content color text,Icons, ... -->
-    <SolidColorBrush x:Key="ContentBrush"
-                     Color="#FF000000" />
-
-
-    <!-- Header -->
-    <SolidColorBrush x:Key="TitlebarBackgroundBrush"
-                     Color="#FF6EC0D6" />
-    <SolidColorBrush x:Key="TitlebarBackgroundDarkBrush"
-                     Color="#FF466582" />
-    <SolidColorBrush x:Key="TitlebarBackgroundLightBrush"
-                     Color="#FF466582" />
-    <SolidColorBrush x:Key="StatusbarBackgroundBrush"
-                     Color="#FF6EC0D6" />
-
-    <!-- Alert -->
-    <SolidColorBrush x:Key="AlertForegroundBrush"
-                     Color="#FFFF4500" />
-
-    <!-- Splitview Pane -->
-    <SolidColorBrush x:Key="SplitViewBackgroundBrush"
-                     Color="#FFFFFFFF" />
-    <SolidColorBrush x:Key="SplitViewForegroundBrush"
-                     Color="#FF8BD4E3" />
-    <SolidColorBrush x:Key="HamburgerForegroundBrush"
-                     Color="#FFEFBF7D" />
-
-    <!-- Splitview Content -->
-    <Color x:Key="PageBackgroundColor">#FFFFFFFF</Color>
-    <SolidColorBrush x:Key="PageBackgroundBrush"
-                     Color="#FFD8EDE4" />
-    <SolidColorBrush x:Key="PageTitleBrush"
-                     Color="#FF466582" />
-    <SolidColorBrush x:Key="PageForegroundBrush"
-                     Color="#FF466582" />
-
-    <!-- TextBlock styles -->
-
-    <Style x:Key="BasicTextStyle" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="{StaticResource ApplicationForegroundThemeBrush}"/>
-        <Setter Property="FontSize" Value="{StaticResource ControlContentThemeFontSize}"/>
-        <Setter Property="FontFamily" Value="{StaticResource ContentControlThemeFontFamily}"/>
-        <Setter Property="TextTrimming" Value="WordEllipsis"/>
-        <Setter Property="TextWrapping" Value="Wrap"/>
-        <Setter Property="Typography.StylisticSet20" Value="True"/>
-        <Setter Property="Typography.DiscretionaryLigatures" Value="True"/>
-        <Setter Property="Typography.CaseSensitiveForms" Value="True"/>
-    </Style>
-
-    <Style x:Key="BaselineTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasicTextStyle}">
-        <Setter Property="LineHeight" Value="20"/>
-        <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
-        <!-- Properly align text along its baseline -->
-        <Setter Property="RenderTransform">
-            <Setter.Value>
-                <TranslateTransform X="-1" Y="4"/>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="SubheaderTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
-        <Setter Property="FontSize" Value="26.667"/>
-        <Setter Property="FontWeight" Value="Light"/>
-        <Setter Property="LineHeight" Value="30"/>
-        <Setter Property="RenderTransform">
-            <Setter.Value>
-                <TranslateTransform X="-1" Y="6"/>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!-- Button styles -->
-
-    <!--
-        TextButtonStyle is used to style a Button using subheader-styled text with no other adornment.  This
-        style is used in the GroupedItemsPage as a group header and in the FileOpenPickerPage for triggering
-        commands.
-    -->
-    <Style x:Key="TextButtonStyle" TargetType="Button">
-        <Setter Property="MinWidth" Value="0"/>
-        <Setter Property="MinHeight" Value="0"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Grid Background="Transparent">
-                        <TextBlock
-                            x:Name="Text"
-                            Text="{TemplateBinding Content}"
-                            Margin="3,-7,3,10"
-                            TextWrapping="NoWrap"
-                            Style="{StaticResource SubheaderTextStyle}"/>
-                        <Rectangle
-                            x:Name="FocusVisualWhite"
-                            IsHitTestVisible="False"
-                            Stroke="{StaticResource FocusVisualWhiteStrokeThemeBrush}"
-                            StrokeEndLineCap="Square"
-                            StrokeDashArray="1,1"
-                            Opacity="0"
-                            StrokeDashOffset="1.5"/>
-                        <Rectangle
-                            x:Name="FocusVisualBlack"
-                            IsHitTestVisible="False"
-                            Stroke="{StaticResource FocusVisualBlackStrokeThemeBrush}"
-                            StrokeEndLineCap="Square"
-                            StrokeDashArray="1,1"
-                            Opacity="0"
-                            StrokeDashOffset="0.5"/>
-
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="PointerOver">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Text" Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TenPercentGrayBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Pressed">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Text" Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TwintyPercentGrayBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Disabled">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Text" Storyboard.TargetProperty="Foreground">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonDisabledForegroundThemeBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                            <VisualStateGroup x:Name="FocusStates">
-                                <VisualState x:Name="Focused">
-                                    <Storyboard>
-                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetName="FocusVisualWhite" Storyboard.TargetProperty="Opacity"/>
-                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetName="FocusVisualBlack" Storyboard.TargetProperty="Opacity"/>
-                                    </Storyboard>
-                                </VisualState>
-                                <VisualState x:Name="Unfocused"/>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-
-    <!-- Page layout roots typically use entrance animations and a theme-appropriate background color -->
-
-    <Style x:Key="TitleTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
-        <Setter Property="FontWeight" Value="SemiBold"/>
-    </Style>
-
-    <Style x:Key="CaptionTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Foreground" Value="{StaticResource ApplicationSecondaryForegroundThemeBrush}"/>
-    </Style>
-
-    <Style x:Key="LayoutRootStyle" TargetType="Panel">
-        <Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>
-        <Setter Property="ChildrenTransitions">
-            <Setter.Value>
-                <TransitionCollection>
-                    <EntranceThemeTransition/>
-                </TransitionCollection>
-            </Setter.Value>
-        </Setter>
-    </Style>
-        </ResourceDictionary>
-        <ResourceDictionary x:Key="Dark">
-
-            <!-- Theme Resources -->
-
             <!-- Default Accent Color -->
             <Color x:Key="DefaultAccentColor">#8882A8</Color>
 
@@ -226,74 +15,89 @@
 
             <!-- General Purpose -->
             <SolidColorBrush x:Key="TenPercentDarkerBrush"
-                     Color="Black"
-                     Opacity=".1" />
+                        Color="Black"
+                        Opacity=".1" />
             <SolidColorBrush x:Key="TenPercentLighterBrush"
-                     Color="White"
-                     Opacity=".1" />
+                        Color="White"
+                        Opacity=".1" />
             <SolidColorBrush x:Key="TenPercentGrayBrush"
-                     Color="Gray"
-                     Opacity=".1" />
+                        Color="Gray"
+                        Opacity=".1" />
             <SolidColorBrush x:Key="TwintyPercentGrayBrush"
-                     Color="Gray"
-                     Opacity=".2" />
+                        Color="Gray"
+                        Opacity=".2" />
+            <SolidColorBrush x:Key="PointerBrush"
+                Color="Gray"
+                Opacity=".4" />
+            <SolidColorBrush x:Key="PressBrush"
+                Color="Gray"
+                Opacity=".8" />
             <SolidColorBrush x:Key="HighlightBrush"
-                     Color="#FFEFBF7D" />
-            <SolidColorBrush x:Key="ActionBrush"
-                     Color="#FFFF0000" />
+                        Color="#FFEFBF7D" />
             <SolidColorBrush x:Key="BlackBrush"
-                     Color="#FF000000" />
+                        Color="#FF000000" />
             <SolidColorBrush x:Key="WhiteBrush"
-                     Color="#FFFFFFFF" />
+                        Color="#FFFFFFFF" />
             <SolidColorBrush x:Key="transBrush"
-                     Color="#00FFFFFF" />
+                        Color="#00FFFFFF" />
 
-            <!-- Menu colors -->
+            <!-- Menu item  colors -->
+            <SolidColorBrush x:Key="ItemSelectedBrush"
+                        Color="Gray"
+                        Opacity=".1"  />
+            <SolidColorBrush x:Key="ItemSelectedHoverBrush"
+                        Color="Gray"
+                        Opacity=".0"  />
+            <SolidColorBrush x:Key="ItemHoverBrush"
+                        Color="Gray"
+                        Opacity=".5"  />
+
+            <!-- Menu icon colors -->
             <SolidColorBrush x:Key="ActiveBrush"
-                     Color="#FFFFFFFF" />
+                        Color="Gray" />
             <SolidColorBrush x:Key="NotActiveBrush"
-                     Color="#7DFF0000" />
+                        Color="#7DFF0000" />
 
             <!-- Content color text,Icons, ... -->
             <SolidColorBrush x:Key="ContentBrush"
-                     Color="#FFFFFFFF" />
+                        Color="#FF000000" />
 
 
             <!-- Header -->
             <SolidColorBrush x:Key="TitlebarBackgroundBrush"
-                     Color="#FF6EC0D6" />
+                        Color="#FF6EC0D6" />
             <SolidColorBrush x:Key="TitlebarBackgroundDarkBrush"
-                     Color="#FF466582" />
+                        Color="#FF466582" />
             <SolidColorBrush x:Key="TitlebarBackgroundLightBrush"
-                     Color="#FF466582" />
+                        Color="#FF466582" />
             <SolidColorBrush x:Key="StatusbarBackgroundBrush"
-                     Color="#FF6EC0D6" />
+                        Color="#FF6EC0D6" />
 
             <!-- Alert -->
             <SolidColorBrush x:Key="AlertForegroundBrush"
-                     Color="#FFFF4500" />
+                        Color="#FFFF4500" />
 
             <!-- Splitview Pane -->
             <SolidColorBrush x:Key="SplitViewBackgroundBrush"
-                     Color="#FF000000" />
+                        Color="#FFFFFFFF" />
             <SolidColorBrush x:Key="SplitViewForegroundBrush"
-                     Color="#FF8BD4E3" />
+                        Color="#FF8BD4E3" />
             <SolidColorBrush x:Key="HamburgerForegroundBrush"
-                     Color="#FFEFBF7D" />
+                        Color="#FFEFBF7D" />
 
             <!-- Splitview Content -->
-            <Color x:Key="PageBackgroundColor">#FF000000</Color>
+            <Color x:Key="PageBackgroundColor">#FFFFFFFF</Color>
             <SolidColorBrush x:Key="PageBackgroundBrush"
-                     Color="#FFD8EDE4" />
+                        Color="#FFD8EDE4" />
             <SolidColorBrush x:Key="PageTitleBrush"
-                     Color="#FF466582" />
+                        Color="#FF466582" />
             <SolidColorBrush x:Key="PageForegroundBrush"
-                     Color="#FF466582" />
+                        Color="#FF466582" />
 
             <!-- TextBlock styles -->
 
             <Style x:Key="BasicTextStyle" TargetType="TextBlock">
-                <Setter Property="Foreground" Value="{StaticResource ApplicationForegroundThemeBrush}"/>
+                <Setter Property="Foreground" Value="{ThemeResource ContentBrush}"/>
                 <Setter Property="FontSize" Value="{StaticResource ControlContentThemeFontSize}"/>
                 <Setter Property="FontFamily" Value="{StaticResource ContentControlThemeFontFamily}"/>
                 <Setter Property="TextTrimming" Value="WordEllipsis"/>
@@ -368,14 +172,245 @@
                                         <VisualState x:Name="PointerOver">
                                             <Storyboard>
                                                 <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Text" Storyboard.TargetProperty="Foreground">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TenPercentGrayBrush}"/>
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PointerBrush}"/>
                                                 </ObjectAnimationUsingKeyFrames>
                                             </Storyboard>
                                         </VisualState>
                                         <VisualState x:Name="Pressed">
                                             <Storyboard>
                                                 <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Text" Storyboard.TargetProperty="Foreground">
-                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TwintyPercentGrayBrush}"/>
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PressBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Disabled">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Text" Storyboard.TargetProperty="Foreground">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonDisabledForegroundThemeBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="FocusStates">
+                                        <VisualState x:Name="Focused">
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="0" To="1" Storyboard.TargetName="FocusVisualWhite" Storyboard.TargetProperty="Opacity"/>
+                                                <DoubleAnimation Duration="0" To="1" Storyboard.TargetName="FocusVisualBlack" Storyboard.TargetProperty="Opacity"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Unfocused"/>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+
+            <!-- Page layout roots typically use entrance animations and a theme-appropriate background color -->
+
+            <Style x:Key="TitleTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
+                <Setter Property="FontWeight" Value="SemiBold"/>
+            </Style>
+
+            <Style x:Key="CaptionTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Foreground" Value="{StaticResource ApplicationSecondaryForegroundThemeBrush}"/>
+            </Style>
+
+            <Style x:Key="LayoutRootStyle" TargetType="Panel">
+                <Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>
+                <Setter Property="ChildrenTransitions">
+                    <Setter.Value>
+                        <TransitionCollection>
+                            <EntranceThemeTransition/>
+                        </TransitionCollection>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+
+        <ResourceDictionary x:Key="Dark">
+
+            <!-- Theme Resources -->
+
+            <!-- Default Accent Color -->
+            <Color x:Key="DefaultAccentColor">#8882A8</Color>
+
+            <!-- ImageBrush Color -->
+            <ImageBrush ImageSource="/Assets/TravelBackground.png" x:Key="TravelBackground" Stretch="UniformToFill"/>
+            <AcrylicBrush x:Key="MaskBackground" BackgroundSource="Backdrop" TintColor="Black" Opacity="0.90"  TintOpacity="0.01" FallbackColor="Black"/>
+
+            <!-- General Purpose -->
+            <SolidColorBrush x:Key="TenPercentDarkerBrush"
+                     Color="Black"
+                     Opacity=".1" />
+            <SolidColorBrush x:Key="TenPercentLighterBrush"
+                     Color="White"
+                     Opacity=".1" />
+            <SolidColorBrush x:Key="TenPercentGrayBrush"
+                     Color="Gray"
+                     Opacity=".1" />
+            <SolidColorBrush x:Key="TwintyPercentGrayBrush"
+                     Color="Gray"
+                     Opacity=".2" />
+            <SolidColorBrush x:Key="PointerBrush"
+                Color="Gray"
+                Opacity=".4" />
+            <SolidColorBrush x:Key="PressBrush"
+                Color="Gray"
+                Opacity=".8" />
+            <SolidColorBrush x:Key="HighlightBrush"
+                     Color="#FFEFBF7D" />
+            <SolidColorBrush x:Key="ActionBrush"
+                     Color="#FFFF0000" />
+            <SolidColorBrush x:Key="BlackBrush"
+                     Color="#FF000000" />
+            <SolidColorBrush x:Key="WhiteBrush"
+                     Color="#FFFFFFFF" />
+            <SolidColorBrush x:Key="transBrush"
+                     Color="#00FFFFFF" />
+
+            <!-- Menu item  colors -->
+            <SolidColorBrush x:Key="ItemSelectedBrush"
+                        Color="Gray"
+                        Opacity=".1"  />
+            <SolidColorBrush x:Key="ItemSelectedHoverBrush"
+                        Color="Gray"
+                        Opacity=".0"  />
+            <SolidColorBrush x:Key="ItemHoverBrush"
+                        Color="Gray"
+                        Opacity=".5"  />
+
+            <!-- Menu icon colors -->
+            <SolidColorBrush x:Key="ActiveBrush"
+                     Color="Gray" />
+            <SolidColorBrush x:Key="NotActiveBrush"
+                     Color="#7DFF0000" />
+
+            <!-- Content color text,Icons, ... -->
+            <SolidColorBrush x:Key="ContentBrush"
+                     Color="#FFFFFFFF" />
+
+
+            <!-- Header -->
+            <SolidColorBrush x:Key="TitlebarBackgroundBrush"
+                     Color="#FF6EC0D6" />
+            <SolidColorBrush x:Key="TitlebarBackgroundDarkBrush"
+                     Color="#FF466582" />
+            <SolidColorBrush x:Key="TitlebarBackgroundLightBrush"
+                     Color="#FF466582" />
+            <SolidColorBrush x:Key="StatusbarBackgroundBrush"
+                     Color="#FF6EC0D6" />
+
+            <!-- Alert -->
+            <SolidColorBrush x:Key="AlertForegroundBrush"
+                     Color="#FFFF4500" />
+
+            <!-- Splitview Pane -->
+            <SolidColorBrush x:Key="SplitViewBackgroundBrush"
+                     Color="#FF000000" />
+            <SolidColorBrush x:Key="SplitViewForegroundBrush"
+                     Color="#FF8BD4E3" />
+            <SolidColorBrush x:Key="HamburgerForegroundBrush"
+                     Color="#FFEFBF7D" />
+
+            <!-- Splitview Content -->
+            <Color x:Key="PageBackgroundColor">#FF000000</Color>
+            <SolidColorBrush x:Key="PageBackgroundBrush"
+                     Color="#FFD8EDE4" />
+            <SolidColorBrush x:Key="PageTitleBrush"
+                     Color="#FF466582" />
+            <SolidColorBrush x:Key="PageForegroundBrush"
+                     Color="#FF466582" />
+
+            <!-- TextBlock styles -->
+
+            <Style x:Key="BasicTextStyle" TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{ThemeResource ContentBrush}"/>
+                <Setter Property="FontSize" Value="{StaticResource ControlContentThemeFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ContentControlThemeFontFamily}"/>
+                <Setter Property="TextTrimming" Value="WordEllipsis"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="Typography.StylisticSet20" Value="True"/>
+                <Setter Property="Typography.DiscretionaryLigatures" Value="True"/>
+                <Setter Property="Typography.CaseSensitiveForms" Value="True"/>
+            </Style>
+
+            <Style x:Key="BaselineTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasicTextStyle}">
+                <Setter Property="LineHeight" Value="20"/>
+                <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
+                <!-- Properly align text along its baseline -->
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <TranslateTransform X="-1" Y="4"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="SubheaderTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
+                <Setter Property="FontSize" Value="26.667"/>
+                <Setter Property="FontWeight" Value="Light"/>
+                <Setter Property="LineHeight" Value="30"/>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <TranslateTransform X="-1" Y="6"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- Button styles -->
+
+            <!--
+        TextButtonStyle is used to style a Button using subheader-styled text with no other adornment.  This
+        style is used in the GroupedItemsPage as a group header and in the FileOpenPickerPage for triggering
+        commands.
+    -->
+            <Style x:Key="TextButtonStyle" TargetType="Button">
+                <Setter Property="MinWidth" Value="0"/>
+                <Setter Property="MinHeight" Value="0"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid Background="Transparent">
+                                <TextBlock
+                            x:Name="Text"
+                            Text="{TemplateBinding Content}"
+                            Margin="3,-7,3,10"
+                            TextWrapping="NoWrap"
+                            Style="{StaticResource SubheaderTextStyle}"/>
+                                <Rectangle
+                            x:Name="FocusVisualWhite"
+                            IsHitTestVisible="False"
+                            Stroke="{ThemeResource FocusVisualWhiteStrokeThemeBrush}"
+                            StrokeEndLineCap="Square"
+                            StrokeDashArray="1,1"
+                            Opacity="0"
+                            StrokeDashOffset="1.5"/>
+                                <Rectangle
+                            x:Name="FocusVisualBlack"
+                            IsHitTestVisible="False"
+                            Stroke="{ThemeResource FocusVisualBlackStrokeThemeBrush}"
+                            StrokeEndLineCap="Square"
+                            StrokeDashArray="1,1"
+                            Opacity="0"
+                            StrokeDashOffset="0.5"/>
+
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal"/>
+                                        <VisualState x:Name="PointerOver">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Text" Storyboard.TargetProperty="Foreground">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PointerBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Pressed">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Text" Storyboard.TargetProperty="Foreground">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PressBrush}"/>
                                                 </ObjectAnimationUsingKeyFrames>
                                             </Storyboard>
                                         </VisualState>

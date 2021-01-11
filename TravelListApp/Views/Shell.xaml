@@ -49,7 +49,6 @@
                 </Border>
                 <TextBlock Text="{x:Bind Text}"
                            Margin="12 0 0 0"
-                           Foreground="{ThemeResource ContentBrush}"
                            VerticalAlignment="Center" />
             </StackPanel>
         </DataTemplate>

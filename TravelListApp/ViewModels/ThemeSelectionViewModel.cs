@@ -22,8 +22,8 @@ namespace TravelListApp.ViewModels
             };
 
             //Find the Current/Last selected theme, and set the IsSelected property for that specific theme item in the list.
-            var selectedTheme = Themes.FirstOrDefault(x => x.ThemeId == ThemeManager.CurrentTheme());
-            selectedTheme.IsSelected = true;
+            SelectedTheme = Themes.FirstOrDefault(x => x.ThemeId == ThemeManager.CurrentTheme());
+            SelectedTheme.IsSelected = true;
         }
 
         List<AppTheme> _themes;
@@ -47,7 +47,7 @@ namespace TravelListApp.ViewModels
             }
         }
 
-        string _selectedThemeName = "Light";
+        string _selectedThemeName;
         public string SelectedThemeName
         {
             get { return _selectedThemeName; }

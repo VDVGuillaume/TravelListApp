@@ -12,13 +12,6 @@
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
     RequestedTheme="{x:Bind ThemeViewModel.SelectedThemeName, Mode=OneWay}"
     Background="{ThemeResource PageBackgroundColor}">
-    
-    <!--DataContext="{Binding RelativeSource={RelativeSource Self}}">-->
-
-    <!--<UserControl.Resources>
-        <ImageBrush ImageSource="/Assets/Travel-Wallpaper-Background.png" x:Key="ImageBackground" Stretch="UniformToFill"/>
-        <AcrylicBrush x:Key="MaskBackground" BackgroundSource="Backdrop" TintColor="White" TintOpacity="0.1" FallbackColor="White"/>
-    </UserControl.Resources>-->
 
 
         <UserControl.Resources>
@@ -41,14 +34,14 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
                         <ListViewItemPresenter 
-                                               SelectedBackground="{StaticResource TenPercentLighterBrush}"
-                                               SelectedPointerOverBackground="{StaticResource TenPercentLighterBrush}"
-                                               PointerOverBackground="{StaticResource TenPercentDarkerBrush}"
-                                               ContentTransitions="{TemplateBinding ContentTransitions}"
-                                               HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                               VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                               ContentMargin="{TemplateBinding Padding}"
-                                               IsHitTestVisible="{Binding IsActive}" />
+                        SelectedBackground="{StaticResource ItemSelectedBrush}"
+                        SelectedPointerOverBackground="{StaticResource ItemSelectedHoverBrush}"
+                        PointerOverBackground="{StaticResource ItemHoverBrush}"
+                        ContentTransitions="{TemplateBinding ContentTransitions}"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        ContentMargin="{TemplateBinding Padding}"
+                        IsHitTestVisible="{Binding IsActive}" />
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -73,7 +66,6 @@
                 </Border>
                 <TextBlock Text="{Binding Text}"
                        Margin="0 4 0 0"
-                       Foreground="{ThemeResource ContentBrush}"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
             </StackPanel>
@@ -110,8 +102,7 @@
                      StretchDirection="DownOnly"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Center">
-                <TextBlock Foreground="{ThemeResource ContentBrush}"
-                           FontSize="48"
+                <TextBlock FontSize="48"
                            FontWeight="Light"
                            VerticalAlignment="Top"
                            HorizontalAlignment="Left"

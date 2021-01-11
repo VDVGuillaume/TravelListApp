@@ -15,7 +15,6 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <TextBlock Text="Travellist Editor"
-            Foreground="{ThemeResource ContentBrush}"
             FontSize="24"
             Margin="0 0 0 10"
             Grid.Row="0" />
@@ -29,7 +28,6 @@
                 <DataTemplate>
                     <Grid Padding="15,10" >
                         <TextBlock Text="{Binding Title}"
-                                Foreground="{ThemeResource ContentBrush}"
                                 Margin="0 0 0 10"/>
                     </Grid>
                 </DataTemplate>
