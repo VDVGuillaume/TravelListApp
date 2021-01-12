@@ -1,14 +1,13 @@
-﻿using Windows.UI.Xaml;
+﻿using Microsoft.Graph;
 using Microsoft.Identity.Client;
-using Microsoft.Graph;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Windows.UI.Xaml.Controls;
-using System.Collections.Generic;
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Net.Http.Headers;
-using TravelListApp.Identity;
+using System.Threading.Tasks;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
