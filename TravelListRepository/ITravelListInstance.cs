@@ -14,5 +14,6 @@ namespace TravelListRepository
         IBingRepo Bing { get; }
         ICategoryRepo Categories { get; }
         ICheckListItemRepo CheckLists { get; }
+        ITaskListItemRepo TaskLists { get; }
      }
 }

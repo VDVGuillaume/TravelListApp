@@ -28,5 +28,8 @@ namespace TravelListRepository.Rest
         public ICategoryRepo Categories => new RestCategoryRepository(_url);
 
         public ICheckListItemRepo CheckLists => new RestCheckListItemRepository(_url);
+
+        public ITaskListItemRepo TaskLists => new RestTaskListItemRepository(_url);
+
     }
 }

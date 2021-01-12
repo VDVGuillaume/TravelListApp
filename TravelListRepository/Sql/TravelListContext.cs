@@ -12,6 +12,7 @@ namespace TravelListRepository.Sql
         }
         public DbSet<TravelListItem> TravelLists { get; set; }
         public DbSet<TravelCheckListItem> Items { get; set; }
+        public DbSet<TravelTaskListItem> Tasks { get; set; }
         public DbSet<TravelPointOfInterest> Points { get; set; }
         public DbSet<TravelListItemImage> TravelListImages { get; set; }
         public DbSet<Category> Categories { get; set; }
