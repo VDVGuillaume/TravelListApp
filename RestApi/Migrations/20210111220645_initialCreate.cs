@@ -108,6 +108,40 @@ namespace TravelList.Api.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Routes",
+                columns: table => new
+                {
+                    TravelRouteID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    TravelListItemID = table.Column<int>(nullable: false),
+                    Driving = table.Column<bool>(nullable: false),
+                    StartTravelPointOfInterestID = table.Column<int>(nullable: true),
+                    EndTravelPointOfInterestID = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Routes", x => x.TravelRouteID);
+                    table.ForeignKey(
+                        name: "FK_Routes_Points_EndTravelPointOfInterestID",
+                        column: x => x.EndTravelPointOfInterestID,
+                        principalTable: "Points",
+                        principalColumn: "TravelPointOfInterestID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Routes_Points_StartTravelPointOfInterestID",
+                        column: x => x.StartTravelPointOfInterestID,
+                        principalTable: "Points",
+                        principalColumn: "TravelPointOfInterestID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Routes_TravelLists_TravelListItemID",
+                        column: x => x.TravelListItemID,
+                        principalTable: "TravelLists",
+                        principalColumn: "TravelListItemID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Items_TravelListItemID",
                 table: "Items",
@@ -116,6 +150,21 @@ namespace TravelList.Api.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Points_TravelListItemID",
                 table: "Points",
+                column: "TravelListItemID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Routes_EndTravelPointOfInterestID",
+                table: "Routes",
+                column: "EndTravelPointOfInterestID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Routes_StartTravelPointOfInterestID",
+                table: "Routes",
+                column: "StartTravelPointOfInterestID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Routes_TravelListItemID",
+                table: "Routes",
                 column: "TravelListItemID");
 
             migrationBuilder.CreateIndex(
@@ -133,10 +182,13 @@ namespace TravelList.Api.Migrations
                 name: "Items");
 
             migrationBuilder.DropTable(
-                name: "Points");
+                name: "Routes");
 
             migrationBuilder.DropTable(
                 name: "TravelListImages");
+
+            migrationBuilder.DropTable(
+                name: "Points");
 
             migrationBuilder.DropTable(
                 name: "TravelLists");

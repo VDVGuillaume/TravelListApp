@@ -10,8 +10,8 @@ using TravelListRepository.Sql;
 namespace TravelList.Api.Migrations
 {
     [DbContext(typeof(TravelListContext))]
-    [Migration("20210103162810_Migration v2.7")]
-    partial class Migrationv27
+    [Migration("20210111220645_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,17 +21,38 @@ namespace TravelList.Api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("TravelListModels.CheckListItem", b =>
+            modelBuilder.Entity("TravelListModels.Category", b =>
                 {
-                    b.Property<int>("CheckListItemID")
+                    b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name");
 
+                    b.Property<string>("UserId");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("TravelListModels.TravelCheckListItem", b =>
+                {
+                    b.Property<int>("TravelCheckListItemID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Amount");
+
+                    b.Property<string>("Category");
+
+                    b.Property<bool>("Checked");
+
+                    b.Property<string>("Name");
+
                     b.Property<int>("TravelListItemID");
 
-                    b.HasKey("CheckListItemID");
+                    b.HasKey("TravelCheckListItemID");
 
                     b.HasIndex("TravelListItemID");
 
@@ -130,7 +151,7 @@ namespace TravelList.Api.Migrations
                     b.ToTable("Routes");
                 });
 
-            modelBuilder.Entity("TravelListModels.CheckListItem", b =>
+            modelBuilder.Entity("TravelListModels.TravelCheckListItem", b =>
                 {
                     b.HasOne("TravelListModels.TravelListItem")
                         .WithMany("Items")
