@@ -9,7 +9,7 @@ namespace TravelListApp.Models
 {
     public class CheckListItem : TravelCheckListItem
     {
-        public Boolean IsNew { get; set; }
-        public Boolean ToRemove { get; set; }
+        public bool IsNew { get; set; }
+        public bool ToRemove { get; set; }
     }
 }
