@@ -28,6 +28,7 @@ namespace TravelListApp.Views
             TravelListMenu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("View"), Text = "View", NavigationDestination = typeof(TravelListItemPage) });
             TravelListMenu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("Edit"), Text = "Edit", NavigationDestination = typeof(TravelListItemEditPage) });
             TravelListMenu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("CheckList"), Text = "Checklist", NavigationDestination = typeof(TravelListItemChecklistPage) });
+            TravelListMenu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("TaskList"), Text = "Tasklist", NavigationDestination = typeof(TravelListItemTaskListPage) });
             TravelListMenu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("Map"), Text = "Places", NavigationDestination = typeof(TravelListItemPlacesPage) });
             TravelListMenu.Items.Add(new MenuItem() { Glyph = Icon.GetIcon("Route"), Text = "Routes", NavigationDestination = typeof(TravelListItemRoutesPage) });
 

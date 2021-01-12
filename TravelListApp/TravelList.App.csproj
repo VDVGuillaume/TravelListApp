@@ -182,6 +182,9 @@
     <Compile Include="Views\TravelListItemPage.xaml.cs">
       <DependentUpon>TravelListItemPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TravelListItemTaskListPage.xaml.cs">
+      <DependentUpon>TravelListItemTaskListPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TravelListPage.xaml.cs">
       <DependentUpon>TravelListPage.xaml</DependentUpon>
     </Compile>
@@ -261,6 +264,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TravelListItemPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TravelListItemTaskListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
