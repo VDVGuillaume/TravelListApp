@@ -29,7 +29,7 @@ namespace TravelListRepository.Sql
             return await _context.TravelLists.AsNoTracking()
                 .Include(x => x.Points).ThenInclude(p => p.ConnectedStartRoutes)
                 .Include(x => x.Points).ThenInclude(p => p.ConnectedEndRoutes)
-                .Include(x => x.Items).Include(x => x.Images)
+                .Include(x => x.Items).Include(x => x.Images).Include(x=>x.Tasks)
                 .Include(x => x.Routes)
                 .FirstOrDefaultAsync(p => p.TravelListItemID == tl.TravelListItemID);
         }
@@ -51,6 +51,7 @@ namespace TravelListRepository.Sql
                 .Include(x => x.Points).ThenInclude(p => p.ConnectedStartRoutes)
                 .Include(x => x.Points).ThenInclude(p => p.ConnectedEndRoutes)
                 .Include(x => x.Items)
+                .Include(x => x.Tasks)
                 .Include(x => x.Images)
                 .Include(x => x.Routes).ToListAsync();
         }
@@ -61,6 +62,7 @@ namespace TravelListRepository.Sql
                 .Include(x => x.Points).ThenInclude(p => p.ConnectedStartRoutes)
                 .Include(x => x.Points).ThenInclude(p => p.ConnectedEndRoutes)
                 .Include(x => x.Items)
+                .Include(x => x.Tasks)
                 .Include(x => x.Images)
                 .Include(x => x.Routes)
                 .FirstOrDefaultAsync(p => p.TravelListItemID == id);
