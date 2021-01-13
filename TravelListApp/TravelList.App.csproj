@@ -122,6 +122,7 @@
     <Compile Include="Models\CarouselImage.cs" />
     <Compile Include="Models\CheckListItem.cs" />
     <Compile Include="Models\RoutesOfPointOfInterest.cs" />
+    <Compile Include="Models\TaskListItem.cs" />
     <Compile Include="Services\Converters\IconConverter.cs" />
     <Compile Include="Services\LocalStorage.cs" />
     <Compile Include="Services\Validation\IPropertyList.cs" />

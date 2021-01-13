@@ -48,6 +48,7 @@ namespace TravelListApp.ViewModels
                         this.Latitude = _model.Latitude;
                         this.Longitude = _model.Longitude;
                         this.Items = _model.Items.ToList();
+                        this.Tasks = _model.Tasks.ToList();
                         this.Points = _model.Points.ToList();
                         this.Images = _model.Images.ToList();
                         this.Routes = _model.Routes.ToList();
@@ -184,6 +185,19 @@ namespace TravelListApp.ViewModels
             set
             {
                 Model.Items = value;
+                WriteList(value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets Tasks.
+        /// </summary>
+        public List<TravelTaskListItem> Tasks
+        {
+            get => ReadList<TravelTaskListItem>().ToList();
+            set
+            {
+                Model.Tasks = value;
                 WriteList(value);
             }
         }
@@ -499,6 +513,34 @@ namespace TravelListApp.ViewModels
                     await App.Repository.CheckLists.UpdateCheckListItemAsync(ci.TravelCheckListItemID, ci);
                 }
             
+        }
+
+        public async Task<List<TravelTaskListItem>> GetTravelTaskListItems()
+        {
+            IEnumerable<TravelTaskListItem> checkListItems = await App.Repository.TaskLists.GetTaskList(_model.TravelListItemID);
+            return checkListItems.ToList();
+        }
+
+        /// <summary>
+        /// Saves travellist data that has been edited.
+        /// </summary>
+        public async Task SaveTasklistAsync(TaskListItem ci)
+        {
+
+            if (ci.IsNew)
+            {
+                ci.TravelListItemID = _model.TravelListItemID;
+                await App.Repository.TaskLists.CreateTaskListItemAsync(ci);
+            }
+            if (ci.ToRemove)
+            {
+                await App.Repository.TaskLists.DeleteTaskListItemAsync(ci);
+            }
+            else
+            {
+                await App.Repository.TaskLists.UpdateTaskListItemAsync(ci.TravelTaskListItemID, ci);
+            }
+
         }
 
 
