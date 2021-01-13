@@ -17,11 +17,11 @@
                     <Color x:Key="SystemAccentColor">#B1560F</Color>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
-            <!--<ResourceDictionary.MergedDictionaries>
-                --><!-- Theme colors and icons -->
+            <ResourceDictionary.MergedDictionaries>
+                 <!--Theme colors and icons--> 
                 <!--<ResourceDictionary Source="Services/Icons/Icons.xaml" />
-                <ResourceDictionary Source="Services/Theming/Theme.xaml" />--><!--
-            </ResourceDictionary.MergedDictionaries>-->
+                <ResourceDictionary Source="Services/ThemeResources/Theme.xaml" />-->
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

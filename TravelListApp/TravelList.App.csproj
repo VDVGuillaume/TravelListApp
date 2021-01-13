@@ -129,12 +129,6 @@
       <DependentUpon>IconsTheme.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\LocalStorage.cs" />
-    <Compile Include="Services\ThemeResources\LightTheme.xaml.cs">
-      <DependentUpon>LightTheme.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Services\ThemeResources\DarkTheme.xaml.cs">
-      <DependentUpon>DarkTheme.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Services\ThemeResources\Theme.xaml.cs">
       <DependentUpon>Theme.xaml</DependentUpon>
     </Compile>
@@ -235,14 +229,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Services\Icons\IconsTheme.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Services\ThemeResources\LightTheme.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Services\ThemeResources\DarkTheme.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
