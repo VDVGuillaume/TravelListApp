@@ -10,13 +10,13 @@
     xmlns:mvvm="using:TravelListApp.Services.Converters"
     mc:Ignorable="d"
     xmlns:sys="using:System"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource PageBackgroundColor}">
 
     <Page.Resources>
         <mvvm:IconConverter x:Key="IconConverter" />
     </Page.Resources>
 
-    <Grid x:Name="Grid" Background="{StaticResource TravelBackground2}"
+    <Grid x:Name="Grid" Background="{StaticResource TravelBackground}"
           Padding="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -43,7 +43,7 @@
                     <DataTemplate>
                         <Button x:Name="mapItemButton" Click="mapItemButton_Click" Background="Transparent">
                             <StackPanel>
-                                <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                                <Border Background="{ThemeResource PageBackgroundColor}">
                                     <TextBlock Text="{Binding Name}"/>
                                 </Border>
                                 <Image Source="{Binding ImageSourceUri}"
@@ -76,7 +76,7 @@
                                     <RowDefinition Height="40" />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <AppBarButton Padding="0,0,0,0" Margin="0,0,0,0" Grid.Column="0" Foreground="{StaticResource WhiteBrush}"  Click="ZoomTo_Click" Tag="{Binding Location}" HorizontalAlignment="Center">
+                                <AppBarButton Padding="0,0,0,0" Margin="0,0,0,0" Grid.Column="0" Foreground="{ThemeResource ContentBrush}"  Click="ZoomTo_Click" Tag="{Binding Location}" HorizontalAlignment="Center">
                                     <AppBarButton.Icon >
                                         <PathIcon Data="{Binding PinIconName, Converter={StaticResource IconConverter}, Mode=OneWay}" HorizontalAlignment="Center" />
                                     </AppBarButton.Icon>
@@ -84,8 +84,8 @@
                                 <TextBox Grid.Column="1"
                                 HorizontalAlignment="Stretch"
                                 BorderThickness="0.5"
-                                Foreground="{StaticResource WhiteBrush}"
-                                BorderBrush="{StaticResource WhiteBrush}"
+                                Foreground="{ThemeResource ContentBrush}"
+                                BorderBrush="{ThemeResource ContentBrush}"
                                 Background="{StaticResource transBrush}"
                                 Tag="{Binding LocalId}"
                                 SelectionChanged="MapItemsList_SelectionChanged"
@@ -103,7 +103,7 @@
             <ItemsControl x:Name="ErrorsList">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Foreground="{StaticResource WhiteBrush}" Text="{Binding}" Margin="10 5" />
+                        <TextBlock Text="{Binding}" Margin="10 5" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
@@ -113,28 +113,28 @@
             x:Name="PlaceNameTextBox" PlaceholderText="Placename..."
             HorizontalAlignment="Stretch"
             BorderThickness="0.5"
-            Foreground="{StaticResource WhiteBrush}"
-            BorderBrush="{StaticResource WhiteBrush}"
+            Foreground="{ThemeResource ContentBrush}"
+            BorderBrush="{ThemeResource ContentBrush}"
             Background="{StaticResource transBrush}"
             Margin="0 2.5 0 2.5" />
 
         <CommandBar Grid.Row="6" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" Background="{StaticResource TenPercentLighterBrush}">
-            <AppBarButton x:Name="ListCommandButton" Label="List" Foreground="{StaticResource WhiteBrush}" Click="ShowListAppBar_Click"  >
+            <AppBarButton x:Name="ListCommandButton" Label="List" Foreground="{ThemeResource ContentBrush}" Click="ShowListAppBar_Click"  >
                 <AppBarButton.Icon >
                     <PathIcon Data="{x:Bind ShowListIcon.Glyph}" HorizontalAlignment="Center" />
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton x:Name="AddPointCommandButton" Label="Add" Foreground="{StaticResource WhiteBrush}" Click="AddPointAppBar_Click" >
+            <AppBarButton x:Name="AddPointCommandButton" Label="Add" Foreground="{ThemeResource ContentBrush}" Click="AddPointAppBar_Click" >
                 <AppBarButton.Icon >
                     <PathIcon Data="{x:Bind AddPointIcon.Glyph}" HorizontalAlignment="Center" />
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton x:Name="RemovePointCommandButton" Label="Remove" Foreground="{StaticResource WhiteBrush}" Click="RemovePointAppBar_Click">
+            <AppBarButton x:Name="RemovePointCommandButton" Label="Remove" Foreground="{ThemeResource ContentBrush}" Click="RemovePointAppBar_Click">
                 <AppBarButton.Icon>
                     <PathIcon Data="{x:Bind RemovePointIcon.Glyph}" HorizontalAlignment="Center"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton x:Name="SaveCommandButton" Label="Save" Foreground="{StaticResource WhiteBrush}" Click="SaveAppBar_Click">
+            <AppBarButton x:Name="SaveCommandButton" Label="Save" Foreground="{ThemeResource ContentBrush}" Click="SaveAppBar_Click">
                 <AppBarButton.Icon>
                     <PathIcon Data="{x:Bind SaveIcon.Glyph}" HorizontalAlignment="Center"/>
                 </AppBarButton.Icon>

@@ -8,13 +8,13 @@
     xmlns:mvvm="using:TravelListApp.Services.Converters"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource PageBackgroundColor}">
 
     <Page.Resources>
         <mvvm:DateTimeToDateTimeOffsetConverter x:Key="DateTimeToDateTimeOffsetConverter" />
     </Page.Resources>
 
-    <Grid Background="{StaticResource TravelBackground2}"
+    <Grid Background="{StaticResource TravelBackground}"
           Padding="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -41,14 +41,13 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <TextBlock Text="Travellist Editor"
-                            Foreground="{StaticResource WhiteBrush}"
                             FontSize="24"
                             Margin="0 0 0 10"
                             Grid.ColumnSpan="2" />
             <TextBox Header="Name"
                              BorderThickness="0.5"
-                             Foreground="{StaticResource WhiteBrush}"
-                             BorderBrush="{StaticResource WhiteBrush}"
+                             Foreground="{ThemeResource ContentBrush}"
+                             BorderBrush="{ThemeResource ContentBrush}"
                              Background="{StaticResource transBrush}"
                              Text="{x:Bind ViewModel.Name, Mode=TwoWay}"
                              Margin="0 0 5 10"
@@ -57,8 +56,8 @@
                              Grid.Column="0" />
             <TextBox Header="Description"
                              BorderThickness="0.5"
-                             Foreground="{StaticResource WhiteBrush}"
-                             BorderBrush="{StaticResource WhiteBrush}"
+                             Foreground="{ThemeResource ContentBrush}"
+                             BorderBrush="{ThemeResource ContentBrush}"
                              Background="{StaticResource transBrush}"
                              Text="{x:Bind ViewModel.Description, Mode=TwoWay}"
                              Margin="0 0 5 10"
@@ -67,8 +66,8 @@
                              Grid.Column="0" />
             <CalendarDatePicker Header="Start date"
                                 BorderThickness="0.5"
-                                Foreground="{StaticResource WhiteBrush}"
-                                BorderBrush="{StaticResource WhiteBrush}"
+                                Foreground="{ThemeResource ContentBrush}"
+                                BorderBrush="{ThemeResource ContentBrush}"
                                 Background="{StaticResource transBrush}"
                                 Date="{x:Bind ViewModel.StartDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"
                                 HorizontalAlignment="Stretch"
@@ -78,8 +77,8 @@
                                 DateFormat="{}{month.full} {day.integer}, {year.full}" />
             <CalendarDatePicker Header="End date"
                                 BorderThickness="0.5"
-                                Foreground="{StaticResource WhiteBrush}"
-                                BorderBrush="{StaticResource WhiteBrush}"
+                                Foreground="{ThemeResource ContentBrush}"
+                                BorderBrush="{ThemeResource ContentBrush}"
                                 Background="{StaticResource transBrush}"
                                 Date="{x:Bind ViewModel.EndDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"
                                 HorizontalAlignment="Stretch"
@@ -89,8 +88,8 @@
                                 DateFormat="{}{month.full} {day.integer}, {year.full}" />
             <ComboBox Header="Country"
                               BorderThickness="0.5"
-                              Foreground="{StaticResource WhiteBrush}"
-                              BorderBrush="{StaticResource WhiteBrush}"
+                              Foreground="{ThemeResource ContentBrush}"
+                              BorderBrush="{ThemeResource ContentBrush}"
                               Background="{StaticResource transBrush}"
                               ItemsSource="{x:Bind ViewModel.Countries}"
                               SelectedItem="{x:Bind ViewModel.Country, Mode=TwoWay}"
@@ -102,8 +101,8 @@
             <Button x:Name="button" 
                     Click="Convert_Click"
                     BorderThickness="0.5"
-                    Foreground="{StaticResource WhiteBrush}"
-                    BorderBrush="{StaticResource WhiteBrush}"
+                    Foreground="{ThemeResource ContentBrush}"
+                    BorderBrush="{ThemeResource ContentBrush}"
                     Background="{StaticResource transBrush}"
                     Content="Add picture" 
                     HorizontalAlignment="Stretch"
@@ -138,7 +137,7 @@
                               Source="{Binding Photo}"
                               Stretch="Uniform" />
                                     <StackPanel VerticalAlignment="Bottom">
-                                        <AppBarButton x:Name="DeleteImageCommandButton" Foreground="{StaticResource WhiteBrush}" Tag="{Binding ImageName}" Click="DeleteImageAppBar_Click" HorizontalAlignment="Right">
+                                        <AppBarButton x:Name="DeleteImageCommandButton" Foreground="{ThemeResource ContentBrush}" Tag="{Binding ImageName}" Click="DeleteImageAppBar_Click" HorizontalAlignment="Right">
                                             <AppBarButton.Icon>
                                                 <PathIcon Data="{Binding DeleteIcon.Glyph}" HorizontalAlignment="Center"/>
                                             </AppBarButton.Icon>
@@ -158,18 +157,18 @@
             <ItemsControl ItemsSource="{x:Bind ViewModel.Errors, Mode=OneWay}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Foreground="{StaticResource WhiteBrush}" Text="{Binding}" Margin="10 5" />
+                        <TextBlock Text="{Binding}" Margin="10 5" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Grid>
         <CommandBar Grid.Column="0" Grid.Row="3" x:Name="SecondaryTileCommandBar" IsSticky="True" IsOpen="False" Background="{StaticResource TenPercentLighterBrush}" >
-            <AppBarButton x:Name="SaveCommandButton" Label="Save" Foreground="{StaticResource WhiteBrush}" Click="SaveAppBar_Click">
+            <AppBarButton x:Name="SaveCommandButton" Label="Save" Foreground="{ThemeResource ContentBrush}" Click="SaveAppBar_Click">
                 <AppBarButton.Icon>
                     <PathIcon Data="{x:Bind SaveIcon.Glyph}" HorizontalAlignment="Center"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton x:Name="DeleteCommandButton" Label="Delete" Foreground="{StaticResource WhiteBrush}" Click="DeleteAppBar_Click">
+            <AppBarButton x:Name="DeleteCommandButton" Label="Delete" Foreground="{ThemeResource ContentBrush}" Click="DeleteAppBar_Click">
                 <AppBarButton.Icon>
                     <PathIcon Data="{x:Bind DeleteIcon.Glyph}" HorizontalAlignment="Center"/>
                 </AppBarButton.Icon>

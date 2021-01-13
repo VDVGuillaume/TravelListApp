@@ -7,10 +7,10 @@
     xmlns:local="using:TravelListApp.Views"
     x:Class="TravelListApp.Views.TravelListItemChecklistPage"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource PageBackgroundColor}">
 
 
-    <StackPanel Background="{StaticResource TravelBackground2}">
+    <StackPanel Background="{StaticResource TravelBackground}">
 
         <Grid>
             <Grid.RowDefinitions>
