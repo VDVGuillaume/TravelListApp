@@ -3,25 +3,25 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TravelList.Api.Migrations
 {
-    public partial class Migrationv20 : Migration
+    public partial class Migrationv11 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Routes",
+                name: "Tasks",
                 columns: table => new
                 {
-                    TravelRouteID = table.Column<int>(nullable: false)
+                    TravelTaskListItemID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    TravelListItemID = table.Column<int>(nullable: false),
-                    StartTravelPointOfInterestID = table.Column<int>(nullable: false),
-                    EndTravelPointOfInterestID = table.Column<int>(nullable: false)
+                    Name = table.Column<string>(nullable: true),
+                    Checked = table.Column<bool>(nullable: false),
+                    TravelListItemID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Routes", x => x.TravelRouteID);
+                    table.PrimaryKey("PK_Tasks", x => x.TravelTaskListItemID);
                     table.ForeignKey(
-                        name: "FK_Routes_TravelLists_TravelListItemID",
+                        name: "FK_Tasks_TravelLists_TravelListItemID",
                         column: x => x.TravelListItemID,
                         principalTable: "TravelLists",
                         principalColumn: "TravelListItemID",
@@ -29,15 +29,15 @@ namespace TravelList.Api.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Routes_TravelListItemID",
-                table: "Routes",
+                name: "IX_Tasks_TravelListItemID",
+                table: "Tasks",
                 column: "TravelListItemID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Routes");
+                name: "Tasks");
         }
     }
 }

@@ -34,7 +34,8 @@ namespace TravelListApp.ViewModels
             get => _model;
             set
             {
-                if (value != null) {
+                if (value != null)
+                {
                     if (_model != value)
                     {
                         _model = value;
@@ -47,11 +48,14 @@ namespace TravelListApp.ViewModels
                         this.Latitude = _model.Latitude;
                         this.Longitude = _model.Longitude;
                         this.Items = _model.Items.ToList();
+                        this.Tasks = _model.Tasks.ToList();
                         this.Points = _model.Points.ToList();
                         this.Images = _model.Images.ToList();
                         this.Routes = _model.Routes.ToList();
                     }
-                } else {
+                }
+                else
+                {
                     _model = new TravelListItem();
                     _model.UserId = LoginPage.account.Id;
                 }
@@ -63,7 +67,7 @@ namespace TravelListApp.ViewModels
         }
 
 
-    
+
 
         /// <summary>
         /// Gets or sets the TravelListItemID's.
@@ -175,12 +179,25 @@ namespace TravelListApp.ViewModels
         /// <summary>
         /// Gets or sets Items.
         /// </summary>
-        public List<CheckListItem> Items
+        public List<TravelCheckListItem> Items
         {
-            get => ReadList<CheckListItem>().ToList();
+            get => ReadList<TravelCheckListItem>().ToList();
             set
             {
                 Model.Items = value;
+                WriteList(value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets Tasks.
+        /// </summary>
+        public List<TravelTaskListItem> Tasks
+        {
+            get => ReadList<TravelTaskListItem>().ToList();
+            set
+            {
+                Model.Tasks = value;
                 WriteList(value);
             }
         }
@@ -279,12 +296,12 @@ namespace TravelListApp.ViewModels
 
         public async Task<CarouselImage> ConvertImageTask(TravelListItemImage image)
         {
-                StorageFile sfile = await LocalStorage.AsStorageFile(image.ImageData, image.ImageName);
-                CarouselImage cImage = new CarouselImage(image)
-                {
-                    Photo = await LocalStorage.getImageFromStorageFile(sfile)
-                };
-                return cImage;
+            StorageFile sfile = await LocalStorage.AsStorageFile(image.ImageData, image.ImageName);
+            CarouselImage cImage = new CarouselImage(image)
+            {
+                Photo = await LocalStorage.getImageFromStorageFile(sfile)
+            };
+            return cImage;
         }
 
         public List<PointOfInterest> syncPoints = new List<PointOfInterest>();
@@ -456,8 +473,81 @@ namespace TravelListApp.ViewModels
             await RefreshAsync();
         }
 
+
+
+        public async Task<List<Category>> GetCategoriesAsync()
+        {            
+            IEnumerable<Category> categories = await App.Repository.Categories.GetAllCategories(LoginPage.account.Id);
+            return categories.ToList();
+        }
+
+        public async Task SaveCategoryAsync(Category category)
+        {
+            await App.Repository.Categories.CreateCategory(category);
+        }
+
+        public async Task<List<TravelCheckListItem>> GetTravelCheckListItems()
+        {
+            IEnumerable<TravelCheckListItem> checkListItems = await App.Repository.CheckLists.GetCheckList(_model.TravelListItemID);
+            return checkListItems.ToList();
+        }
+
+       
         /// <summary>
-        /// Saves travellist points data that has been edited.
+        /// Saves travellist data that has been edited.
+        /// </summary>
+        public async Task SaveChecklistAsync(CheckListItem ci)
+        {           
+       
+                if (ci.IsNew)
+                {
+                    ci.TravelListItemID = _model.TravelListItemID;                    
+                    await App.Repository.CheckLists.CreateCheckListItemAsync(ci);
+                }
+                if (ci.ToRemove)
+                {
+                    await App.Repository.CheckLists.DeleteCheckListItemAsync(ci);
+                }
+                else
+                {
+                    await App.Repository.CheckLists.UpdateCheckListItemAsync(ci.TravelCheckListItemID, ci);
+                }
+            
+        }
+
+        public async Task<List<TravelTaskListItem>> GetTravelTaskListItems()
+        {
+            IEnumerable<TravelTaskListItem> checkListItems = await App.Repository.TaskLists.GetTaskList(_model.TravelListItemID);
+            return checkListItems.ToList();
+        }
+
+        /// <summary>
+        /// Saves travellist data that has been edited.
+        /// </summary>
+        public async Task SaveTasklistAsync(TaskListItem ci)
+        {
+
+            if (ci.IsNew)
+            {
+                ci.TravelListItemID = _model.TravelListItemID;
+                await App.Repository.TaskLists.CreateTaskListItemAsync(ci);
+            }
+            if (ci.ToRemove)
+            {
+                await App.Repository.TaskLists.DeleteTaskListItemAsync(ci);
+            }
+            else
+            {
+                await App.Repository.TaskLists.UpdateTaskListItemAsync(ci.TravelTaskListItemID, ci);
+            }
+
+        }
+
+
+
+
+        /// <summary>
+        /// Delete travellist.
         /// </summary>
         public async Task SavePointsAsync()
         {
@@ -507,6 +597,9 @@ namespace TravelListApp.ViewModels
                 await RefreshAsync();
             }
         }
+
+
+
 
 
         /// <summary>
@@ -589,5 +682,8 @@ namespace TravelListApp.ViewModels
         /// Called when a bound DataGrid control commits the edits that have been made to a travellist.
         /// </summary>
         public async void EndEdit() => await SaveAsync();
+
+
+
     }
 }

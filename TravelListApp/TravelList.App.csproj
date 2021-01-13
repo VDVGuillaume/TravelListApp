@@ -121,7 +121,9 @@
     </Compile>
     <Compile Include="Models\AppTheme.cs" />
     <Compile Include="Models\CarouselImage.cs" />
+    <Compile Include="Models\CheckListItem.cs" />
     <Compile Include="Models\RoutesOfPointOfInterest.cs" />
+    <Compile Include="Models\TaskListItem.cs" />
     <Compile Include="Services\Converters\IconConverter.cs" />
     <Compile Include="Services\Icons\IconsTheme.xaml.cs">
       <DependentUpon>IconsTheme.xaml</DependentUpon>
@@ -145,7 +147,6 @@
     <Compile Include="Services\Validation\ObservableUniqueCollection.cs" />
     <Compile Include="Services\Validation\PropertyList.cs" />
     <Compile Include="Services\Validation\Property.cs" />
-    <Compile Include="Identity\Account.cs" />
     <Compile Include="UserControls\CollapsibleSearchBox.xaml.cs">
       <DependentUpon>CollapsibleSearchBox.xaml</DependentUpon>
     </Compile>
@@ -200,6 +201,9 @@
     </Compile>
     <Compile Include="Views\TravelListItemPage.xaml.cs">
       <DependentUpon>TravelListItemPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TravelListItemTaskListPage.xaml.cs">
+      <DependentUpon>TravelListItemTaskListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TravelListPage.xaml.cs">
       <DependentUpon>TravelListPage.xaml</DependentUpon>
@@ -287,6 +291,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TravelListItemPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TravelListItemTaskListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

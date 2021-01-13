@@ -5,35 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20201230153259_Migration v2.4.cs" />
-    <Compile Remove="Migrations\20201230153259_Migration v2.4.Designer.cs" />
-    <Compile Remove="Migrations\20201230153756_Migration v2.5.cs" />
-    <Compile Remove="Migrations\20201230153756_Migration v2.5.Designer.cs" />
-    <Compile Remove="Migrations\20201230154409_Migration v2.6.cs" />
-    <Compile Remove="Migrations\20201230154409_Migration v2.6.Designer.cs" />
-    <Compile Remove="Migrations\20201230160050_Migration v2.7.cs" />
-    <Compile Remove="Migrations\20201230160050_Migration v2.7.Designer.cs" />
-    <Compile Remove="Migrations\20201230160305_Migration v2.8.cs" />
-    <Compile Remove="Migrations\20201230160305_Migration v2.8.Designer.cs" />
-    <Compile Remove="Migrations\20201230161150_Migration v2.9.cs" />
-    <Compile Remove="Migrations\20201230161150_Migration v2.9.Designer.cs" />
-    <Compile Remove="Migrations\20201230162251_Migration v3.0.cs" />
-    <Compile Remove="Migrations\20201230162251_Migration v3.0.Designer.cs" />
-    <Compile Remove="Migrations\20201230162928_Migration v3.1.cs" />
-    <Compile Remove="Migrations\20201230162928_Migration v3.1.Designer.cs" />
-    <Compile Remove="Migrations\20201230163208_Migration v3.2.cs" />
-    <Compile Remove="Migrations\20201230163208_Migration v3.2.Designer.cs" />
-    <Compile Remove="Migrations\20201230164034_Migration v3.3.cs" />
-    <Compile Remove="Migrations\20201230164034_Migration v3.3.Designer.cs" />
-    <Compile Remove="Migrations\20201230164140_Migration v3.4.cs" />
-    <Compile Remove="Migrations\20201230164140_Migration v3.4.Designer.cs" />
-    <Compile Remove="Migrations\20201230165002_Migration v3.5.cs" />
-    <Compile Remove="Migrations\20201230165002_Migration v3.5.Designer.cs" />
-    <Compile Remove="Migrations\20201230165430_Migration v3.6.cs" />
-    <Compile Remove="Migrations\20201230165430_Migration v3.6.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -44,6 +15,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.1" PrivateAssets="All" />
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.10" />
     <PackageReference Include="Microsoft.NETCore.Windows.ApiSets" Version="1.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
   </ItemGroup>
 
   <ItemGroup>
