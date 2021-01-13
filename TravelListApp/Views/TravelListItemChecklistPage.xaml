@@ -12,13 +12,15 @@
 
     <StackPanel Background="{StaticResource TravelBackground}">
 
+        <local:TravelListItemMenu x:Name="Menu"/>
+
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />
-                <RowDefinition />
             </Grid.RowDefinitions>
-            <local:TravelListItemMenu x:Name="Menu" Grid.Row="0"/>
-            <TextBlock  Text="CheckList" FontSize="20" Margin="41,48,-41,2" Grid.RowSpan="2"  />
+            <TextBlock Text="CheckList"
+                            FontSize="20"
+                            Margin="10 0 0 10" />
         </Grid>
 
 

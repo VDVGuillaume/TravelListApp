@@ -44,10 +44,10 @@
             <!-- Menu item  colors -->
             <SolidColorBrush x:Key="ItemSelectedBrush"
                         Color="Gray"
-                        Opacity=".1"  />
+                        Opacity=".3"  />
             <SolidColorBrush x:Key="ItemSelectedHoverBrush"
                         Color="Gray"
-                        Opacity=".0"  />
+                        Opacity=".1"  />
             <SolidColorBrush x:Key="ItemHoverBrush"
                         Color="Gray"
                         Opacity=".5"  />
@@ -275,10 +275,10 @@
             <!-- Menu item  colors -->
             <SolidColorBrush x:Key="ItemSelectedBrush"
                         Color="Gray"
-                        Opacity=".1"  />
+                        Opacity=".3"  />
             <SolidColorBrush x:Key="ItemSelectedHoverBrush"
                         Color="Gray"
-                        Opacity=".0"  />
+                        Opacity=".1"  />
             <SolidColorBrush x:Key="ItemHoverBrush"
                         Color="Gray"
                         Opacity=".5"  />

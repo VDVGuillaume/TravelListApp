@@ -42,7 +42,7 @@ namespace TravelListApp.ViewModels
                 SetProperty(ref _selectedTheme, value);
                 if (value != null) {
                     SelectedThemeName = value.ThemeId.ToString();
-                    OnThemeSelected(value);
+                    // OnThemeSelected(value);
                 }
             }
         }
