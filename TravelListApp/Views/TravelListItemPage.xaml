@@ -45,16 +45,16 @@
                         </controls:Carousel.ItemTemplate>
                     </controls:Carousel>
                     <TextBlock Text="{x:Bind ViewModel.Name}" Style="{ThemeResource TitleTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,15"/>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Description:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
-                        <TextBlock x:Name="DescriptionTextBlock" Text="{x:Bind ViewModel.Description}" Style="{ThemeResource CaptionTextStyle}" Margin="0,0,15,10"
-                              Width="300"
+                    <TextBlock Text="Description:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
+                    <TextBlock x:Name="DescriptionTextBlock" Text="{x:Bind ViewModel.Description}" Style="{ThemeResource CaptionTextStyle}"
+                              MinWidth="300"
+                              Margin="20 0 10 10"
                               TextWrapping="Wrap" 
                               TextTrimming="WordEllipsis" 
                               LineStackingStrategy="BlockLineHeight"
+                              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                               LineHeight="20"
                               MaxHeight="60"/>
-                    </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Country:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
                         <TextBlock Text="{x:Bind ViewModel.Country}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,10"/>

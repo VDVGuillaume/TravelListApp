@@ -34,7 +34,6 @@ namespace TravelListApp.Views
             CarouselControl.ItemsSource = cImages;
             Size s = App.ViewModel.GetCurrentViewSize();
             CarouselControl.Height = s.Height/3;
-            DescriptionTextBlock.Width = s.Width / 1.75;
         }
 
         public TravelListItemViewModel ViewModel { get; set; }
