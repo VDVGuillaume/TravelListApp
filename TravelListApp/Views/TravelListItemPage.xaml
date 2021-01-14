@@ -6,15 +6,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:local1="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     mc:Ignorable="d"
     Background="{ThemeResource PageBackgroundColor}">
 
-    <Page.Resources>
-
-    </Page.Resources>
-
-        <Grid Background="{StaticResource TravelBackground}"
+    <Grid Background="{ThemeResource TravelBackground}"
           Padding="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -24,11 +19,11 @@
 
         <local:TravelListItemMenu x:Name="Menu" />
 
-        <Grid Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch">
+        <Grid Grid.Row="1" VerticalAlignment="Stretch">
             <Image Source="{x:Bind ViewModel.firstConvertedImage }" Stretch="UniformToFill" />
-            <Border VerticalAlignment="Stretch" Background="{StaticResource MaskBackground}">
+            <Border VerticalAlignment="Stretch" Background="{ThemeResource MaskBackground}">
                 <StackPanel VerticalAlignment="Bottom">
-                <controls:Carousel x:Name="CarouselControl"
+                    <controls:Carousel x:Name="CarouselControl"
                   InvertPositive="True"
                   ItemDepth="300"
                   ItemMargin="0"
@@ -38,50 +33,24 @@
                   Orientation="Horizontal"
                   SelectedIndex="0"
                   >
-                    <controls:Carousel.EasingFunction>
-                        <CubicEase EasingMode="EaseOut" />
-                    </controls:Carousel.EasingFunction>
-                    <controls:Carousel.ItemTemplate>
-                        <DataTemplate>
+                        <controls:Carousel.EasingFunction>
+                            <CubicEase EasingMode="EaseOut" />
+                        </controls:Carousel.EasingFunction>
+                        <controls:Carousel.ItemTemplate>
+                            <DataTemplate>
                                 <Image
                           Source="{Binding Photo}"
                           Stretch="Uniform" />
-                        </DataTemplate>
-                    </controls:Carousel.ItemTemplate>
-                </controls:Carousel>
-                <TextBlock Text="{x:Bind ViewModel.Name}" Foreground="{StaticResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextStyle}" Height="60" Margin="15,0,15,0"/>
-                <TextBlock Text="{x:Bind ViewModel.Description}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
-                <TextBlock Text="{x:Bind ViewModel.Country}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
-                <TextBlock Text="{x:Bind ViewModel.StartDate}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
-                <TextBlock Text="{x:Bind ViewModel.EndDate}" Foreground="{StaticResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
-            </StackPanel>
+                            </DataTemplate>
+                        </controls:Carousel.ItemTemplate>
+                    </controls:Carousel>
+                    <TextBlock Text="{x:Bind ViewModel.Name}" Style="{ThemeResource TitleTextStyle}" Height="60" Margin="15,0,15,0"/>
+                    <TextBlock Text="{x:Bind ViewModel.Description}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                    <TextBlock Text="{x:Bind ViewModel.Country}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                    <TextBlock Text="{x:Bind ViewModel.StartDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                    <TextBlock Text="{x:Bind ViewModel.EndDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                </StackPanel>
             </Border>
         </Grid>
-        <!--<Border Margin="0" Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch">
-            <controls:Carousel x:Name="CarouselControl"
-                  InvertPositive="True"
-                  ItemDepth="300"
-                  ItemMargin="0"
-                  ItemRotationX="0"
-                  ItemRotationY="45"
-                  ItemRotationZ ="0"
-                  Orientation="Horizontal"
-                  SelectedIndex="0"
-                  >
-                <controls:Carousel.EasingFunction>
-                    <CubicEase EasingMode="EaseOut" />
-                </controls:Carousel.EasingFunction>
-                <controls:Carousel.ItemTemplate>
-                    <DataTemplate>
-                        <Image Width="300"
-                          Height="300"
-                          VerticalAlignment="Bottom"
-                          Source="{Binding Photo}"
-                          Stretch="Uniform" />
-                    </DataTemplate>
-                </controls:Carousel.ItemTemplate>
-            </controls:Carousel>
-        </Border>-->
-
     </Grid>
 </Page>

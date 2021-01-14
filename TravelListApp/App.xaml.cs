@@ -32,9 +32,6 @@ namespace TravelListApp
         {
             this.InitializeComponent();
 
-            //It is necessary to load the theme when the app launches. It identifies the last selected/stored theme and based on that, it loads the proper theme resources.
-            // ThemeManager.LoadTheme();
-
             this.Suspending += OnSuspending;
         }
 
@@ -45,8 +42,6 @@ namespace TravelListApp
         /// <param name="e">Details about the launch request and process.</param>
         protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            //It is necessary to load the theme when the app launches. It identifies the last selected/stored theme and based on that, it loads the proper theme resources.
-            ThemeManager.LoadTheme();
 
             DotNetEnv.Env.Load();
 

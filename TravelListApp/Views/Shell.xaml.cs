@@ -28,11 +28,11 @@ namespace TravelListApp.Views
             Navigation.Frame = SplitViewFrame;
 
             // Navigate to home page.
-            Navigation.Navigate(typeof(HomePage));
+            // Navigation.Navigate(typeof(HomePage));
         }
 
         // Navigate to another page.
-        private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count > 0)
             {
@@ -55,6 +55,10 @@ namespace TravelListApp.Views
                     Navigation.Frame = Frame;
                     Frame.Navigate(typeof(LoginPage));
                     }
+                    if (menuItem.NavigationDestination == typeof(HomePage))
+                    {
+                        await App.ViewModel.GetFirstUpcomingAsync();
+                    }
 
                     Navigation.Navigate(menuItem.NavigationDestination);
                 }
@@ -71,8 +75,12 @@ namespace TravelListApp.Views
             }
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            // Navigate to home page.
+            await App.ViewModel.GetFirstUpcomingAsync();
+            Navigation.Navigate(typeof(HomePage));
+
             Navigation.EnableBackButton();
             base.OnNavigatedTo(e);
         }

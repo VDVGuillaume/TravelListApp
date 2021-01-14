@@ -42,7 +42,6 @@ namespace TravelListApp.ViewModels
                 SetProperty(ref _selectedTheme, value);
                 if (value != null) {
                     SelectedThemeName = value.ThemeId.ToString();
-                    // OnThemeSelected(value);
                 }
             }
         }
@@ -55,19 +54,6 @@ namespace TravelListApp.ViewModels
             {
                 SetProperty(ref _selectedThemeName, value);
             }
-        }
-
-        /// <summary>
-        /// Invokes when you select any Theme from the ListView
-        /// </summary>
-        /// <param name="selectedTheme"></param>
-        private void OnThemeSelected(AppTheme selectedTheme)
-        {
-            foreach (var t in Themes)
-            {
-                t.IsSelected = t.ThemeId == selectedTheme.ThemeId;
-            }
-            ThemeManager.ChangeTheme(selectedTheme.ThemeId);
         }
     }
 }

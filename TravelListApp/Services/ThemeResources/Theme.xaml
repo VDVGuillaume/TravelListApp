@@ -11,7 +11,7 @@
 
             <!-- ImageBrush Color -->
             <ImageBrush ImageSource="/Assets/TravelBackground.png" x:Key="TravelBackground" Stretch="UniformToFill"/>
-            <AcrylicBrush x:Key="MaskBackground" BackgroundSource="Backdrop" TintColor="Black" Opacity="0.90"  TintOpacity="0.01" FallbackColor="Black"/>
+            <AcrylicBrush x:Key="MaskBackground" BackgroundSource="Backdrop" TintColor="White" Opacity="0.90"  TintOpacity="0.75" FallbackColor="White"/>
 
             <!-- General Purpose -->
             <SolidColorBrush x:Key="TenPercentDarkerBrush"
@@ -129,6 +129,33 @@
                 </Setter>
             </Style>
 
+            <!-- Page layout roots typically use entrance animations and a theme-appropriate background color -->
+
+            <Style x:Key="HeadTitleTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="FontSize" Value="24"/>
+            </Style>
+
+            <Style x:Key="TitleTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+
+            <Style x:Key="CaptionTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
+                <Setter Property="FontSize" Value="15"/>
+            </Style>
+
+            <Style x:Key="LayoutRootStyle" TargetType="Panel">
+                <Setter Property="Background" Value="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
+                <Setter Property="ChildrenTransitions">
+                    <Setter.Value>
+                        <TransitionCollection>
+                            <EntranceThemeTransition/>
+                        </TransitionCollection>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
             <!-- Button styles -->
 
             <!--
@@ -207,28 +234,6 @@
                 </Setter>
             </Style>
 
-
-            <!-- Page layout roots typically use entrance animations and a theme-appropriate background color -->
-
-            <Style x:Key="TitleTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
-                <Setter Property="FontWeight" Value="SemiBold"/>
-            </Style>
-
-            <Style x:Key="CaptionTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
-                <Setter Property="FontSize" Value="12"/>
-                <Setter Property="Foreground" Value="{StaticResource ApplicationSecondaryForegroundThemeBrush}"/>
-            </Style>
-
-            <Style x:Key="LayoutRootStyle" TargetType="Panel">
-                <Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>
-                <Setter Property="ChildrenTransitions">
-                    <Setter.Value>
-                        <TransitionCollection>
-                            <EntranceThemeTransition/>
-                        </TransitionCollection>
-                    </Setter.Value>
-                </Setter>
-            </Style>
         </ResourceDictionary>
 
         <ResourceDictionary x:Key="Dark">
@@ -240,7 +245,7 @@
 
             <!-- ImageBrush Color -->
             <ImageBrush ImageSource="/Assets/TravelBackground.png" x:Key="TravelBackground" Stretch="UniformToFill"/>
-            <AcrylicBrush x:Key="MaskBackground" BackgroundSource="Backdrop" TintColor="Black" Opacity="0.90"  TintOpacity="0.01" FallbackColor="Black"/>
+            <AcrylicBrush x:Key="MaskBackground" BackgroundSource="Backdrop" TintColor="Black" Opacity="0.90"  TintOpacity="0.75" FallbackColor="Black"/>
 
             <!-- General Purpose -->
             <SolidColorBrush x:Key="TenPercentDarkerBrush"
@@ -329,8 +334,8 @@
 
             <Style x:Key="BasicTextStyle" TargetType="TextBlock">
                 <Setter Property="Foreground" Value="{ThemeResource ContentBrush}"/>
-                <Setter Property="FontSize" Value="{StaticResource ControlContentThemeFontSize}"/>
-                <Setter Property="FontFamily" Value="{StaticResource ContentControlThemeFontFamily}"/>
+                <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+                <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
                 <Setter Property="TextTrimming" Value="WordEllipsis"/>
                 <Setter Property="TextWrapping" Value="Wrap"/>
                 <Setter Property="Typography.StylisticSet20" Value="True"/>
@@ -356,6 +361,33 @@
                 <Setter Property="RenderTransform">
                     <Setter.Value>
                         <TranslateTransform X="-1" Y="6"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- Page layout roots typically use entrance animations and a theme-appropriate background color -->
+
+            <Style x:Key="HeadTitleTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="FontSize" Value="24"/>
+            </Style>
+
+            <Style x:Key="TitleTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+
+            <Style x:Key="CaptionTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
+                <Setter Property="FontSize" Value="15"/>
+            </Style>
+
+            <Style x:Key="LayoutRootStyle" TargetType="Panel">
+                <Setter Property="Background" Value="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
+                <Setter Property="ChildrenTransitions">
+                    <Setter.Value>
+                        <TransitionCollection>
+                            <EntranceThemeTransition/>
+                        </TransitionCollection>
                     </Setter.Value>
                 </Setter>
             </Style>
@@ -438,28 +470,6 @@
                 </Setter>
             </Style>
 
-
-            <!-- Page layout roots typically use entrance animations and a theme-appropriate background color -->
-
-            <Style x:Key="TitleTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
-                <Setter Property="FontWeight" Value="SemiBold"/>
-            </Style>
-
-            <Style x:Key="CaptionTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaselineTextStyle}">
-                <Setter Property="FontSize" Value="12"/>
-                <Setter Property="Foreground" Value="{StaticResource ApplicationSecondaryForegroundThemeBrush}"/>
-            </Style>
-
-            <Style x:Key="LayoutRootStyle" TargetType="Panel">
-                <Setter Property="Background" Value="{StaticResource ApplicationPageBackgroundThemeBrush}"/>
-                <Setter Property="ChildrenTransitions">
-                    <Setter.Value>
-                        <TransitionCollection>
-                            <EntranceThemeTransition/>
-                        </TransitionCollection>
-                    </Setter.Value>
-                </Setter>
-            </Style>
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 </ResourceDictionary>
