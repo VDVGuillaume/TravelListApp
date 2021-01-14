@@ -68,6 +68,20 @@ namespace TravelListRepository.Sql
                 .FirstOrDefaultAsync(p => p.TravelListItemID == id);
         }
 
+        public async Task<TravelListItem> GetFirstUpcomingTravelList(string userId)
+        {
+            return await _context.TravelLists.AsNoTracking()
+                .Where(x => x.UserId == userId)
+                .OrderBy(x => x.StartDate)
+                .Include(x => x.Points).ThenInclude(p => p.ConnectedStartRoutes)
+                .Include(x => x.Points).ThenInclude(p => p.ConnectedEndRoutes)
+                .Include(x => x.Items)
+                .Include(x => x.Tasks)
+                .Include(x => x.Images)
+                .Include(x => x.Routes)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task UpdateTravelList(int id, TravelListItem tl)
         {
             if (tl == null)

@@ -29,10 +29,20 @@ namespace RestApi.Controllers
         [HttpGet("GetAllTravelLists")]
         public async Task<IActionResult> GetAllTravelLists(string value)
         {
-
-            
             var travelListItems = await _repo.GetAllTravelLists(value);
             return Ok(_mapper.Map<IEnumerable<TravelListReadDto>>(travelListItems));
+        }
+
+        //api/travellists
+        [HttpGet("GetFirstUpcomingTravelList")]
+        public async Task<IActionResult> GetFirstUpcomingTravelList(string value)
+        {
+            var travelListItem = await _repo.GetFirstUpcomingTravelList(value);
+            if (travelListItem != null)
+            {
+                return Ok(_mapper.Map<TravelListReadDto>(travelListItem));
+            }
+            return NotFound();
         }
 
         //api/travellists/{id}
@@ -71,33 +81,6 @@ namespace RestApi.Controllers
             }
 
             _mapper.Map(travelListUpdateDto, travelListModelFromRepo);
-
-            await _repo.UpdateTravelList(id, travelListModelFromRepo);
-
-            _repo.SaveChanges();
-
-            return NoContent();
-
-        }
-
-        //PATCH api/travellists/{id}
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> PartialTravelListUpdate(int id, [FromBody]JsonPatchDocument<TravelListUpdateDto> patchDoc)
-        {
-            var travelListModelFromRepo = await _repo.GetTravelListById(id);
-            if (travelListModelFromRepo == null)
-            {
-                return NotFound();
-            }
-            var travelListToPatch = _mapper.Map<TravelListUpdateDto>(travelListModelFromRepo);
-            patchDoc.ApplyTo(travelListToPatch, ModelState);
-
-            if (!TryValidateModel(travelListToPatch))
-            {
-                return ValidationProblem(ModelState);
-            }
-
-            _mapper.Map(travelListToPatch, travelListModelFromRepo);
 
             await _repo.UpdateTravelList(id, travelListModelFromRepo);
 

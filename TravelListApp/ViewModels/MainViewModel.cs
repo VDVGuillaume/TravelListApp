@@ -30,6 +30,11 @@ namespace TravelListApp.ViewModels
             await Task.Run(GetTravelListListAsync);
         }
 
+        public async Task GetFirstUpcomingAsync()
+        {
+            await Task.Run(GetFirstUpcomingTravelListAsync);
+        }
+
         public string MapServiceToken { get; set; }
 
         // public ObservableCollection<TravelListItemViewModel> TravelListItems { get; set; }
@@ -65,6 +70,20 @@ namespace TravelListApp.ViewModels
             set => SetProperty(ref _selectedTravelList, value);
         }
 
+        private TravelListItemViewModel _firstUpcommingTravelList;
+        /// <summary>
+        /// Gets or sets the selected TravelList, or null if no TravelList is selected. 
+        /// </summary>
+        public TravelListItemViewModel FirstUpcommingTravelList
+        {
+            get => _firstUpcommingTravelList;
+            set
+            {
+                SetProperty(ref _firstUpcommingTravelList, value);
+                // OnPropertyChanged(nameof(FirstUpcommingTravelList));
+            }
+        }
+
         private bool _isLoading = false;
 
         public bool IsLoading
@@ -79,6 +98,25 @@ namespace TravelListApp.ViewModels
         {
             get => _isReady;
             set => SetProperty(ref _isReady, value);
+        }
+
+        public async Task GetFirstUpcomingTravelListAsync()
+        {
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() => IsLoading = true);
+
+            var travelList = await App.Repository.TravelLists.GetFirstUpcomingTravelList(LoginPage.account.Id);
+            if (travelList == null)
+            {
+                return;
+            }
+
+            await DispatcherHelper.ExecuteOnUIThreadAsync(async () =>
+            {
+                var newModel = new TravelListItemViewModel(travelList);
+                await newModel.ConvertImagesTask();
+                FirstUpcommingTravelList = newModel;
+                IsLoading = false;
+            });
         }
 
         public async Task GetTravelListListAsync()

@@ -19,8 +19,8 @@
             </ResourceDictionary.ThemeDictionaries>
             <ResourceDictionary.MergedDictionaries>
                  <!--Theme colors and icons--> 
-                <!--<ResourceDictionary Source="Services/Icons/Icons.xaml" />
-                <ResourceDictionary Source="Services/ThemeResources/Theme.xaml" />-->
+                <ResourceDictionary Source="Services/Icons/IconsTheme.xaml" />
+                <ResourceDictionary Source="Services/ThemeResources/Theme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

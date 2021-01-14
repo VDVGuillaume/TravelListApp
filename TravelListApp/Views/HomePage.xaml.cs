@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
+using TravelListApp.Models;
 using TravelListApp.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Graphics.Display;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -23,10 +27,52 @@ namespace TravelListApp.Views
     /// </summary>
     public sealed partial class HomePage : Page
     {
-        public ThemeSelectionViewModel ThemeViewModel { get; } = App.ThemeViewModel;
+        // public ThemeSelectionViewModel ThemeViewModel { get; } = App.ThemeViewModel;
+
         public HomePage()
         {
             this.InitializeComponent();
+            ViewModel = App.ViewModel.FirstUpcommingTravelList;
+            CarouselControl.ItemsSource = cImages;
+            Size s = GetCurrentDisplaySize();
+            CarouselControl.Height = s.Height / 5;
+        }
+
+        public TravelListItemViewModel ViewModel { get; set; }
+        public ObservableCollection<CarouselImage> cImages = new ObservableCollection<CarouselImage>();
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (ViewModel != null)
+            {
+                foreach (var item in ViewModel.convertedImages)
+                {
+                    cImages.Add(item);
+                }
+            }
+
+        }
+
+        public static Size GetCurrentDisplaySize()
+        {
+            var displayInformation = DisplayInformation.GetForCurrentView();
+            TypeInfo t = typeof(DisplayInformation).GetTypeInfo();
+            var props = t.DeclaredProperties.Where(x => x.Name.StartsWith("Screen") && x.Name.EndsWith("InRawPixels")).ToArray();
+            var w = props.Where(x => x.Name.Contains("Width")).First().GetValue(displayInformation);
+            var h = props.Where(x => x.Name.Contains("Height")).First().GetValue(displayInformation);
+            var size = new Size(System.Convert.ToDouble(w), System.Convert.ToDouble(h));
+            switch (displayInformation.CurrentOrientation)
+            {
+                case DisplayOrientations.Landscape:
+                case DisplayOrientations.LandscapeFlipped:
+                    size = new Size(Math.Max(size.Width, size.Height), Math.Min(size.Width, size.Height));
+                    break;
+                case DisplayOrientations.Portrait:
+                case DisplayOrientations.PortraitFlipped:
+                    size = new Size(Math.Min(size.Width, size.Height), Math.Max(size.Width, size.Height));
+                    break;
+            }
+            return size;
         }
     }
 }
