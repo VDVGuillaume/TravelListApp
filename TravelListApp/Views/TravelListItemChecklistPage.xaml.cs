@@ -35,6 +35,8 @@ namespace TravelListApp.Views
             };
             NewCategory.ItemsSource = ListOfCategories;
 
+           
+
         }
 
 
@@ -48,17 +50,18 @@ namespace TravelListApp.Views
 
             LoadCategories();
             LoadItems();
-            
+            LoadProgress();
+           
+
         }
 
         private async void LoadItems()
         {
             ObservablecheckListItems = new ObservableCollection<CheckListItem>();
-            List<TravelCheckListItem> Items = await ViewModel.GetTravelCheckListItems();
-            Progress.Maximum = Items.Count;
+            List<TravelCheckListItem> Items = await ViewModel.GetTravelCheckListItems();           
             foreach (TravelCheckListItem item in Items)
             {
-                LoadProgress(item);
+               
                 ObservablecheckListItems.Add(new CheckListItem() { Name = item.Name, Amount = item.Amount, Category = item.Category,
                     Checked = item.Checked, TravelCheckListItemID = item.TravelCheckListItemID,TravelListItemID = item.TravelListItemID });
             }
@@ -77,16 +80,11 @@ namespace TravelListApp.Views
 
         }
 
-        private void LoadProgress(TravelCheckListItem item)
+        private void LoadProgress()
         {
-
-            if (item.Checked)
-                Progress.Value++;
-            else
-                Progress.Value--;
-       
+            Progress.Maximum = ObservablecheckListItems.Count;
+            Progress.Value = ObservablecheckListItems.Where(x => x.Checked).Count();
         }
-
 
 
 
@@ -113,6 +111,7 @@ namespace TravelListApp.Views
          
         
             ObservablecheckListItems.Add(checkListItem);
+            LoadProgress();
             checkListItem.IsNew = false;
 
         }
@@ -136,6 +135,7 @@ namespace TravelListApp.Views
 
             await ViewModel.SaveChecklistAsync(itemToDelete);
             ObservablecheckListItems.Remove(itemToDelete);
+            LoadProgress();
         }
 
 
@@ -147,7 +147,8 @@ namespace TravelListApp.Views
                 CheckBox cbx = sender as CheckBox;
                 CheckListItem ItemToUpdate = (CheckListItem)cbx.DataContext;
                 ItemToUpdate.Checked = (bool)cbx.IsChecked;
-                LoadProgress(ItemToUpdate);
+                ObservablecheckListItems.Where(x => x.TravelCheckListItemID == ItemToUpdate.TravelCheckListItemID).ToList().ForEach(x => x.Checked = (bool)cbx.IsChecked);
+                LoadProgress();
                 await ViewModel.SaveChecklistAsync(ItemToUpdate);
             }
         }
