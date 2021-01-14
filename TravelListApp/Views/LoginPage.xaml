@@ -43,10 +43,10 @@
                             Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
 
 
-                <Button x:Name="CallGraphButton" Content="Login with windows Account" HorizontalAlignment="Left" Margin="58,18.156,0,0" Grid.Row="1" VerticalAlignment="Top" Width="204" Grid.RowSpan="6" Click="CallGraphButton_Click"/>
+                <Button x:Name="CallGraphButton" Content="Login with windows Account" HorizontalAlignment="Left" Margin="58,18,0,0" Grid.Row="1" VerticalAlignment="Top" Width="204" Grid.RowSpan="7" Click="CallGraphButton_Click" Height="47"/>
                 <Button x:Name="SignOutButton" Content="Sign out" HorizontalAlignment="Left" Margin="58,44,0,0" Grid.Row="7" VerticalAlignment="Top" Width="204" Click="SignOutButton_Click" Visibility="Collapsed"/>
                 <TextBlock x:Name="ErrorLabel" Text="" Margin="58,0,41,814" Grid.Row="7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                <SymbolIcon Symbol="Contact" Margin="0,23,688,0" Grid.Row="1" RenderTransformOrigin="-1.884,0.357" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <SymbolIcon Symbol="Contact" Margin="0,3,688,489" Grid.Row="2" RenderTransformOrigin="-1.884,0.357" Grid.RowSpan="6"/>
                 <SymbolIcon x:Name="SignOutIcon" Symbol="Undo" Margin="0,51,688,782" Grid.Row="7" RenderTransformOrigin="-1.884,0.357" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed"/>
 
             </Grid>

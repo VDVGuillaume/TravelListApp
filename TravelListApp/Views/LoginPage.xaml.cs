@@ -36,7 +36,6 @@ namespace TravelListApp.Views
         // You have to replace:
         // - the content of ClientID with the Application Id for your app registration
         private const string ClientId = "5b2f6fb3-1910-4a39-9bea-feba4672cb8d";
-
         private const string Tenant = "471165d9-42e8-4cb5-950a-cbade4b923e0"; // Alternatively "[Enter your tenant, as obtained from the Azure portal, e.g. kko365.onmicrosoft.com]"
         private const string Authority = "https://login.microsoftonline.com/" + Tenant;
 
@@ -73,11 +72,11 @@ namespace TravelListApp.Views
             }
             catch (MsalException msalEx)
             {
-                await DisplayMessageAsync($"There was an error login in, please try again.");
+                await DisplayMessageAsync($"There was a problem login in, please try again.");
             }
             catch (Exception ex)
             {
-                await DisplayMessageAsync($"There was an error login in, please try again.");
+                await DisplayMessageAsync($"There was a problem login in, please try again.");
                 return;
             }
         }
