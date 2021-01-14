@@ -71,7 +71,6 @@
                 BorderThickness="0.5"
                 Foreground="{ThemeResource ContentBrush}"
                 BorderBrush="{ThemeResource ContentBrush}"
-                Background="{StaticResource transBrush}"
                 DisplayMemberPath="Name"
                 SelectedItem="{x:Bind Start, Mode=TwoWay}"
                 Grid.Column="0" />
@@ -83,7 +82,6 @@
                 BorderThickness="0.5"
                 Foreground="{ThemeResource ContentBrush}"
                 BorderBrush="{ThemeResource ContentBrush}"
-                Background="{StaticResource transBrush}"
                 SelectedItem="{x:Bind SelectedRouteType, Mode=TwoWay}"
                 Grid.Column="1" />
             <ComboBox
@@ -94,7 +92,6 @@
                 BorderThickness="0.5"
                 Foreground="{ThemeResource ContentBrush}"
                 BorderBrush="{ThemeResource ContentBrush}"
-                Background="{StaticResource transBrush}"
                 DisplayMemberPath="Name"
                 SelectedItem="{x:Bind End, Mode=TwoWay}"
                 Grid.Column="2" />
@@ -175,8 +172,5 @@
                 </AppBarButton.Icon>
             </AppBarButton>
         </CommandBar>
-        <Grid Name="MyProgressGrid" Grid.RowSpan="6" Background="{StaticResource MaskBackground}" Visibility="Collapsed">
-            <ProgressRing  Name="MyProgressRing" Grid.Row="1" Height="100" VerticalAlignment="Center" HorizontalAlignment="Center" Width="100" Foreground="Red" IsActive="{Binding IsLoading}" Visibility="Visible" />
-        </Grid>
     </Grid>
 </Page>

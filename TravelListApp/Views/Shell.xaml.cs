@@ -20,6 +20,7 @@ namespace TravelListApp.Views
     public sealed partial class Shell : Page
     {
         public ThemeSelectionViewModel ThemeViewModel { get; } = App.ThemeViewModel;
+        
         public Shell()
         {
             InitializeComponent();
@@ -29,6 +30,22 @@ namespace TravelListApp.Views
 
             // Navigate to home page.
             // Navigation.Navigate(typeof(HomePage));
+            App.ViewModel.PropertyChanged += (obj, ev) =>
+            {
+                if (ev.PropertyName.Equals("IsLoading"))
+                {
+                    MyProgressRing.IsActive = App.ViewModel.IsLoading;
+                    if (App.ViewModel.IsLoading)
+                    {
+                        MyProgressGrid.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        MyProgressGrid.Visibility = Visibility.Collapsed;
+                    }
+                }
+
+            };
         }
 
         // Navigate to another page.
@@ -43,8 +60,9 @@ namespace TravelListApp.Views
                 }
                 else
                 {
-                    Menu.SelectedItem = null;                }
-                }               
+                    Menu.SelectedItem = null;
+                }
+            }               
                 
 
             

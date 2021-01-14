@@ -84,7 +84,7 @@ namespace TravelListApp.Views
         {
             if (ViewModel.IsDirty)
             {
-                SetLoader();
+                App.ViewModel.SetLoader();
                 e.Cancel = true;
                 var result = await ViewModel.ShowDialog();
                 if (result)
@@ -95,40 +95,26 @@ namespace TravelListApp.Views
                 {
                     Menu.SetTab(GetType());
                 }
-                SetLoader();
+                App.ViewModel.SetLoader();
             }
-        }
-
-        private void SetLoader()
-        {
-            if (MyProgressRing.IsActive)
-            {
-                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-                MyProgressRing.IsActive = false;
-            } else
-            {
-                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                MyProgressRing.IsActive = true;
-            }
-
         }
 
         private async void SaveAppBar_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             if (ViewModel.IsNewTravelList || ViewModel.IsDirty)
             {
-                SetLoader();
+                App.ViewModel.SetLoader();
                 await ViewModel.SaveAsync();
                 await ViewModel.ConvertImagesTask();
-                SetLoader();
+                App.ViewModel.SetLoader();
                 Navigation.Navigate(typeof(TravelListItemPage), ViewModel.TravelListItemID);
             }
             else if (ViewModel.imageChanges.Count > 0)
             {
-                SetLoader();
+                App.ViewModel.SetLoader();
                 await ViewModel.SaveImagesAsync();
                 await ViewModel.ConvertImagesTask();
-                SetLoader();
+                App.ViewModel.SetLoader();
             }
         }
 
@@ -136,9 +122,9 @@ namespace TravelListApp.Views
         {
             if (!ViewModel.IsNewTravelList)
             {
-                SetLoader();
+                App.ViewModel.SetLoader();
                 await ViewModel.DeleteAsync();
-                SetLoader();
+                App.ViewModel.SetLoader();
                 Navigation.Navigate(typeof(TravelListPage));
             }
         }

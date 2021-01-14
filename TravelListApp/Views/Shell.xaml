@@ -10,6 +10,8 @@
     RequestedTheme="{x:Bind ThemeViewModel.SelectedThemeName, Mode=OneWay}"
     Background="{ThemeResource PageBackgroundColor}">
 
+    
+
     <Page.DataContext>
         <vm:ShellViewModel />
     </Page.DataContext>
@@ -105,17 +107,6 @@
                             </TransitionCollection>
                         </Frame.ContentTransitions>
                     </Frame>
-
-                    <!-- SplitViewOpener -->
-                    <!-- Comment out when it blocks the UI -->
-                    <!--<Grid ManipulationMode="TranslateX"
-                          ManipulationCompleted="SplitViewOpener_ManipulationCompleted"
-                          Width="120"
-                          Margin="0"
-                          Background="Transparent"
-                          HorizontalAlignment="Left"
-                          VerticalAlignment="Stretch">
-                    </Grid>-->
                 </Grid>
             </SplitView.Content>
         </SplitView>
@@ -137,6 +128,12 @@
                   Width="24"
                   Stretch="Uniform" />
         </Button>
+
+
+        <Grid Name="MyProgressGrid" Background="{StaticResource MaskBackground}" Visibility="Visible">
+            <ProgressRing  Name="MyProgressRing" Height="100" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red" Visibility="Visible" />
+        </Grid>
+        
 
         <!-- Responsive Visual States -->
         <VisualStateManager.VisualStateGroups>

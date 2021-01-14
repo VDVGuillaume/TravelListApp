@@ -95,8 +95,7 @@
         <GridViewItem VerticalAlignment="Stretch"
                       VerticalContentAlignment="Center"
                       HorizontalAlignment="Stretch"
-                      HorizontalContentAlignment="Left"
-                      Background="{StaticResource transBrush}">
+                      HorizontalContentAlignment="Left">
             <Viewbox x:Name="Title"
                      Stretch="Uniform"
                      StretchDirection="DownOnly"

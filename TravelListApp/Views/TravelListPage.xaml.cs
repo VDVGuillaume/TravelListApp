@@ -42,12 +42,10 @@ namespace TravelListApp.Views
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
             await ViewModel.RefreshData();
             // groupedItemsViewSource.Source = ViewModel.Items;
             var collectionGroups = groupedItemsViewSource.View.CollectionGroups;
             ((ListViewBase)this.Zoom.ZoomedOutView).ItemsSource = collectionGroups;
-            MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
 
         private void AddButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -130,11 +128,9 @@ namespace TravelListApp.Views
                 if (String.IsNullOrEmpty(sender.Text))
                 {
                     ViewModel.Search = "";
-                    MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
                     ViewModel.GetTravelListsItemsGroupedByParam();
                     var collectionGroups = groupedItemsViewSource.View.CollectionGroups;
                     ((ListViewBase)this.Zoom.ZoomedOutView).ItemsSource = collectionGroups;
-                    MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                 }
                 //else
                 //{

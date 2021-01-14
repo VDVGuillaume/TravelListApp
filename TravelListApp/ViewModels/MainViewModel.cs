@@ -1,8 +1,11 @@
 ﻿using Microsoft.Toolkit.Uwp.Helpers;
 using System.Collections.ObjectModel;
+using Windows.Foundation;
 using System.Threading.Tasks;
 using TravelListApp.Views;
 using TravelListModels;
+using Windows.Graphics.Display;
+using Windows.UI.ViewManagement;
 
 namespace TravelListApp.ViewModels
 {
@@ -89,7 +92,23 @@ namespace TravelListApp.ViewModels
         public bool IsLoading
         {
             get => _isLoading;
-            set => SetProperty(ref _isLoading, value);
+            set
+            {
+                SetProperty(ref _isLoading, value);
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
+
+        public void SetLoader()
+        {
+            if (IsLoading)
+            {
+               IsLoading = false;
+            }
+            else
+            {
+                IsLoading = true;
+            }
         }
 
         private bool _isReady = false;
@@ -107,6 +126,8 @@ namespace TravelListApp.ViewModels
             var travelList = await App.Repository.TravelLists.GetFirstUpcomingTravelList(LoginPage.account.Id);
             if (travelList == null)
             {
+                FirstUpcommingTravelList = null;
+                await DispatcherHelper.ExecuteOnUIThreadAsync(() => IsLoading = false);
                 return;
             }
 
@@ -165,6 +186,22 @@ namespace TravelListApp.ViewModels
                 IsLoading = false;
             });
 
+        }
+        public Size GetCurrentViewSize()
+        {
+            // Get the visible bounds for current view
+            var visibleBounds = ApplicationView.GetForCurrentView().VisibleBounds;
+
+            // Get the scale factor from display information
+            var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
+
+            double newWidth = visibleBounds.Width * scaleFactor;
+
+            var newHeight = visibleBounds.Height * scaleFactor;
+
+            // Get the application screen size
+            var size = new Size(newWidth, newHeight);
+            return size;
         }
 
 

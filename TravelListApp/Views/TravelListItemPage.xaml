@@ -44,11 +44,27 @@
                             </DataTemplate>
                         </controls:Carousel.ItemTemplate>
                     </controls:Carousel>
-                    <TextBlock Text="{x:Bind ViewModel.Name}" Style="{ThemeResource TitleTextStyle}" Height="60" Margin="15,0,15,0"/>
-                    <TextBlock Text="{x:Bind ViewModel.Description}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
-                    <TextBlock Text="{x:Bind ViewModel.Country}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
-                    <TextBlock Text="{x:Bind ViewModel.StartDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
-                    <TextBlock Text="{x:Bind ViewModel.EndDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                    <TextBlock Text="{x:Bind ViewModel.Name}" Style="{ThemeResource TitleTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,15"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Description:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
+                        <TextBlock x:Name="DescriptionTextBlock" Text="{x:Bind ViewModel.Description}" Style="{ThemeResource CaptionTextStyle}" Margin="0,0,15,10"
+                              Width="300"
+                              TextWrapping="Wrap" 
+                              TextTrimming="WordEllipsis" 
+                              LineStackingStrategy="BlockLineHeight"
+                              LineHeight="20"
+                              MaxHeight="60"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Country:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
+                        <TextBlock Text="{x:Bind ViewModel.Country}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,10"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="From:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
+                        <TextBlock Text="{x:Bind ViewModel.StartDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,5"/>
+                        <TextBlock Text="To:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="5,0,15,5"/>
+                        <TextBlock Text="{x:Bind ViewModel.EndDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,10"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
         </Grid>
