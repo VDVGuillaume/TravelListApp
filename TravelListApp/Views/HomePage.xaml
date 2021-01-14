@@ -15,7 +15,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" VerticalAlignment="Stretch">
+        <Grid x:Name="GridHasTravelListControl" VerticalAlignment="Stretch" >
             <Image Source="{x:Bind ViewModel.firstConvertedImage }" Stretch="UniformToFill" />
             <Grid Grid.Row="0" VerticalAlignment="Stretch" Background="{ThemeResource MaskBackground}">
                 <Grid.RowDefinitions>
@@ -26,7 +26,8 @@
                  Style="{ThemeResource HeadTitleTextStyle}"
                  Margin="50 10 0 10"
                  />
-                <Border Grid.Row="3" VerticalAlignment="Stretch" >
+                <ScrollViewer x:Name="myScrollViewer" Grid.Column="0" Grid.Row="3" VerticalAlignment="Stretch">
+                <Border VerticalAlignment="Stretch" >
                     <StackPanel VerticalAlignment="Bottom">
                         <controls:Carousel x:Name="CarouselControl"
                               InvertPositive="True"
@@ -50,16 +51,16 @@
                             </controls:Carousel.ItemTemplate>
                         </controls:Carousel>
                         <TextBlock Text="{x:Bind ViewModel.Name}" Style="{ThemeResource TitleTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,15"/>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Description:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
-                            <TextBlock x:Name="DescriptionTextBlock" Text="{x:Bind ViewModel.Description}" Style="{ThemeResource CaptionTextStyle}" Margin="0,0,15,10"
+                        <TextBlock Text="Description:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
+                        <TextBlock x:Name="DescriptionTextBlock" Text="{x:Bind ViewModel.Description}" Style="{ThemeResource CaptionTextStyle}"
                               MinWidth="300"
+                              Margin="20 0 10 10"
                               TextWrapping="Wrap" 
                               TextTrimming="WordEllipsis" 
                               LineStackingStrategy="BlockLineHeight"
+                              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                               LineHeight="20"
                               MaxHeight="60"/>
-                        </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Country:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
                             <TextBlock Text="{x:Bind ViewModel.Country}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,10"/>
@@ -74,12 +75,12 @@
                              Style="{ThemeResource TitleTextStyle}"
                              Margin="15 0 0 15"
                              />
-                        <ProgressBar Grid.Row="2" x:Name="ProgressCheck" Margin="10 0 10 10"  Width="550" Height="20" HorizontalAlignment="Left" VerticalAlignment="Stretch" />
+                        <ProgressBar Grid.Row="2" x:Name="ProgressCheck" Margin="10 0 10 10"  Height="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                         <TextBlock Text="Tasklist progress"
                              Style="{ThemeResource TitleTextStyle}"
                              Margin="15 0 0 15"
                              />
-                        <ProgressBar Grid.Row="2" x:Name="ProgressTask" Margin="10 0 10 10"  Width="550" Height="20" HorizontalAlignment="Left" VerticalAlignment="Stretch" />
+                        <ProgressBar Grid.Row="2" x:Name="ProgressTask" Margin="10 0 10 10"  Height="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                         <Button x:Name="button" 
                             Click="GoToButton_Click"
                             Tag="{x:Bind ViewModel.TravelListItemID}"
@@ -94,6 +95,37 @@
                             Grid.Column="0"/>
                     </StackPanel>
                 </Border>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+        <Grid x:Name="GridHasNoTravelListControl" VerticalAlignment="Stretch" >
+            <Grid Grid.Row="0" VerticalAlignment="Stretch" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Create a travellist"
+                 Style="{ThemeResource HeadTitleTextStyle}"
+                 Margin="50 10 0 10"
+                 />
+                <StackPanel Grid.Row="1"  Orientation="Vertical" VerticalAlignment="Center">
+                    <Button
+                    Click="CreateButton_Click"
+                    BorderThickness="0.5"
+                    Foreground="{ThemeResource ContentBrush}"
+                    BorderBrush="{ThemeResource ContentBrush}"
+                    Content="Create travellist" 
+                    HorizontalAlignment="Stretch"
+                    Margin="10 0 10 10"/>
+                    <Button
+                    Click="SeedButton_Click"
+                    BorderThickness="0.5"
+                    Foreground="{ThemeResource ContentBrush}"
+                    BorderBrush="{ThemeResource ContentBrush}"
+                    Content="Seed dummy travellists" 
+                    HorizontalAlignment="Stretch"
+                    Margin="10 0 10 10"/>
+                </StackPanel>
             </Grid>
         </Grid>
     </Grid>

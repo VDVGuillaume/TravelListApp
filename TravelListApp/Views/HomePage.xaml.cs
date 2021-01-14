@@ -30,9 +30,7 @@ namespace TravelListApp.Views
             CarouselControl.ItemsSource = cImages;
             Size s = App.ViewModel.GetCurrentViewSize();
             CarouselControl.Height = s.Height / 5;
-            ProgressCheck.Width = s.Width;
-            ProgressTask.Width = s.Width;
-            DescriptionTextBlock.Width = s.Width / 1.75;
+            // DescriptionTextBlock.Width = s.Width / 1.75;
         }
 
         public TravelListItemViewModel ViewModel { get; set; }
@@ -42,10 +40,21 @@ namespace TravelListApp.Views
         {
             if (ViewModel != null)
             {
+                GridHasNoTravelListControl.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                GridHasTravelListControl.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                if (ViewModel.Items.Count > 0)
+                {
+                    ProgressCheck.Maximum = ViewModel.Items.Count;
+                    ProgressCheck.Value = ViewModel.Items.Where(x => x.Checked).Count();
+                }
                 foreach (var item in ViewModel.convertedImages)
                 {
                     cImages.Add(item);
                 }
+            } else
+            {
+                GridHasNoTravelListControl.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                GridHasTravelListControl.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
 
         }
@@ -56,6 +65,16 @@ namespace TravelListApp.Views
             var TravelListItemID = button.Tag;
             await App.ViewModel.GetAllDataTravelListAsync();
             Navigation.Navigate(typeof(TravelListItemPage), TravelListItemID);
+        }
+
+        private void CreateButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            Navigation.Navigate(typeof(TravelListItemEditPage));
+        }
+
+        private void SeedButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+
         }
     }
 }
