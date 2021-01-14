@@ -151,7 +151,7 @@ namespace TravelListApp.Views
         {
             if (ViewModel.IsDirty)
             {
-                SetLoader();
+                App.ViewModel.SetLoader();
                 e.Cancel = true;
                 var result = await ViewModel.ShowDialog();
                 if (result)
@@ -163,28 +163,13 @@ namespace TravelListApp.Views
                 {
                     Menu.SetTab(GetType());
                 }
-                SetLoader();
+                App.ViewModel.SetLoader();
             }
-        }
-
-        private void SetLoader()
-        {
-            if (MyProgressRing.IsActive)
-            {
-                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-                MyProgressRing.IsActive = false;
-            }
-            else
-            {
-                MyProgressGrid.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                MyProgressRing.IsActive = true;
-            }
-
         }
 
         private async void MyMap_Loaded(object sender, RoutedEventArgs e)
         {
-            SetLoader();
+            App.ViewModel.SetLoader();
 
             foreach (RoutesOfPointOfInterest route in ViewModel.syncRoutes.Where(p => p.ToRemove == false))
             {
@@ -192,7 +177,7 @@ namespace TravelListApp.Views
                     await ShowRouteOnMap(route);
             }
 
-            SetLoader();
+            App.ViewModel.SetLoader();
         }
 
         private async void AddRoute_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -217,7 +202,7 @@ namespace TravelListApp.Views
             newRoute.Driving = SelectedRouteType.Equals(RouteTypes.Driving);
             newRoute.IsNew = true;
 
-            SetLoader();
+            App.ViewModel.SetLoader();
 
             bool result = await ShowRouteOnMap(newRoute);
             if (result)
@@ -230,7 +215,7 @@ namespace TravelListApp.Views
                 Errors.Add("Route not found");
             }
 
-            SetLoader();
+            App.ViewModel.SetLoader();
         }
 
         
@@ -287,7 +272,7 @@ namespace TravelListApp.Views
         {
             if (MapItemsListViewer.Height == 0)
             {
-                Size s = GetCurrentDisplaySize();
+                Size s = App.ViewModel.GetCurrentViewSize();
                 MapItemsListViewer.Height = s.Height / 5;
             }
             else
@@ -299,32 +284,10 @@ namespace TravelListApp.Views
 
         private async void SaveAppBar_Click(object sender, RoutedEventArgs e)
         {
-            SetLoader();
+            App.ViewModel.SetLoader();
             await ViewModel.SaveRoutesAsync();
             Sync();
-            SetLoader();
-        }
-
-        public static Size GetCurrentDisplaySize()
-        {
-            var displayInformation = DisplayInformation.GetForCurrentView();
-            TypeInfo t = typeof(DisplayInformation).GetTypeInfo();
-            var props = t.DeclaredProperties.Where(x => x.Name.StartsWith("Screen") && x.Name.EndsWith("InRawPixels")).ToArray();
-            var w = props.Where(x => x.Name.Contains("Width")).First().GetValue(displayInformation);
-            var h = props.Where(x => x.Name.Contains("Height")).First().GetValue(displayInformation);
-            var size = new Size(System.Convert.ToDouble(w), System.Convert.ToDouble(h));
-            switch (displayInformation.CurrentOrientation)
-            {
-                case DisplayOrientations.Landscape:
-                case DisplayOrientations.LandscapeFlipped:
-                    size = new Size(Math.Max(size.Width, size.Height), Math.Min(size.Width, size.Height));
-                    break;
-                case DisplayOrientations.Portrait:
-                case DisplayOrientations.PortraitFlipped:
-                    size = new Size(Math.Min(size.Width, size.Height), Math.Max(size.Width, size.Height));
-                    break;
-            }
-            return size;
+            App.ViewModel.SetLoader();
         }
 
     }

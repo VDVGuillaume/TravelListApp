@@ -18,40 +18,82 @@
         <Grid Grid.Row="0" VerticalAlignment="Stretch">
             <Image Source="{x:Bind ViewModel.firstConvertedImage }" Stretch="UniformToFill" />
             <Grid Grid.Row="0" VerticalAlignment="Stretch" Background="{ThemeResource MaskBackground}">
-            <TextBlock Text="First upcoming travel"
-                            Style="{ThemeResource HeadTitleTextStyle}"
-                            Margin="50 0 0 0"
-                     />
-            <Border VerticalAlignment="Stretch" >
-                <StackPanel VerticalAlignment="Bottom">
-                    <controls:Carousel x:Name="CarouselControl"
-                          InvertPositive="True"
-                          ItemDepth="300"
-                          ItemMargin="0"
-                          ItemRotationX="0"
-                          ItemRotationY="45"
-                          ItemRotationZ ="0"
-                          Orientation="Horizontal"
-                          SelectedIndex="0"
-                          >
-                        <controls:Carousel.EasingFunction>
-                            <CubicEase EasingMode="EaseOut" />
-                        </controls:Carousel.EasingFunction>
-                        <controls:Carousel.ItemTemplate>
-                            <DataTemplate>
-                                <Image
-                          Source="{Binding Photo}"
-                          Stretch="Uniform" />
-                            </DataTemplate>
-                        </controls:Carousel.ItemTemplate>
-                    </controls:Carousel>
-                        <TextBlock Text="{x:Bind ViewModel.Name}" Style="{ThemeResource TitleTextStyle}" Height="60" Margin="15,0,15,0"/>
-                        <TextBlock Text="{x:Bind ViewModel.Description}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
-                        <TextBlock Text="{x:Bind ViewModel.Country}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
-                        <TextBlock Text="{x:Bind ViewModel.StartDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
-                        <TextBlock Text="{x:Bind ViewModel.EndDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
-                </StackPanel>
-            </Border>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="First upcoming travel"
+                 Style="{ThemeResource HeadTitleTextStyle}"
+                 Margin="50 10 0 10"
+                 />
+                <Border Grid.Row="3" VerticalAlignment="Stretch" >
+                    <StackPanel VerticalAlignment="Bottom">
+                        <controls:Carousel x:Name="CarouselControl"
+                              InvertPositive="True"
+                              ItemDepth="300"
+                              ItemMargin="0"
+                              ItemRotationX="0"
+                              ItemRotationY="45"
+                              ItemRotationZ ="0"
+                              Orientation="Horizontal"
+                              SelectedIndex="0"
+                              >
+                            <controls:Carousel.EasingFunction>
+                                <CubicEase EasingMode="EaseOut" />
+                            </controls:Carousel.EasingFunction>
+                            <controls:Carousel.ItemTemplate>
+                                <DataTemplate>
+                                    <Image
+                              Source="{Binding Photo}"
+                              Stretch="Uniform" />
+                                </DataTemplate>
+                            </controls:Carousel.ItemTemplate>
+                        </controls:Carousel>
+                        <TextBlock Text="{x:Bind ViewModel.Name}" Style="{ThemeResource TitleTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,15"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Description:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
+                            <TextBlock x:Name="DescriptionTextBlock" Text="{x:Bind ViewModel.Description}" Style="{ThemeResource CaptionTextStyle}" Margin="0,0,15,10"
+                              MinWidth="300"
+                              TextWrapping="Wrap" 
+                              TextTrimming="WordEllipsis" 
+                              LineStackingStrategy="BlockLineHeight"
+                              LineHeight="20"
+                              MaxHeight="60"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Country:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
+                            <TextBlock Text="{x:Bind ViewModel.Country}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,10"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="From:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
+                            <TextBlock Text="{x:Bind ViewModel.StartDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,5"/>
+                            <TextBlock Text="To:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="5,0,15,5"/>
+                            <TextBlock Text="{x:Bind ViewModel.EndDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,10"/>
+                        </StackPanel>
+                        <TextBlock Text="Checklist progress"
+                             Style="{ThemeResource TitleTextStyle}"
+                             Margin="15 0 0 15"
+                             />
+                        <ProgressBar Grid.Row="2" x:Name="ProgressCheck" Margin="10 0 10 10"  Width="550" Height="20" HorizontalAlignment="Left" VerticalAlignment="Stretch" />
+                        <TextBlock Text="Tasklist progress"
+                             Style="{ThemeResource TitleTextStyle}"
+                             Margin="15 0 0 15"
+                             />
+                        <ProgressBar Grid.Row="2" x:Name="ProgressTask" Margin="10 0 10 10"  Width="550" Height="20" HorizontalAlignment="Left" VerticalAlignment="Stretch" />
+                        <Button x:Name="button" 
+                            Click="GoToButton_Click"
+                            Tag="{x:Bind ViewModel.TravelListItemID}"
+                            BorderThickness="0.5"
+                            Foreground="{ThemeResource ContentBrush}"
+                            BorderBrush="{ThemeResource ContentBrush}"
+                            Content="Go to travellist" 
+                            HorizontalAlignment="Stretch"
+                            Margin="10 0 10 10"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="5" 
+                            Grid.Column="0"/>
+                    </StackPanel>
+                </Border>
             </Grid>
         </Grid>
     </Grid>

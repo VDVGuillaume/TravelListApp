@@ -48,27 +48,27 @@
                              BorderThickness="0.5"
                              Foreground="{ThemeResource ContentBrush}"
                              BorderBrush="{ThemeResource ContentBrush}"
-                             Background="{StaticResource transBrush}"
                              Text="{x:Bind ViewModel.Name, Mode=TwoWay}"
                              Margin="0 0 5 10"
                              Grid.ColumnSpan="2"
                              Grid.Row="1"
                              Grid.Column="0" />
             <TextBox Header="Description"
-                             BorderThickness="0.5"
-                             Foreground="{ThemeResource ContentBrush}"
-                             BorderBrush="{ThemeResource ContentBrush}"
-                             Background="{StaticResource transBrush}"
-                             Text="{x:Bind ViewModel.Description, Mode=TwoWay}"
-                             Margin="0 0 5 10"
-                             Grid.ColumnSpan="2"
-                             Grid.Row="2"
-                             Grid.Column="0" />
+                    AcceptsReturn="True" TextWrapping="Wrap"
+                    MaxHeight="100"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    BorderThickness="0.5"
+                    Foreground="{ThemeResource ContentBrush}"
+                    BorderBrush="{ThemeResource ContentBrush}"
+                    Text="{x:Bind ViewModel.Description, Mode=TwoWay}"
+                    Margin="0 0 5 10"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="2"
+                    Grid.Column="0" />
             <CalendarDatePicker Header="Start date"
                                 BorderThickness="0.5"
                                 Foreground="{ThemeResource ContentBrush}"
                                 BorderBrush="{ThemeResource ContentBrush}"
-                                Background="{StaticResource transBrush}"
                                 Date="{x:Bind ViewModel.StartDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"
                                 HorizontalAlignment="Stretch"
                                 Margin="0 0 10 10"
@@ -79,7 +79,6 @@
                                 BorderThickness="0.5"
                                 Foreground="{ThemeResource ContentBrush}"
                                 BorderBrush="{ThemeResource ContentBrush}"
-                                Background="{StaticResource transBrush}"
                                 Date="{x:Bind ViewModel.EndDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"
                                 HorizontalAlignment="Stretch"
                                 Margin="5 0 5 10"
@@ -90,7 +89,6 @@
                               BorderThickness="0.5"
                               Foreground="{ThemeResource ContentBrush}"
                               BorderBrush="{ThemeResource ContentBrush}"
-                              Background="{StaticResource transBrush}"
                               ItemsSource="{x:Bind ViewModel.Countries}"
                               SelectedItem="{x:Bind ViewModel.Country, Mode=TwoWay}"
                               Margin="0 0 5 10"
@@ -103,7 +101,6 @@
                     BorderThickness="0.5"
                     Foreground="{ThemeResource ContentBrush}"
                     BorderBrush="{ThemeResource ContentBrush}"
-                    Background="{StaticResource transBrush}"
                     Content="Add picture" 
                     HorizontalAlignment="Stretch"
                     Margin="0 0 5 10" 
@@ -174,8 +171,5 @@
                 </AppBarButton.Icon>
             </AppBarButton>
         </CommandBar>
-        <Grid Name="MyProgressGrid" Grid.RowSpan="3" Background="{StaticResource MaskBackground}" Visibility="Collapsed">
-            <ProgressRing  Name="MyProgressRing" Grid.Row="1" Height="100" VerticalAlignment="Center" HorizontalAlignment="Center" Width="100" Foreground="Red" IsActive="{Binding IsLoading}" Visibility="Visible" />
-        </Grid>
     </Grid>
 </Page>
