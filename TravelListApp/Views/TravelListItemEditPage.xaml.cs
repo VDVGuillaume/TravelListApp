@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TravelListApp.Models;
-using TravelListApp.Services;
 using TravelListApp.Services.Icons;
 using TravelListApp.ViewModels;
 using Windows.Graphics.Imaging;
@@ -18,7 +17,6 @@ using TravelListApp.Services.Navigation;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using TravelListModels;
-using Windows.UI.Core;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -174,10 +172,8 @@ namespace TravelListApp.Views
                 // Get the SoftwareBitmap representation of the file
                 softwareBitmap = await decoder.GetSoftwareBitmapAsync();
             }
-            //var bitmap = new SoftwareBitmap(BitmapPixelFormat.Bgra8, 200, 200);
             var bitmap = softwareBitmap;
             var imgSource = new WriteableBitmap(bitmap.PixelWidth, bitmap.PixelHeight);
-            // imgbit.Source = imgSource;
             bitmap.CopyToBuffer(imgSource.PixelBuffer);
             byte[] dataArrayTobeSent = await ConvertImageToByte(inputFile);
             imageName = Guid.NewGuid() + inputFile.FileType;

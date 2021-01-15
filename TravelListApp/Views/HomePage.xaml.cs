@@ -3,7 +3,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using TravelListApp.Models;
+using TravelListApp.Seeding;
 using TravelListApp.Services.Navigation;
 using TravelListApp.ViewModels;
 using Windows.Foundation;
@@ -22,6 +24,8 @@ namespace TravelListApp.Views
     public sealed partial class HomePage : Page
     {
         // public ThemeSelectionViewModel ThemeViewModel { get; } = App.ThemeViewModel;
+
+        public static SeedingData SeedingData { get; } = new SeedingData();
 
         public HomePage()
         {
@@ -72,9 +76,12 @@ namespace TravelListApp.Views
             Navigation.Navigate(typeof(TravelListItemEditPage));
         }
 
-        private void SeedButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void SeedButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-
+            App.ViewModel.SetLoader();
+            await SeedingData.LoadData();
+            Navigation.Navigate(typeof(TravelListPage));
+            App.ViewModel.SetLoader();
         }
     }
 }
