@@ -75,12 +75,12 @@
                              Style="{ThemeResource TitleTextStyle}"
                              Margin="15 0 0 15"
                              />
-                        <ProgressBar Grid.Row="2" x:Name="ProgressCheck" Margin="10 0 10 10"  Height="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <ProgressBar x:Name="ProgressCheck" Margin="10 0 10 10"  Height="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                         <TextBlock Text="Tasklist progress"
                              Style="{ThemeResource TitleTextStyle}"
                              Margin="15 0 0 15"
                              />
-                        <ProgressBar Grid.Row="2" x:Name="ProgressTask" Margin="10 0 10 10"  Height="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <ProgressBar x:Name="ProgressTask" Margin="10 0 10 10"  Height="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                         <Button x:Name="button" 
                             Click="GoToButton_Click"
                             Tag="{x:Bind ViewModel.TravelListItemID}"

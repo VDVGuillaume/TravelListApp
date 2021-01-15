@@ -10,7 +10,6 @@
     d:DesignHeight="300"
     d:DesignWidth="400"
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
-    RequestedTheme="{x:Bind ThemeViewModel.SelectedThemeName, Mode=OneWay}"
     Background="{ThemeResource PageBackgroundColor}">
 
 

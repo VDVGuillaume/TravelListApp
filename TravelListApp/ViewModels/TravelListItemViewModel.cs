@@ -17,11 +17,8 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace TravelListApp.ViewModels
 {
-    //public class TravelListItemViewModel : BindableBase, IEditableObject
     public class TravelListItemViewModel : ValidatableModelBase
     {
-
-        // public TravelListItemViewModel(TravelListItem model = null) => Model = model ?? new TravelListItem();
 
         public TravelListItemViewModel(TravelListItem model = null)
         {
@@ -62,13 +59,11 @@ namespace TravelListApp.ViewModels
                 }
 
                 this.PlacesOrRoutesAreUpdated = false;
+                this.ImageChangesCheck = new List<CarouselImage>();
 
                 this.Validator = that => { Validation_Executed(that as TravelListItemViewModel); };
             }
         }
-
-
-
 
         /// <summary>
         /// Gets or sets the TravelListItemID's.
@@ -244,6 +239,9 @@ namespace TravelListApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// List of Countries
+        /// </summary>
         public List<String> Countries = App.ViewModel.Countries.Select(x => x.Name).ToList();
 
         /// <summary>
@@ -258,12 +256,30 @@ namespace TravelListApp.ViewModels
             }
         }
 
+        // List of CarouselImage used in the editpage for triggering imageChanges validation
         public List<CarouselImage> imageChanges = new List<CarouselImage>();
-
-        public List<CarouselImage> convertedImages = new List<CarouselImage>();
 
         public WriteableBitmap defaultImage;
 
+        /// <summary>
+        /// Create defaut WriteableBitmap
+        /// </summary>
+        public async Task SetDefaultImage()
+        {
+            string fileToLaunch = @"Assets\Square150x150Logo.scale-200.png";
+            var storageFile = await Package.Current.InstalledLocation.GetFileAsync(fileToLaunch);
+            var stream = await storageFile.OpenReadAsync();
+
+            var wb = new WriteableBitmap(492, 507); // size by magic?
+            await wb.SetSourceAsync(stream);
+            defaultImage = wb;
+        }
+
+        public List<CarouselImage> convertedImages = new List<CarouselImage>();
+
+        /// <summary>
+        /// Returns first converted WriteableBitmap
+        /// </summary>
         public WriteableBitmap firstConvertedImage
         {
             get
@@ -279,32 +295,9 @@ namespace TravelListApp.ViewModels
             }
         }
 
-        public async Task SetDefaultImage()
-        {
-            string fileToLaunch = @"Assets\Square150x150Logo.scale-200.png";
-            var storageFile = await Package.Current.InstalledLocation.GetFileAsync(fileToLaunch);
-            var stream = await storageFile.OpenReadAsync();
-
-            var wb = new WriteableBitmap(492, 507); // size by magic?
-            await wb.SetSourceAsync(stream);
-            defaultImage = wb;
-        }
-
-
-        public async void ConvertImages()
-        {
-            convertedImages = new List<CarouselImage>();
-            foreach (TravelListItemImage image in Images)
-            {
-                StorageFile sfile = await LocalStorage.AsStorageFile(image.ImageData, image.ImageName);
-                CarouselImage cImage = new CarouselImage(image)
-                {
-                    Photo = await LocalStorage.getImageFromStorageFile(sfile)
-                };
-                convertedImages.Add(cImage);
-            }
-        }
-
+        /// <summary>
+        /// Converts multiple image byte[] and enriches CarouselImage objects
+        /// </summary>
         public async Task ConvertImagesTask()
         {
             await SetDefaultImage();
@@ -320,6 +313,9 @@ namespace TravelListApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Converts image byte[] and enrich CarouselImage object
+        /// </summary>
         public async Task<CarouselImage> ConvertImageTask(TravelListItemImage image)
         {
             StorageFile sfile = await LocalStorage.AsStorageFile(image.ImageData, image.ImageName);
@@ -332,6 +328,9 @@ namespace TravelListApp.ViewModels
 
         public List<PointOfInterest> syncPoints = new List<PointOfInterest>();
 
+        /// <summary>
+        /// Fill up points for the places pages
+        /// </summary>
         public void FillSyncPoints()
         {
             syncPoints = new List<PointOfInterest>();
@@ -343,6 +342,9 @@ namespace TravelListApp.ViewModels
 
         public ObservableCollection<RoutesOfPointOfInterest> syncRoutes = new ObservableCollection<RoutesOfPointOfInterest>();
 
+        /// <summary>
+        /// Fill up routes for the routes pages
+        /// </summary>
         public void FillSyncRoutes()
         {
             syncRoutes.Clear();
@@ -355,6 +357,9 @@ namespace TravelListApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Dialog when leaving unsaved page
+        /// </summary>
         public async Task<bool> ShowDialog()
         {
             var dialog = new Windows.UI.Popups.MessageDialog(
@@ -379,6 +384,9 @@ namespace TravelListApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Validates the travellist model
+        /// </summary>
         private void Validation_Executed(TravelListItemViewModel c)
         {
             if (string.IsNullOrEmpty(c.Name))
@@ -404,7 +412,10 @@ namespace TravelListApp.ViewModels
             }
 
             // Compare two properties.
-            if (c.Images.Count == 0 && (c.imageChanges.Count == 0 || c.imageChanges.FindAll(image => image.IsNew).Count == 0) || (c.Images.Count == c.imageChanges.FindAll(image => image.ToRemove).Count && c.Images.Count == c.imageChanges.Count))
+            if (
+                (c.Images.Count == 0 && c.imageChanges.FindAll(image => image.IsNew).Count == 0) ||
+                ((c.Images.Count == c.imageChanges.FindAll(image => image.ToRemove).Count) && c.imageChanges.FindAll(image => image.IsNew).Count == 0)
+               )
             {
                 // Unfortunately errors have to be assigned to a property.
                 c.Properties[nameof(c.Images)].Errors.Add("Image is mandatory.");
@@ -423,19 +434,7 @@ namespace TravelListApp.ViewModels
                 var item = await App.Repository.TravelLists.CreateTravelList(Model);
                 this.TravelListItemID = item.TravelListItemID;
                 App.ViewModel.TravelListItems.Add(this);
-                foreach (CarouselImage ic in imageChanges)
-                {
-                    if (ic.IsNew)
-                    {
-                        ic.TravelListItemID = this.TravelListItemID;
-                        await App.Repository.TravelListImages.CreateTravelListImage(ic);
-                    }
-                    if (ic.ToRemove)
-                    {
-                        await App.Repository.TravelListImages.DeleteTravelListImage(ic);
-                    }
-                }
-                imageChanges.Clear();
+                await SaveImagesAsync();
                 var newModel = await App.Repository.TravelLists.GetTravelListById(item.TravelListItemID);
                 this.Model = newModel;
                 MarkAsClean();
@@ -447,30 +446,9 @@ namespace TravelListApp.ViewModels
                 {
                     item.Model = _model;
                 }
-                foreach (CarouselImage ic in imageChanges)
-                {
-                    if (ic.IsNew)
-                    {
-                        ic.TravelListItemID = this.TravelListItemID;
-                        await App.Repository.TravelListImages.CreateTravelListImage(ic);
-                    }
-                    if (ic.ToRemove)
-                    {
-                        await App.Repository.TravelListImages.DeleteTravelListImage(ic);
-                    }
-                }
-                imageChanges.Clear();
+                await SaveImagesAsync();
                 await RefreshAsync();
             }
-        }
-
-        /// <summary>
-        /// Delete travellist.
-        /// </summary>
-        public async Task DeleteAsync()
-        {
-            await App.Repository.TravelLists.DeleteTravelList(Model);
-            App.ViewModel.TravelListItems.Remove(this);
         }
 
         /// <summary>
@@ -478,11 +456,6 @@ namespace TravelListApp.ViewModels
         /// </summary>
         public async Task SaveImagesAsync()
         {
-            var item = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == Model.TravelListItemID).First();
-            if (item != null)
-            {
-                item.Model = _model;
-            }
             foreach (CarouselImage ic in imageChanges)
             {
                 if (ic.IsNew)
@@ -496,10 +469,16 @@ namespace TravelListApp.ViewModels
                 }
             }
             imageChanges.Clear();
-            await RefreshAsync();
         }
 
-
+        /// <summary>
+        /// Delete travellist.
+        /// </summary>
+        public async Task DeleteAsync()
+        {
+            await App.Repository.TravelLists.DeleteTravelList(Model);
+            App.ViewModel.TravelListItems.Remove(this);
+        }
 
         public async Task<List<Category>> GetCategoriesAsync()
         {            
@@ -520,7 +499,7 @@ namespace TravelListApp.ViewModels
 
        
         /// <summary>
-        /// Saves travellist data that has been edited.
+        /// Saves travellist checklist data that has been edited.
         /// </summary>
         public async Task SaveChecklistAsync(CheckListItem ci)
         {           
@@ -548,7 +527,7 @@ namespace TravelListApp.ViewModels
         }
 
         /// <summary>
-        /// Saves travellist data that has been edited.
+        /// Saves travellist task data that has been edited.
         /// </summary>
         public async Task SaveTasklistAsync(TaskListItem ci)
         {
@@ -573,7 +552,7 @@ namespace TravelListApp.ViewModels
 
 
         /// <summary>
-        /// Delete travellist.
+        /// Saves travellist points data that has been edited.
         /// </summary>
         public async Task SavePointsAsync()
         {
@@ -624,10 +603,6 @@ namespace TravelListApp.ViewModels
             }
         }
 
-
-
-
-
         /// <summary>
         /// Search Bing and return location object.
         /// </summary>
@@ -635,26 +610,6 @@ namespace TravelListApp.ViewModels
         {
             Location location = await App.Repository.Bing.GetLocationByQuery(search);
             return location;
-        }
-
-        /// <summary>
-        /// Raised when the user cancels the changes they've made to the customer data.
-        /// </summary>
-        public event EventHandler AddNewTravelListCanceled;
-
-        /// <summary>
-        /// Cancels any in progress edits.
-        /// </summary>
-        public async Task CancelEditsAsync()
-        {
-            if (IsNewTravelList)
-            {
-                AddNewTravelListCanceled?.Invoke(this, EventArgs.Empty);
-            }
-            else
-            {
-                await RevertChangesAsync();
-            }
         }
 
         /// <summary>
@@ -677,8 +632,6 @@ namespace TravelListApp.ViewModels
             MarkAsClean();
         }
 
-        // private bool _isNewTravelList;
-
         /// <summary>
         /// Gets or sets a value that indicates whether this is a new TravelList.
         /// </summary>
@@ -686,7 +639,6 @@ namespace TravelListApp.ViewModels
         {
             get => Read<bool>();
             set => Write(value);
-            // set => SetProperty(ref _isNewTravelList, value);
         }
 
         /// <summary>
@@ -696,20 +648,7 @@ namespace TravelListApp.ViewModels
         {
             get => Read<bool>();
             set => Write(value);
-            // set => SetProperty(ref _isNewTravelList, value);
         }
-
-        /// <summary>
-        /// Called when a bound DataGrid control cancels the edits that have been made to a travellist.
-        /// </summary>
-        public async void CancelEdit() => await CancelEditsAsync();
-
-        /// <summary>
-        /// Called when a bound DataGrid control commits the edits that have been made to a travellist.
-        /// </summary>
-        public async void EndEdit() => await SaveAsync();
-
-
 
     }
 }

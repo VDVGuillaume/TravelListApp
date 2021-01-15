@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TravelListApp.Services.Theming;
-using TravelListApp.ViewModels;
+﻿using TravelListApp.Services.Theming;
 
-namespace TravelListApp.Models
+namespace TravelListApp.ViewModels
 {
-    public class AppTheme : ObservableObject
+    public class ThemeItem : BindableBase
     {
         public ThemeManager.Themes ThemeId { get; set; }
         public string Title { get; set; }

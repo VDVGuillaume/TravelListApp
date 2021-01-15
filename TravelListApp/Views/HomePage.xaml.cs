@@ -51,6 +51,11 @@ namespace TravelListApp.Views
                     ProgressCheck.Maximum = ViewModel.Items.Count;
                     ProgressCheck.Value = ViewModel.Items.Where(x => x.Checked).Count();
                 }
+                if (ViewModel.Tasks.Count > 0)
+                {
+                    ProgressTask.Maximum = ViewModel.Tasks.Count;
+                    ProgressTask.Value = ViewModel.Tasks.Where(x => x.Checked).Count();
+                }
                 foreach (var item in ViewModel.convertedImages)
                 {
                     cImages.Add(item);
