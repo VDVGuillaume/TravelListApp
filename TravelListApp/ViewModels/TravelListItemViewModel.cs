@@ -9,6 +9,7 @@ using TravelListApp.Services;
 using TravelListApp.Services.Validation;
 using TravelListApp.Views;
 using TravelListModels;
+using Windows.ApplicationModel;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Storage;
@@ -261,10 +262,34 @@ namespace TravelListApp.ViewModels
 
         public List<CarouselImage> convertedImages = new List<CarouselImage>();
 
+        public WriteableBitmap defaultImage;
+
         public WriteableBitmap firstConvertedImage
         {
-            get => convertedImages.FirstOrDefault().Photo;
+            get
+            {
+                if (convertedImages.FirstOrDefault() != null)
+                {
+                    return convertedImages.FirstOrDefault().Photo;
+                } else
+                {
+                    return defaultImage;
+                }
+                
+            }
         }
+
+        public async Task SetDefaultImage()
+        {
+            string fileToLaunch = @"Assets\Square150x150Logo.scale-200.png";
+            var storageFile = await Package.Current.InstalledLocation.GetFileAsync(fileToLaunch);
+            var stream = await storageFile.OpenReadAsync();
+
+            var wb = new WriteableBitmap(492, 507); // size by magic?
+            await wb.SetSourceAsync(stream);
+            defaultImage = wb;
+        }
+
 
         public async void ConvertImages()
         {
@@ -282,6 +307,7 @@ namespace TravelListApp.ViewModels
 
         public async Task ConvertImagesTask()
         {
+            await SetDefaultImage();
             convertedImages = new List<CarouselImage>();
             foreach(TravelListItemImage image in Images)
             {

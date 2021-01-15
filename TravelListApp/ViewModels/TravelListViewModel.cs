@@ -112,8 +112,8 @@ namespace TravelListApp.ViewModels
             IEnumerable<TravelListByParam> travelListsByParam;
             if (propertyInfo.PropertyType == typeof(System.DateTime))
             {
-                travelListsByParam = travelListsSearch.OrderBy(x => propertyInfo.GetValue(x, null)).GroupBy(x => propertyInfo.GetValue(x, null))
-                .Select(x => new TravelListByParam { Name = ((DateTime)x.Key).ToString("D", DateTimeFormatInfo.InvariantInfo), Items = new ObservableCollection<TravelListItemViewModel>(x.ToList()) });
+                travelListsByParam = travelListsSearch.OrderBy(x => propertyInfo.GetValue(x, null)).GroupBy(x => ((DateTime)propertyInfo.GetValue(x, null)).ToString("D", DateTimeFormatInfo.InvariantInfo))
+                .Select(x => new TravelListByParam { Name = x.Key.ToString(), Items = new ObservableCollection<TravelListItemViewModel>(x.ToList()) });
             } else
             {
                 travelListsByParam = travelListsSearch.OrderBy(x => propertyInfo.GetValue(x, null)).GroupBy(x => propertyInfo.GetValue(x, null))

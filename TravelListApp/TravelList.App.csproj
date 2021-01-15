@@ -166,6 +166,7 @@
     <Compile Include="ViewModels\TravelListViewModel.cs" />
     <Compile Include="Services\Validation\ValidatableModelBase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Seeding\SeedingData.cs" />
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -219,6 +220,12 @@
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\mappin.png" />
     <Content Include="Assets\TravelBackground.png" />
+    <Content Include="Assets\Seeding\CostaRica1.jpg" />
+    <Content Include="Assets\Seeding\CostaRica2.jpg" />
+    <Content Include="Assets\Seeding\Japan1.jpg" />
+    <Content Include="Assets\Seeding\Japan2.jpg" />
+    <Content Include="Assets\Seeding\Spain1.jpg" />
+    <Content Include="Assets\Seeding\Spain2.jpg" />
     <Content Include="..\RestApi\.env">
       <Link>.env</Link>
     </Content>
