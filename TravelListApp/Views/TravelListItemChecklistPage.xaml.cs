@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using TravelListApp.Models;
 using TravelListApp.ViewModels;
 using TravelListModels;
@@ -24,7 +25,8 @@ namespace TravelListApp.Views
         public TravelListItemViewModel ViewModel { get; set; }
         public CheckBox Checkbox;
         public ObservableCollection<string> ListOfCategories { get; set; }
-        private ObservableCollection<CheckListItem> ObservablecheckListItems; 
+        private ObservableCollection<CheckListItem> ObservablecheckListItems;
+        private static readonly Regex _regex = new Regex("[^0-9.-]+");
 
         public TravelListItemChecklistPage()
         {
@@ -43,8 +45,15 @@ namespace TravelListApp.Views
         private void OrderByCategory(object sender, RoutedEventArgs e)
         {
 
+
         }
               
+        private bool NumberCheck(string text)
+        {
+           return !_regex.IsMatch(text);
+        }
+
+
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -107,18 +116,22 @@ namespace TravelListApp.Views
                 await ViewModel.SaveCategoryAsync(category);
             }
 
-            CheckListItem checkListItem = new CheckListItem() { Name = NewItem.Text, Amount = Convert.ToInt32(NewAmount.Text), Checked = (bool)NewCheck.IsChecked, Category = category.Name };
-            checkListItem.IsNew = true;
-            try
+            if (NumberCheck(NewAmount.Text))
             {
-                await ViewModel.SaveChecklistAsync(checkListItem);
+
+                CheckListItem checkListItem = new CheckListItem() { Name = NewItem.Text, Amount = Convert.ToInt32(NewAmount.Text), Checked = (bool)NewCheck.IsChecked, Category = category.Name };
+                checkListItem.IsNew = true;
+                try
+                {
+                    await ViewModel.SaveChecklistAsync(checkListItem);
+                }
+                catch { }
+                ObservablecheckListItems.Add(checkListItem);
+                LoadProgress();
+                checkListItem.IsNew = false;
             }
-            catch { }
-         
-        
-            ObservablecheckListItems.Add(checkListItem);
-            LoadProgress();
-            checkListItem.IsNew = false;
+
+            else { ErrorLabel.Text = "Only numbers are allowed in the amount field, please try again."; };
 
         }
 
