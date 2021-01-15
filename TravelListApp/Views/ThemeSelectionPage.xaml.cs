@@ -23,7 +23,7 @@ namespace TravelListApp.Views
     /// </summary>
     public sealed partial class ThemeSelectionPage : Page
     {
-        public ThemeSelectionViewModel ThemeViewModel { get; } = App.ThemeViewModel;
+        public ThemeViewModel ThemeViewModel { get; } = App.ThemeViewModel;
         public ThemeSelectionPage()
         {
             this.InitializeComponent();

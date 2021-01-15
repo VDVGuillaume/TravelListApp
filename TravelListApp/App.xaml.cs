@@ -19,7 +19,7 @@ namespace TravelListApp
     {
 
         public static MainViewModel ViewModel { get; } = new MainViewModel();
-        public static ThemeSelectionViewModel ThemeViewModel { get; } = new ThemeSelectionViewModel();
+        public static ThemeViewModel ThemeViewModel { get; } = new ThemeViewModel();
         /// <summary>
         /// Pipeline for interacting with backend service or database.
         /// </summary>

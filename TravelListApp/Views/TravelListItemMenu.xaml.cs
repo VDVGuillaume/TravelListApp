@@ -20,8 +20,6 @@ namespace TravelListApp.Views
 
         private TravelListItemViewModel _model;
 
-        public ThemeSelectionViewModel ThemeViewModel { get; } = App.ThemeViewModel;
-
         public TravelListItemMenu()
         {
             this.InitializeComponent();

@@ -107,13 +107,6 @@ namespace TravelListApp.Views
                 App.ViewModel.SetLoader();
                 Navigation.Navigate(typeof(TravelListItemPage), ViewModel.TravelListItemID);
             }
-            else if (ViewModel.imageChanges.Count > 0)
-            {
-                App.ViewModel.SetLoader();
-                await ViewModel.SaveImagesAsync();
-                await ViewModel.ConvertImagesTask();
-                App.ViewModel.SetLoader();
-            }
         }
 
         private async void DeleteAppBar_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -144,8 +137,7 @@ namespace TravelListApp.Views
                     ViewModel.imageChanges.Add(imageToDelete);
                     
                 }
-                ViewModel.ImageChangesCheck = new List<CarouselImage>();
-                ViewModel.ImageChangesCheck = ViewModel.imageChanges;
+                ViewModel.ImageChangesCheck = new List<CarouselImage>(ViewModel.imageChanges);
                 cImages.Remove(imageToDelete);
             }
         }
@@ -186,8 +178,7 @@ namespace TravelListApp.Views
             CarouselImage cImage = await ViewModel.ConvertImageTask(liImage);
             cImage.IsNew = true;
             ViewModel.imageChanges.Add(cImage);
-            ViewModel.ImageChangesCheck = new List<CarouselImage>();
-            ViewModel.ImageChangesCheck = ViewModel.imageChanges;
+            ViewModel.ImageChangesCheck = new List<CarouselImage>(ViewModel.imageChanges);
             cImages.Add(cImage);
         }
 
