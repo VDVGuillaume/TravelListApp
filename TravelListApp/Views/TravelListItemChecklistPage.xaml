@@ -89,7 +89,7 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Check" HorizontalAlignment="Left"  VerticalAlignment="Stretch"/>
             <TextBlock Grid.Row="0" Grid.Column="1" Text="Item" HorizontalAlignment="Center" />
             <TextBlock Grid.Row="0" Grid.Column="2" Text="Amount" HorizontalAlignment="Center" />
-            <TextBlock Grid.Row="0" Grid.Column="3" Text="Category" HorizontalAlignment="Center" />
+            <Button Grid.Row="0" Grid.Column="3" Content="Category" HorizontalAlignment="Center" Click="OrderByCategory"/>
         </Grid>
         
         <Grid x:Name="addList"               
@@ -133,7 +133,7 @@
                    Padding="20,20,0,0"                    
                    ScrollViewer.VerticalScrollBarVisibility="Visible"
                    Grid.Row="4"
-                   MaxHeight="500"
+                   MaxHeight="300"
                    >
 
             <GridView.ItemTemplate>
