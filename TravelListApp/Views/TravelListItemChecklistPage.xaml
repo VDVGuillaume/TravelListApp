@@ -40,6 +40,17 @@
 
                 </VisualState>
 
+                <!-- tablet window VisualState -->
+                <VisualState x:Name="VisualStateMinimal">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="addList.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+
+                </VisualState>
+
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
@@ -94,7 +105,7 @@
         
         <Grid x:Name="addList"               
               HorizontalAlignment="Left" 
-              Padding="20,20,0,0"
+              Padding="20,20,0,20"
               Grid.Row="3"        
               
               >

@@ -9,7 +9,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel Background="{StaticResource TravelBackground}">
+    <Grid Background="{StaticResource TravelBackground}">
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
@@ -31,10 +31,19 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="addList.Visibility" Value="Collapsed" />
-                    </VisualState.Setters>
-
+                    </VisualState.Setters>                  
+                
                 </VisualState>
 
+                <!-- tablet window VisualState -->
+                <VisualState x:Name="VisualStateMinimal">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="addList.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 

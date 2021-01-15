@@ -39,6 +39,11 @@ namespace TravelListApp.Views
            
 
         }
+
+        private void OrderByCategory(object sender, RoutedEventArgs e)
+        {
+
+        }
               
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
