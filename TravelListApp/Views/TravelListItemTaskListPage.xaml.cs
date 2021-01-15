@@ -39,7 +39,7 @@ namespace TravelListApp.Views
             base.OnNavigatedTo(e);
 
             LoadItems();
-
+            LoadProgress();
         }
 
         private async void LoadItems()
@@ -48,8 +48,7 @@ namespace TravelListApp.Views
             List<TravelTaskListItem> Items = await ViewModel.GetTravelTaskListItems();
             Progress.Maximum = Items.Count;
             foreach (TravelTaskListItem item in Items)
-            {
-                LoadProgress(item);
+            {               
                 ObservableTaskListItems.Add(new TaskListItem()
                 {
                     Name = item.Name,                   
@@ -61,18 +60,13 @@ namespace TravelListApp.Views
 
 
 
-        private void LoadProgress(TravelTaskListItem item)
+        private void LoadProgress()
         {
-
-            if (item.Checked)
-                Progress.Value++;
-            else
-                Progress.Value--;
-
+            Progress.Maximum = ObservableTaskListItems.Count;
+            Progress.Value = ObservableTaskListItems.Where(x => x.Checked).Count();
         }
 
-
-
+        
 
 
         private async void AddItem(object sender, RoutedEventArgs e)
@@ -89,6 +83,7 @@ namespace TravelListApp.Views
 
 
             ObservableTaskListItems.Add(taskListItem);
+            LoadProgress();
             taskListItem.IsNew = false;
 
         }
@@ -103,6 +98,7 @@ namespace TravelListApp.Views
 
             await ViewModel.SaveTasklistAsync(itemToDelete);
             ObservableTaskListItems.Remove(itemToDelete);
+            LoadProgress();
         }
 
 
@@ -114,7 +110,8 @@ namespace TravelListApp.Views
                 CheckBox cbx = sender as CheckBox;
                 TaskListItem ItemToUpdate = (TaskListItem)cbx.DataContext;
                 ItemToUpdate.Checked = (bool)cbx.IsChecked;
-                LoadProgress(ItemToUpdate);
+                ObservableTaskListItems.Where(x => x.TravelTaskListItemID == ItemToUpdate.TravelTaskListItemID).ToList().ForEach(x => x.Checked = (bool)cbx.IsChecked);
+                LoadProgress();
                 await ViewModel.SaveTasklistAsync(ItemToUpdate);
             }
         }

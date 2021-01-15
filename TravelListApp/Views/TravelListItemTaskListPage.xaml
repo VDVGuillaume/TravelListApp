@@ -11,59 +11,131 @@
 
     <StackPanel Background="{StaticResource TravelBackground}">
 
-        <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+
+                <!-- pc window VisualState -->
+                <VisualState x:Name="VisualStateDesktop">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1020"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="addList.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <!-- tablet window VisualState -->
+                <VisualState x:Name="VisualStateTablet">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="addList.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+
+                </VisualState>
+
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <local:TravelListItemMenu x:Name="Menu" Grid.Row="0"/>
+
+
+
+        <TextBlock Text="Tasklist Editor"
+                   FontSize="24"
+                   Margin="0 0 0 10"
+                   Grid.ColumnSpan="2"
+                   Grid.Row="1"
+                   />
+
+
+        <Grid 
+              VerticalAlignment="Stretch"
+              Padding="20,20,0,0"
+              Grid.Row="2"              
+              >
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="400"/>
+            </Grid.ColumnDefinitions>
+
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <local:TravelListItemMenu x:Name="Menu" Grid.Row="0"/>
-            <TextBlock  Text="TaskList" FontSize="20" Margin="41,48,-41,2" Grid.RowSpan="2"  />
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Check" HorizontalAlignment="Left"  VerticalAlignment="Stretch"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Task" HorizontalAlignment="Center" />
         </Grid>
 
+        <Grid x:Name="addList"               
+              HorizontalAlignment="left" 
+              Padding="20,20,0,20"
+              Grid.Row="3"        
+              
+              >
 
-        <Grid Width ="550" HorizontalAlignment="Left" Padding="100,20,0,0">
+
+
+
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="250"/>
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Text="Check" HorizontalAlignment="Left"  Grid.ColumnSpan="2" VerticalAlignment="Stretch"/>
-            <TextBlock Grid.Column="1" Text="Task" HorizontalAlignment="Center" />
-        </Grid>
-        <Grid x:Name="addList" Width ="550" HorizontalAlignment="Left" Padding="100,20,0,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="250"/>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="50"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="19*"/>
+                <RowDefinition Height="auto"/>
 
             </Grid.RowDefinitions>
             <CheckBox x:Name="NewCheck" Grid.Column="0" HorizontalAlignment="Left"  VerticalAlignment="Center" Width="50"/>
             <TextBox x:Name="NewItem" Grid.Row="0" Grid.Column="1" Text="" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" PlaceholderText="Type in your task"  />
-            <Button Grid.Row ="0" Grid.Column="2" Background="Transparent" Click="AddItem" >
+
+            <Button Grid.Row ="0" Grid.Column="4" Background="Transparent" Click="AddItem" >
                 <SymbolIcon Symbol="Add" HorizontalAlignment="Center" />
             </Button>
 
 
         </Grid>
 
-        <GridView  x:Name="TaskListTable" ItemsSource="{x:Bind ObservableTaskListItems  }" Width ="550" HorizontalAlignment="Left" Padding="100,20,0,0" Height="500" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="0,0,0,0" VerticalAlignment="Stretch">
+        <GridView  x:Name="TaskListTable" 
+                   ItemsSource="{x:Bind ObservableTaskListItems}" 
+                   Width ="550" HorizontalAlignment="Left" 
+                   Padding="20,20,0,0"                    
+                   ScrollViewer.VerticalScrollBarVisibility="Visible"
+                   Grid.Row="4"
+                   MaxHeight="300"
+                   >
 
             <GridView.ItemTemplate>
-                <DataTemplate x:DataType="x1:TaskListItem" >
+                <DataTemplate x:DataType="x1:TaskListItem">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50"/>
                             <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="50"/>
                         </Grid.ColumnDefinitions>
 
-                        <CheckBox  Grid.Row="0" Grid.Column="0" IsChecked="{Binding Checked}"  Content="{Binding TravelTaskListItemId }"  HorizontalAlignment="Left" VerticalAlignment="Center"  Width="50" Grid.ColumnSpan="2" Checked="CheckBox_CheckedChanged" Unchecked="CheckBox_CheckedChanged"/>
+                        <CheckBox  Grid.Row="0" Grid.Column="0" IsChecked="{Binding Checked}"  Content="{Binding TravelCheckListItemId }"  HorizontalAlignment="Left" VerticalAlignment="Center"  Width="50" Grid.ColumnSpan="2" Checked="CheckBox_CheckedChanged" Unchecked="CheckBox_CheckedChanged"/>
                         <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center"  />
-                        <Button Grid.Row ="0" Grid.Column="2" Background="Transparent" Tag="{Binding TravelTaskListItemId}" Click="DeleteItem" >
+                        <Button Grid.Row ="0" Grid.Column="4" Background="Transparent" Tag="{Binding TravelCheckListItemId}" Click="DeleteItem" >
                             <SymbolIcon Symbol="Delete" HorizontalAlignment="Center" />
                         </Button>
 
@@ -76,7 +148,18 @@
 
 
         </GridView>
-        <TextBlock Text="The progress of your Tasklist" FontSize="20" Width="550" HorizontalAlignment="Left" TextAlignment="Center"/>
-        <ProgressBar x:Name="Progress"  Width="550" Height="50" HorizontalAlignment="Left" VerticalAlignment="Stretch" />
-    </StackPanel>
+        <Grid
+            Grid.Row="5"
+            >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="19*"></RowDefinition>
+                <RowDefinition Height="19*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="The progress of your tasklist" FontSize="20" Width="550" HorizontalAlignment="Left" TextAlignment="Center"/>
+            <ProgressBar Grid.Row="1" x:Name="Progress"  Width="550" Height="50" HorizontalAlignment="Left" VerticalAlignment="Stretch" />
+        </Grid>
+
+    </Grid>
+
+
 </Page>
