@@ -43,7 +43,6 @@ namespace TravelListApp.ViewModels
             set
             {
                 SetProperty(ref _isLoading, value);
-                OnPropertyChanged(nameof(IsLoading));
             }
         }
 
@@ -55,7 +54,6 @@ namespace TravelListApp.ViewModels
             set
             {
                 SetProperty(ref _search, value);
-                OnPropertyChanged(nameof(Search));
             }
         }
 
@@ -67,7 +65,6 @@ namespace TravelListApp.ViewModels
             set
             {
                 SetProperty(ref _Prefs, value);
-                OnPropertyChanged(nameof(Prefs));
             }
         }
 
@@ -79,7 +76,6 @@ namespace TravelListApp.ViewModels
             set
             {
                 SetProperty(ref _selectedPref, value);
-                OnPropertyChanged(nameof(SelectedPref));
             }
         }
 
@@ -91,7 +87,6 @@ namespace TravelListApp.ViewModels
             set
             {
                 SetProperty(ref _Items, value);
-                OnPropertyChanged(nameof(Items));
             }
         }
 
