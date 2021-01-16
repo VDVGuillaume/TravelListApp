@@ -158,7 +158,6 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ButtonItem.cs" />
     <Compile Include="ViewModels\ThemeViewModel.cs" />
-    <Compile Include="ViewModels\TravelListItemCmd.cs" />
     <Compile Include="ViewModels\MenuItem.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TravelListItemViewModel.cs" />

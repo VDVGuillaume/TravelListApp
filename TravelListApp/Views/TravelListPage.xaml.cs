@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using TravelListApp.Services.Icons;
 using TravelListApp.Services.Navigation;
 using TravelListApp.ViewModels;
@@ -43,7 +42,6 @@ namespace TravelListApp.Views
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             await ViewModel.RefreshData();
-            // groupedItemsViewSource.Source = ViewModel.Items;
             var collectionGroups = groupedItemsViewSource.View.CollectionGroups;
             ((ListViewBase)this.Zoom.ZoomedOutView).ItemsSource = collectionGroups;
         }
@@ -52,14 +50,6 @@ namespace TravelListApp.Views
         {
             Navigation.Navigate(typeof(TravelListItemEditPage));
         }
-
-        //private void Pref_ItemClick(object sender, ItemClickEventArgs e)
-        //{
-        //    var prefItem = e.ClickedItem as PrefItem;
-        //    ViewModel.GetTravelListsItemsGroupedByParam();
-        //    var collectionGroups = groupedItemsViewSource.View.CollectionGroups;
-        //    ((ListViewBase)this.Zoom.ZoomedOutView).ItemsSource = collectionGroups;
-        //}
 
         private void Pref_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

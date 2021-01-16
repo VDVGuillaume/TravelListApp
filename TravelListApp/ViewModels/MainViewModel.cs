@@ -13,14 +13,6 @@ namespace TravelListApp.ViewModels
     {
         public MainViewModel()
         {
-            //Task.Run(GetTravelListListAsync);
-            //Task.Run(GetCountriesAsync);
-        }
-
-        public async Task GetAllDataAsync()
-        {
-            await Task.Run(GetCountriesAsync);
-            await Task.Run(GetTravelListListAsync);
         }
 
         public async Task GetAllDataCountriesAsync()
@@ -38,11 +30,12 @@ namespace TravelListApp.ViewModels
             await Task.Run(GetFirstUpcomingTravelListAsync);
         }
 
+        /// <summary>
+        /// Bing maps token
+        /// </summary>
         public string MapServiceToken { get; set; }
 
-        // public ObservableCollection<TravelListItemViewModel> TravelListItems { get; set; }
-
-        ObservableCollection<TravelListItemViewModel> _travelListItemViewModel = new ObservableCollection<TravelListItemViewModel>();
+        private ObservableCollection<TravelListItemViewModel> _travelListItemViewModel = new ObservableCollection<TravelListItemViewModel>();
 
         public ObservableCollection<TravelListItemViewModel> TravelListItems
         {
@@ -55,27 +48,15 @@ namespace TravelListApp.ViewModels
                 if (_travelListItemViewModel != value)
                 {
                     _travelListItemViewModel = value;
-                    OnPropertyChanged(nameof(TravelListItems));
                 }
             }
         }
 
         public ObservableCollection<Country> Countries { get; set; }
 
-        private TravelListItemViewModel _selectedTravelList;
-
-        /// <summary>
-        /// Gets or sets the selected TravelList, or null if no TravelList is selected. 
-        /// </summary>
-        public TravelListItemViewModel SelectedTravelList
-        {
-            get => _selectedTravelList;
-            set => SetProperty(ref _selectedTravelList, value);
-        }
-
         private TravelListItemViewModel _firstUpcommingTravelList;
         /// <summary>
-        /// Gets or sets the selected TravelList, or null if no TravelList is selected. 
+        /// Gets or sets the selected first Upcomming TravelList, or null if no TravelList is selected. 
         /// </summary>
         public TravelListItemViewModel FirstUpcommingTravelList
         {
@@ -83,22 +64,25 @@ namespace TravelListApp.ViewModels
             set
             {
                 SetProperty(ref _firstUpcommingTravelList, value);
-                // OnPropertyChanged(nameof(FirstUpcommingTravelList));
             }
         }
 
         private bool _isLoading = false;
-
+        /// <summary>
+        /// Gets or sets IsLoading. 
+        /// </summary>
         public bool IsLoading
         {
             get => _isLoading;
             set
             {
                 SetProperty(ref _isLoading, value);
-                OnPropertyChanged(nameof(IsLoading));
             }
         }
 
+        /// <summary>
+        /// Method for setting IsLoading. 
+        /// </summary>
         public void SetLoader()
         {
             if (IsLoading)
@@ -107,19 +91,14 @@ namespace TravelListApp.ViewModels
             }
             else
             {
-                IsLoading = true;
+               IsLoading = true;
             }
         }
 
-        private bool _isReady = false;
-
-        public bool IsReady
-        {
-            get => _isReady;
-            set => SetProperty(ref _isReady, value);
-        }
-
-        public async Task GetFirstUpcomingTravelListAsync()
+        /// <summary>
+        /// Gets FirstUpcomingTravelList
+        /// </summary>
+        private async Task GetFirstUpcomingTravelListAsync()
         {
             await DispatcherHelper.ExecuteOnUIThreadAsync(() => IsLoading = true);
 
@@ -140,15 +119,17 @@ namespace TravelListApp.ViewModels
             });
         }
 
-        public async Task GetTravelListListAsync()
+        /// <summary>
+        /// Gets all TravelLists
+        /// </summary>
+        private async Task GetTravelListListAsync()
         {
             await DispatcherHelper.ExecuteOnUIThreadAsync(() => IsLoading = true);
-
-            TravelListItems = new ObservableCollection<TravelListItemViewModel>();
 
             var travelLists = await App.Repository.TravelLists.GetAllTravelLists(LoginPage.account.Id);
             if (travelLists == null)
             {
+                await DispatcherHelper.ExecuteOnUIThreadAsync(() => IsLoading = false);
                 return;
             }
 
@@ -165,7 +146,10 @@ namespace TravelListApp.ViewModels
             });
         }
 
-        public async Task GetCountriesAsync()
+        /// <summary>
+        /// Gets all Countries
+        /// </summary>
+        private async Task GetCountriesAsync()
         {
             await DispatcherHelper.ExecuteOnUIThreadAsync(() => IsLoading = true);
 
@@ -173,6 +157,7 @@ namespace TravelListApp.ViewModels
             var countries = await App.Repository.Countries.GetAllCountries();
             if (countries == null)
             {
+                await DispatcherHelper.ExecuteOnUIThreadAsync(() => IsLoading = false);
                 return;
             }
 
@@ -187,6 +172,10 @@ namespace TravelListApp.ViewModels
             });
 
         }
+
+        /// <summary>
+        /// Gets ViewSize
+        /// </summary>
         public Size GetCurrentViewSize()
         {
             // Get the visible bounds for current view

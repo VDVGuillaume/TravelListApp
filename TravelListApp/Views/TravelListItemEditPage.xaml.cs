@@ -59,8 +59,6 @@ namespace TravelListApp.Views
             else
             {
                 ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
-                // StorageFile sfile = await LocalStorage.AsStorageFile(ViewModel.Images[0].ImageData, ViewModel.Images[0].ImageName);
-                // imgbit.Source = ViewModel.firstConvertedImage;
                 foreach (var item in ViewModel.convertedImages)
                 {
                     cImages.Add(item);

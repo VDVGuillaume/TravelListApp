@@ -41,7 +41,6 @@ namespace TravelListApp.Views
             Errors = new ObservableUniqueCollection<string>();
             ErrorsList.ItemsSource = Errors;
             MapItemsListViewer.Height = 0;
-            // RouteType.SelectedItem = SelectedRouteType;
             RouteType.ItemsSource = Enum.GetValues(typeof(RouteTypes));
         }
 
@@ -91,9 +90,6 @@ namespace TravelListApp.Views
                   new Geopoint(endLocation));
             }
 
-
-
-
             if (routeResult.Status == MapRouteFinderStatus.Success)
             {
                 // Use the route to initialize a MapRouteView.
@@ -108,7 +104,6 @@ namespace TravelListApp.Views
                     viewOfRoute.RouteColor = Colors.Blue;
                     viewOfRoute.OutlineColor = Colors.Black;
                 }
-
 
                 // Assign viewOfRoute to Route object
                 route.ViewOfRoute = viewOfRoute;

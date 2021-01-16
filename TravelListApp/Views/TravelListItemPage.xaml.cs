@@ -47,6 +47,7 @@ namespace TravelListApp.Views
             {
                 cImages.Add(item);
             }
+            // Send page model to menu.
             Menu.SetModel(ViewModel);
             // Send page type to menu.
             Menu.SetTab(GetType());

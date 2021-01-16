@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Uwp.Helpers;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
@@ -23,27 +24,29 @@ namespace TravelListApp.Views
     /// </summary>
     public sealed partial class HomePage : Page
     {
-        // public ThemeSelectionViewModel ThemeViewModel { get; } = App.ThemeViewModel;
 
         public static SeedingData SeedingData { get; } = new SeedingData();
 
         public HomePage()
         {
             this.InitializeComponent();
-            ViewModel = App.ViewModel.FirstUpcommingTravelList;
             CarouselControl.ItemsSource = cImages;
             Size s = App.ViewModel.GetCurrentViewSize();
             CarouselControl.Height = s.Height / 5;
-            // DescriptionTextBlock.Width = s.Width / 1.75;
         }
 
-        public TravelListItemViewModel ViewModel { get; set; }
+        public TravelListItemViewModel ViewModel => App.ViewModel.FirstUpcommingTravelList;
+
         public ObservableCollection<CarouselImage> cImages = new ObservableCollection<CarouselImage>();
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            GridHasNoTravelListControl.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            GridHasTravelListControl.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            await App.ViewModel.GetFirstUpcomingAsync();
             if (ViewModel != null)
             {
+                GridHasTravelListControl.DataContext = App.ViewModel.FirstUpcommingTravelList;
                 GridHasNoTravelListControl.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
                 GridHasTravelListControl.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 if (ViewModel.Items.Count > 0)
@@ -60,12 +63,13 @@ namespace TravelListApp.Views
                 {
                     cImages.Add(item);
                 }
-            } else
+            }
+            else
             {
                 GridHasNoTravelListControl.Visibility = Windows.UI.Xaml.Visibility.Visible;
                 GridHasTravelListControl.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
-
+            base.OnNavigatedTo(e);
         }
 
         private async void GoToButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
