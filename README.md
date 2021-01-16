@@ -30,7 +30,7 @@
     * PM> Drop-DataBase
 
 ## Screenshots
-![Screenshot](https://github.com/JensBock/TravelListApp/blob/main/screenshot.png)
+![Screenshot](https://github.com/JensBock/TravelListApp/blob/main/screenshot.PNG)
 
 
 
