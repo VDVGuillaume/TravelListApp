@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
 
         <Grid x:Name="GridHasTravelListControl" VerticalAlignment="Stretch" >
-            <Image Source="{x:Bind ViewModel.firstConvertedImage }" Stretch="UniformToFill" />
+            <Image Source="{Binding firstConvertedImage }" Stretch="UniformToFill" />
             <Grid Grid.Row="0" VerticalAlignment="Stretch" Background="{ThemeResource MaskBackground}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -50,9 +50,9 @@
                                 </DataTemplate>
                             </controls:Carousel.ItemTemplate>
                         </controls:Carousel>
-                        <TextBlock Text="{x:Bind ViewModel.Name}" Style="{ThemeResource TitleTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,15"/>
+                        <TextBlock Text="{Binding Name}" Style="{ThemeResource TitleTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,15"/>
                         <TextBlock Text="Description:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
-                        <TextBlock x:Name="DescriptionTextBlock" Text="{x:Bind ViewModel.Description}" Style="{ThemeResource CaptionTextStyle}"
+                            <TextBlock x:Name="DescriptionTextBlock" Text="{Binding Description}" Style="{ThemeResource CaptionTextStyle}"
                               MinWidth="300"
                               Margin="20 0 10 10"
                               TextWrapping="Wrap" 
@@ -63,13 +63,13 @@
                               MaxHeight="60"/>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Country:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
-                            <TextBlock Text="{x:Bind ViewModel.Country}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,10"/>
+                                <TextBlock Text="{Binding Country}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,10"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="From:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
-                            <TextBlock Text="{x:Bind ViewModel.StartDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,5"/>
+                                <TextBlock Text="{Binding StartDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,5"/>
                             <TextBlock Text="To:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="5,0,15,5"/>
-                            <TextBlock Text="{x:Bind ViewModel.EndDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,10"/>
+                                <TextBlock Text="{Binding EndDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,10"/>
                         </StackPanel>
                         <TextBlock Text="Checklist progress"
                              Style="{ThemeResource TitleTextStyle}"
@@ -83,7 +83,7 @@
                         <ProgressBar x:Name="ProgressTask" Margin="10 0 10 10"  Height="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                         <Button x:Name="button" 
                             Click="GoToButton_Click"
-                            Tag="{x:Bind ViewModel.TravelListItemID}"
+                            Tag="{Binding TravelListItemID}"
                             BorderThickness="0.5"
                             Foreground="{ThemeResource ContentBrush}"
                             BorderBrush="{ThemeResource ContentBrush}"

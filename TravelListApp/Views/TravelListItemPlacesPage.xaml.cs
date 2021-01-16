@@ -218,8 +218,6 @@ namespace TravelListApp.Views
 
         }
 
-        
-
         private void mapItemButton_Click(object sender, RoutedEventArgs e)
         {
             var buttonSender = sender as Button;
@@ -272,32 +270,6 @@ namespace TravelListApp.Views
 
             }
         }
-
-        ///// <summary>
-        ///// Updates the search box items source when the user changes the search text.
-        ///// </summary>
-        //private async void BingSearchBox_TextChanged(AutoSuggestBox sender,
-        //    AutoSuggestBoxTextChangedEventArgs args)
-        //{
-        //    // We only want to get results when it was a user typing,
-        //    // otherwise we assume the value got filled in by TextMemberPath
-        //    // or the handler for SuggestionChosen.
-        //    if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
-        //    {
-        //        // If no search query is entered, refresh the complete list.
-        //        if (String.IsNullOrEmpty(sender.Text))
-        //        {
-
-        //            sender.ItemsSource = null;
-        //        }
-        //        else
-        //        {
-        //            await ViewModel.GetBingSearchResultsAsync(sender.Text);
-        //            sender.ItemsSource = null;
-
-        //        }
-        //    }
-        //}
 
     }
 

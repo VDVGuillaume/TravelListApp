@@ -30,9 +30,12 @@ namespace TravelListApp.ViewModels
             await Task.Run(GetFirstUpcomingTravelListAsync);
         }
 
+        /// <summary>
+        /// Bing maps token
+        /// </summary>
         public string MapServiceToken { get; set; }
 
-        ObservableCollection<TravelListItemViewModel> _travelListItemViewModel = new ObservableCollection<TravelListItemViewModel>();
+        private ObservableCollection<TravelListItemViewModel> _travelListItemViewModel = new ObservableCollection<TravelListItemViewModel>();
 
         public ObservableCollection<TravelListItemViewModel> TravelListItems
         {
@@ -53,7 +56,7 @@ namespace TravelListApp.ViewModels
 
         private TravelListItemViewModel _firstUpcommingTravelList;
         /// <summary>
-        /// Gets or sets the selected TravelList, or null if no TravelList is selected. 
+        /// Gets or sets the selected first Upcomming TravelList, or null if no TravelList is selected. 
         /// </summary>
         public TravelListItemViewModel FirstUpcommingTravelList
         {
@@ -65,7 +68,9 @@ namespace TravelListApp.ViewModels
         }
 
         private bool _isLoading = false;
-
+        /// <summary>
+        /// Gets or sets IsLoading. 
+        /// </summary>
         public bool IsLoading
         {
             get => _isLoading;
@@ -75,6 +80,9 @@ namespace TravelListApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Method for setting IsLoading. 
+        /// </summary>
         public void SetLoader()
         {
             if (IsLoading)
@@ -87,6 +95,9 @@ namespace TravelListApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets FirstUpcomingTravelList
+        /// </summary>
         private async Task GetFirstUpcomingTravelListAsync()
         {
             await DispatcherHelper.ExecuteOnUIThreadAsync(() => IsLoading = true);
@@ -108,6 +119,9 @@ namespace TravelListApp.ViewModels
             });
         }
 
+        /// <summary>
+        /// Gets all TravelLists
+        /// </summary>
         private async Task GetTravelListListAsync()
         {
             await DispatcherHelper.ExecuteOnUIThreadAsync(() => IsLoading = true);
@@ -132,6 +146,9 @@ namespace TravelListApp.ViewModels
             });
         }
 
+        /// <summary>
+        /// Gets all Countries
+        /// </summary>
         private async Task GetCountriesAsync()
         {
             await DispatcherHelper.ExecuteOnUIThreadAsync(() => IsLoading = true);
@@ -156,7 +173,9 @@ namespace TravelListApp.ViewModels
 
         }
 
-
+        /// <summary>
+        /// Gets ViewSize
+        /// </summary>
         public Size GetCurrentViewSize()
         {
             // Get the visible bounds for current view

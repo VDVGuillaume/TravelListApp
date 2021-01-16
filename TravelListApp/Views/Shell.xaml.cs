@@ -28,8 +28,7 @@ namespace TravelListApp.Views
             // Initialize Navigation Service.            
             Navigation.Frame = SplitViewFrame;
 
-            // Navigate to home page.
-            // Navigation.Navigate(typeof(HomePage));
+            // Set loader
             App.ViewModel.PropertyChanged += (obj, ev) =>
             {
                 if (ev.PropertyName.Equals("IsLoading"))
@@ -49,7 +48,7 @@ namespace TravelListApp.Views
         }
 
         // Navigate to another page.
-        private async void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count > 0)
             {
@@ -64,22 +63,15 @@ namespace TravelListApp.Views
                 }
             }               
                 
-
-            
-                if (e.AddedItems.Count > 0 && e.AddedItems.First() is MenuItem menuItem && menuItem.IsNavigation)
+            if (e.AddedItems.Count > 0 && e.AddedItems.First() is MenuItem menuItem && menuItem.IsNavigation)
+            {
+                if(menuItem.Text == "User")
                 {
-                    if(menuItem.Text == "User")
-                    {
-                    Navigation.Frame = Frame;
-                    Frame.Navigate(typeof(LoginPage));
-                    }
-                    if (menuItem.NavigationDestination == typeof(HomePage))
-                    {
-                        await App.ViewModel.GetFirstUpcomingAsync();
-                    }
-
-                    Navigation.Navigate(menuItem.NavigationDestination);
+                Navigation.Frame = Frame;
+                Frame.Navigate(typeof(LoginPage));
                 }
+                Navigation.Navigate(menuItem.NavigationDestination);
+            }
         }
         
 
@@ -93,19 +85,11 @@ namespace TravelListApp.Views
             }
         }
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            // Navigate to home page.
-            await App.ViewModel.GetFirstUpcomingAsync();
             Navigation.Navigate(typeof(HomePage));
-
             Navigation.EnableBackButton();
             base.OnNavigatedTo(e);
-        }
-
-        private void OnLeavingBackground(object sender, LeavingBackgroundEventArgs e)
-        {
-            // Your code here.
         }
 
         // Swipe to open the splitview panel.
