@@ -39,14 +39,13 @@ namespace TravelListApp.Views
             base.OnNavigatedTo(e);
 
             LoadItems();
-            LoadProgress();
+           
         }
 
         private async void LoadItems()
         {
             ObservableTaskListItems = new ObservableCollection<TaskListItem>();
-            List<TravelTaskListItem> Items = await ViewModel.GetTravelTaskListItems();
-            Progress.Maximum = Items.Count;
+            List<TravelTaskListItem> Items = await ViewModel.GetTravelTaskListItems();            
             foreach (TravelTaskListItem item in Items)
             {               
                 ObservableTaskListItems.Add(new TaskListItem()
@@ -56,6 +55,7 @@ namespace TravelListApp.Views
                     TravelListItemID = item.TravelListItemID
                 });
             }
+            LoadProgress();
         }
 
 
