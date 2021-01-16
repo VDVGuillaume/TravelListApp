@@ -17,20 +17,20 @@ namespace TravelListRepository.Sql
             _context = context;
         }
 
-        public async Task<IEnumerable<TravelListItemImage>> GetAllTravelListImages()
-        {
-            return await _context.TravelListImages.AsNoTracking().ToListAsync();
-        }
+        //public async Task<IEnumerable<TravelListItemImage>> GetAllTravelListImages()
+        //{
+        //    return await _context.TravelListImages.AsNoTracking().ToListAsync();
+        //}
 
-        public async Task<byte[]> GetTravelListImageDataById(int id)
-        {
-            TravelListItemImage tl = await _context.TravelListImages.AsNoTracking().FirstOrDefaultAsync(p => p.TravelListItemImageID == id);
-            return tl.ImageData;
-        }
+        //public async Task<byte[]> GetTravelListImageDataById(int id)
+        //{
+        //    TravelListItemImage tl = await _context.TravelListImages.AsNoTracking().FirstOrDefaultAsync(p => p.TravelListItemImageID == id);
+        //    return tl.ImageData;
+        //}
 
         public async Task<TravelListItemImage> GetTravelListImageById(int id)
         {
-            
+
             return await _context.TravelListImages.AsNoTracking().FirstOrDefaultAsync(p => p.TravelListItemImageID == id);
         }
 
@@ -55,15 +55,15 @@ namespace TravelListRepository.Sql
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateTravelListImage(int id, TravelListItemImage tl)
-        {
-            if (tl == null)
-            {
-                throw new ArgumentNullException(nameof(tl));
-            }
-            _context.TravelListImages.Update(tl);
-            await _context.SaveChangesAsync();
-        }
+        //public async Task UpdateTravelListImage(int id, TravelListItemImage tl)
+        //{
+        //    if (tl == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(tl));
+        //    }
+        //    _context.TravelListImages.Update(tl);
+        //    await _context.SaveChangesAsync();
+        //}
 
         public bool SaveChanges()
         {

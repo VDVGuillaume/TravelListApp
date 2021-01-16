@@ -10,11 +10,11 @@ namespace TravelListRepository
     public interface ITravelListItemImageRepo
     {
         bool SaveChanges();
-        Task<IEnumerable<TravelListItemImage>> GetAllTravelListImages();
-        Task<byte[]> GetTravelListImageDataById(int id);
+        //Task<IEnumerable<TravelListItemImage>> GetAllTravelListImages();
+        //Task<byte[]> GetTravelListImageDataById(int id);
         Task<TravelListItemImage> GetTravelListImageById(int id);
         Task CreateTravelListImage(TravelListItemImage tl);
-        Task UpdateTravelListImage(int id, TravelListItemImage tl);
+        //Task UpdateTravelListImage(int id, TravelListItemImage tl);
         Task DeleteTravelListImage(TravelListItemImage tl);
     }
 }
