@@ -15,11 +15,11 @@ namespace TravelListRepository.Rest
             _http = new HttpHelper(baseUrl);
         }
 
-        public async Task<IEnumerable<TravelListItemImage>> GetAllTravelListImages() =>
-            await _http.GetAsync<IEnumerable<TravelListItemImage>>("travellistimages");
+        //public async Task<IEnumerable<TravelListItemImage>> GetAllTravelListImages() =>
+        //    await _http.GetAsync<IEnumerable<TravelListItemImage>>("travellistimages");
 
-        public async Task<byte[]> GetTravelListImageDataById(int id) =>
-            await _http.DownloadAsync<byte[]>($"travellistimages/{id}/imagedata");
+        //public async Task<byte[]> GetTravelListImageDataById(int id) =>
+        //    await _http.DownloadAsync<byte[]>($"travellistimages/{id}/imagedata");
 
         public async Task<TravelListItemImage> GetTravelListImageById(int id) =>
             await _http.GetAsync<TravelListItemImage>($"travellistimages/{id}");
@@ -30,8 +30,8 @@ namespace TravelListRepository.Rest
         public async Task DeleteTravelListImage(TravelListItemImage tl) =>
             await _http.DeleteAsync("travellistimages", tl.TravelListItemImageID);
 
-        public async Task UpdateTravelListImage(int id, TravelListItemImage tl) =>
-            await _http.PutAsync<TravelListItemImage, TravelListItemImage>($"travellistimages/{id}", tl);
+        //public async Task UpdateTravelListImage(int id, TravelListItemImage tl) =>
+        //    await _http.PutAsync<TravelListItemImage, TravelListItemImage>($"travellistimages/{id}", tl);
 
         public bool SaveChanges()
         {
