@@ -53,7 +53,7 @@
             </maps:MapItemsControl>
         </maps:MapControl>
 
-        <Grid Margin="0,0,5,0" Grid.Row="2">
+        <Grid Margin="0,0,5,0" Grid.Row="2" Background="{ThemeResource MaskBackground}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -102,7 +102,7 @@
             </AppBarButton>
         </Grid>
 
-        <ScrollViewer x:Name="MapItemsListViewer" Grid.Row="3" VerticalAlignment="Stretch">
+        <ScrollViewer x:Name="MapItemsListViewer" Grid.Row="3" VerticalAlignment="Stretch" Background="{ThemeResource MaskBackground}">
             <Grid Margin="0,0,5,0">
                 <ItemsControl x:Name="MapItemsList">
                     <ItemsControl.ItemTemplate>
