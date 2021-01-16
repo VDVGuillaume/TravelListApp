@@ -40,6 +40,17 @@
 
                 </VisualState>
 
+                <!-- tablet window VisualState -->
+                <VisualState x:Name="VisualStateMinimal">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="addList.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+
+                </VisualState>
+
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
@@ -84,17 +95,18 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Check" HorizontalAlignment="Left"  VerticalAlignment="Stretch"/>
             <TextBlock Grid.Row="0" Grid.Column="1" Text="Item" HorizontalAlignment="Center" />
             <TextBlock Grid.Row="0" Grid.Column="2" Text="Amount" HorizontalAlignment="Center" />
-            <TextBlock Grid.Row="0" Grid.Column="3" Text="Category" HorizontalAlignment="Center" />
+            <Button Grid.Row="0" Grid.Column="3" Content="Category" HorizontalAlignment="Center" Click="OrderByCategory"/>
         </Grid>
         
         <Grid x:Name="addList"               
               HorizontalAlignment="Left" 
-              Padding="20,20,0,0"
+              Padding="20,20,0,20"
               Grid.Row="3"        
               
               >
@@ -127,13 +139,15 @@
 
         </Grid>
 
+        <TextBlock Grid.Row="4" x:Name="ErrorLabel" HorizontalAlignment="Left" TextAlignment="Center" Width="550" Foreground="Red"/>
+
         <GridView  x:Name="CheckListTable" 
                    ItemsSource="{x:Bind ObservablecheckListItems}" 
                    Width ="550" HorizontalAlignment="Left" 
                    Padding="20,20,0,0"                    
                    ScrollViewer.VerticalScrollBarVisibility="Visible"
-                   Grid.Row="4"
-                   MaxHeight="500"
+                   Grid.Row="5"
+                   MaxHeight="300"
                    >
 
             <GridView.ItemTemplate>
@@ -165,7 +179,7 @@
 
         </GridView>
         <Grid
-            Grid.Row="5"
+            Grid.Row="6"
             >
             <Grid.RowDefinitions>
                 <RowDefinition Height="19*"></RowDefinition>
