@@ -32,11 +32,6 @@ namespace TravelListApp.Views
             _pointOfInterests = new List<PointOfInterest>();
             Errors = new ObservableUniqueCollection<string>();
             ErrorsList.ItemsSource = Errors;
-            _addPointMode = false;
-            PlaceNameTextBox.IsEnabled = false;
-            AddPointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["PageForegroundBrush"]);
-            _removePointMode = false;
-            RemovePointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["PageForegroundBrush"]);
             MapItemsListViewer.Height = 0;
         }
 
@@ -56,11 +51,13 @@ namespace TravelListApp.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
+            // Send page model to menu.
             Menu.SetModel(ViewModel);
             // Send page type to menu.
             Menu.SetTab(GetType());
             myMap.MapServiceToken = App.ViewModel.MapServiceToken;
             AddPoints();
+            ResetPointLayout();
             base.OnNavigatedTo(e);
         }
 
@@ -123,10 +120,13 @@ namespace TravelListApp.Views
                 .ToArray());
         }
 
+        /// <summary>
+        /// Clicked on the map
+        /// </summary>
         private void MapUserTapped(MapControl sender, MapInputEventArgs args)
         {
             _removePointMode = false;
-            RemovePointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["PageForegroundBrush"]);
+            CheckRemovePointLayout();
             _selectedPointOfInterests = null;
 
             if (!_addPointMode) { return; }
@@ -165,18 +165,39 @@ namespace TravelListApp.Views
             }
         }
 
-
-
-        private void AddPointAppBar_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Clicked on a place icon
+        /// </summary>
+        private void mapItemButton_Click(object sender, RoutedEventArgs e)
         {
-            _addPointMode = !_addPointMode;
-            _removePointMode = false;
-            _selectedPointOfInterests = null;
+            var buttonSender = sender as Button;
+            _selectedPointOfInterests = buttonSender.DataContext as PointOfInterest;
+            _addPointMode = false;
+            CheckAddPointLayout();
+            _removePointMode = true;
+            CheckRemovePointLayout();
+        }
+
+        private void CheckRemovePointLayout()
+        {
+            if (_removePointMode)
+            {
+                RemovePointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["ActionBrush"]);
+            }
+            else
+            {
+                RemovePointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["PageForegroundBrush"]);
+            }
+        }
+
+        private void CheckAddPointLayout()
+        {
             if (_addPointMode)
             {
                 PlaceNameTextBox.IsEnabled = true;
                 AddPointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["ActionBrush"]);
-            } else
+            }
+            else
             {
                 Errors.Clear();
                 PlaceNameTextBox.IsEnabled = false;
@@ -184,12 +205,36 @@ namespace TravelListApp.Views
             }
         }
 
+        private void ResetPointLayout()
+        {
+            _addPointMode = false;
+            _removePointMode = false;
+            _selectedPointOfInterests = null;
+            CheckAddPointLayout();
+            CheckRemovePointLayout();
+        }
+
+        /// <summary>
+        /// Configure add place
+        /// </summary>
+        private void AddPointAppBar_Click(object sender, RoutedEventArgs e)
+        {
+            _addPointMode = !_addPointMode;
+            _removePointMode = false;
+            _selectedPointOfInterests = null;
+            CheckAddPointLayout();
+            CheckRemovePointLayout();
+        }
+
+        /// <summary>
+        /// Remove place from the map
+        /// </summary>
         private void RemovePointAppBar_Click(object sender, RoutedEventArgs e)
         {
             if (_removePointMode && _selectedPointOfInterests != null)
             {
                 _removePointMode = false;
-                RemovePointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["PageForegroundBrush"]);
+                CheckRemovePointLayout();
                 _selectedPointOfInterests.ToRemove = true;
                 ViewModel.PlacesOrRoutesAreUpdated = true;
                 AddPoints();
@@ -197,14 +242,21 @@ namespace TravelListApp.Views
             }
         }
 
+        /// <summary>
+        /// Save places
+        /// </summary>
         private async void SaveAppBar_Click(object sender, RoutedEventArgs e)
         {
             App.ViewModel.SetLoader();
             await ViewModel.SavePointsAsync();
             AddPoints();
+            ResetPointLayout();
             App.ViewModel.SetLoader();
         }
 
+        /// <summary>
+        /// Show places list
+        /// </summary>
         private void ShowListAppBar_Click(object sender, RoutedEventArgs e)
         {
             if (MapItemsListViewer.Height == 0)
@@ -218,31 +270,20 @@ namespace TravelListApp.Views
 
         }
 
-        private void mapItemButton_Click(object sender, RoutedEventArgs e)
-        {
-            var buttonSender = sender as Button;
-            _selectedPointOfInterests = buttonSender.DataContext as PointOfInterest;
-            _addPointMode = false;
-            AddPointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["PageForegroundBrush"]);
-            _removePointMode = true;
-            RemovePointCommandButton.Foreground = ((SolidColorBrush)Application.Current.Resources["ActionBrush"]);
-        }
-
         /// <summary>
-        /// Initializes the AutoSuggestBox portion of the search box.
+        /// Initializes BingSearchBox
         /// </summary>
         private void BingSearchBox_Loaded(object sender, RoutedEventArgs e)
         {
             if (BingSearchBox != null)
             {
                 BingSearchBox.AutoSuggestBox.QuerySubmitted += BingSearchBox_QuerySubmitted;
-                // BingSearchBox.AutoSuggestBox.TextChanged += BingSearchBox_TextChanged;
                 BingSearchBox.AutoSuggestBox.PlaceholderText = "Search address...";
             }
         }
 
         /// <summary>
-        /// Filters the customer list based on the search text.
+        /// Filters bing.
         /// </summary>
         private async void BingSearchBox_QuerySubmitted(AutoSuggestBox sender,
             AutoSuggestBoxQuerySubmittedEventArgs args)

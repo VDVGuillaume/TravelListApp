@@ -21,52 +21,54 @@
 
         <Grid Grid.Row="1" VerticalAlignment="Stretch">
             <Image Source="{x:Bind ViewModel.firstConvertedImage }" Stretch="UniformToFill" />
-            <Border VerticalAlignment="Stretch" Background="{ThemeResource MaskBackground}">
-                <StackPanel VerticalAlignment="Bottom">
-                    <controls:Carousel x:Name="CarouselControl"
-                  InvertPositive="True"
-                  ItemDepth="300"
-                  ItemMargin="0"
-                  ItemRotationX="0"
-                  ItemRotationY="45"
-                  ItemRotationZ ="0"
-                  Orientation="Horizontal"
-                  SelectedIndex="0"
-                  >
-                        <controls:Carousel.EasingFunction>
-                            <CubicEase EasingMode="EaseOut" />
-                        </controls:Carousel.EasingFunction>
-                        <controls:Carousel.ItemTemplate>
-                            <DataTemplate>
-                                <Image
-                          Source="{Binding Photo}"
-                          Stretch="Uniform" />
-                            </DataTemplate>
-                        </controls:Carousel.ItemTemplate>
-                    </controls:Carousel>
-                    <TextBlock Text="{x:Bind ViewModel.Name}" Style="{ThemeResource TitleTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,15"/>
-                    <TextBlock Text="Description:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
-                    <TextBlock x:Name="DescriptionTextBlock" Text="{x:Bind ViewModel.Description}" Style="{ThemeResource CaptionTextStyle}"
-                              MinWidth="300"
-                              Margin="20 0 10 10"
-                              TextWrapping="Wrap" 
-                              TextTrimming="WordEllipsis" 
-                              LineStackingStrategy="BlockLineHeight"
-                              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                              LineHeight="20"
-                              MaxHeight="60"/>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Country:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
-                        <TextBlock Text="{x:Bind ViewModel.Country}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,10"/>
+            <ScrollViewer x:Name="myScrollViewer" VerticalAlignment="Stretch">
+                <Border VerticalAlignment="Stretch" Background="{ThemeResource MaskBackground}">
+                    <StackPanel VerticalAlignment="Bottom">
+                        <controls:Carousel x:Name="CarouselControl"
+                      InvertPositive="True"
+                      ItemDepth="300"
+                      ItemMargin="0"
+                      ItemRotationX="0"
+                      ItemRotationY="45"
+                      ItemRotationZ ="0"
+                      Orientation="Horizontal"
+                      SelectedIndex="0"
+                      >
+                            <controls:Carousel.EasingFunction>
+                                <CubicEase EasingMode="EaseOut" />
+                            </controls:Carousel.EasingFunction>
+                            <controls:Carousel.ItemTemplate>
+                                <DataTemplate>
+                                    <Image
+                              Source="{Binding Photo}"
+                              Stretch="Uniform" />
+                                </DataTemplate>
+                            </controls:Carousel.ItemTemplate>
+                        </controls:Carousel>
+                        <TextBlock Text="{x:Bind ViewModel.Name}" Style="{ThemeResource TitleTextStyle}" TextWrapping="NoWrap" Margin="15,0,15,15"/>
+                        <TextBlock Text="Description:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
+                        <TextBlock x:Name="DescriptionTextBlock" Text="{x:Bind ViewModel.Description}" Style="{ThemeResource CaptionTextStyle}"
+                                  MinWidth="300"
+                                  Margin="20 0 10 10"
+                                  TextWrapping="Wrap" 
+                                  TextTrimming="WordEllipsis" 
+                                  LineStackingStrategy="BlockLineHeight"
+                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                  LineHeight="20"
+                                  MaxHeight="60"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Country:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
+                            <TextBlock Text="{x:Bind ViewModel.Country}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,10"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="From:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
+                            <TextBlock Text="{x:Bind ViewModel.StartDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,5"/>
+                            <TextBlock Text="To:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="5,0,15,5"/>
+                            <TextBlock Text="{x:Bind ViewModel.EndDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,10"/>
+                        </StackPanel>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="From:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="20,0,15,5"/>
-                        <TextBlock Text="{x:Bind ViewModel.StartDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,5"/>
-                        <TextBlock Text="To:" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="5,0,15,5"/>
-                        <TextBlock Text="{x:Bind ViewModel.EndDate}" Style="{ThemeResource CaptionTextStyle}" TextWrapping="NoWrap" Margin="0,0,15,10"/>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
+                </Border>
+             </ScrollViewer>
         </Grid>
     </Grid>
 </Page>
