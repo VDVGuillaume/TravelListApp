@@ -122,12 +122,15 @@
 
         </Grid>
 
+        <TextBlock Grid.Row="4" x:Name="ErrorLabel" HorizontalAlignment="Left" TextAlignment="Center" Width="550" Foreground="Red"/>
+
+
         <GridView  x:Name="TaskListTable" 
                    ItemsSource="{x:Bind ObservableTaskListItems}" 
                    Width ="550" HorizontalAlignment="Left" 
                    Padding="20,20,0,0"                    
                    ScrollViewer.VerticalScrollBarVisibility="Visible"
-                   Grid.Row="4"
+                   Grid.Row="5"
                    MaxHeight="300"
                    >
 
@@ -158,7 +161,7 @@
 
         </GridView>
         <Grid
-            Grid.Row="5"
+            Grid.Row="6"
             >
             <Grid.RowDefinitions>
                 <RowDefinition Height="19*"></RowDefinition>

@@ -67,11 +67,17 @@ namespace TravelListApp.Views
         private async void AddItem(object sender, RoutedEventArgs e)
         {
 
-            TravelTaskListItem taskListItem = new TravelTaskListItem() { Name = NewItem.Text, Checked = (bool)NewCheck.IsChecked };
-            taskListItem = await ViewModel.SaveTasklistAsync(taskListItem);                        
-            ObservableTaskListItems.Add(taskListItem);
-            LoadProgress();           
-
+            if (NewItem.Text == String.Empty)
+            {
+                ErrorLabel.Text = "No task was specified, please try again.";
+            }
+            else
+            {
+                TravelTaskListItem taskListItem = new TravelTaskListItem() { Name = NewItem.Text, Checked = (bool)NewCheck.IsChecked };
+                taskListItem = await ViewModel.SaveTasklistAsync(taskListItem);
+                ObservableTaskListItems.Add(taskListItem);
+                LoadProgress();
+            }
         }
       
 

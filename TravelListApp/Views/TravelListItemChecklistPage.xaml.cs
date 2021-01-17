@@ -118,16 +118,23 @@ namespace TravelListApp.Views
                 await ViewModel.SaveCategoryAsync(category);
             }
 
-            if (NumberCheck(NewAmount.Text))
+            if (!NumberCheck(NewAmount.Text))
             {
-
-                TravelCheckListItem checkListItem = new TravelCheckListItem() { Name = NewItem.Text, Amount = Convert.ToInt32(NewAmount.Text), Checked = (bool)NewCheck.IsChecked, Category = category.Name };
-                checkListItem = await ViewModel.SaveChecklistAsync(checkListItem);               
-                ObservablecheckListItems.Add(checkListItem);
-                LoadProgress();               
+                ErrorLabel.Text = "Only numbers are allowed in the amount field, please try again.";
+                           
             }
 
-            else { ErrorLabel.Text = "Only numbers are allowed in the amount field, please try again."; };
+            else if(NewItem.Text == String.Empty)
+            {
+                ErrorLabel.Text = "No item was specified, please try again.";
+            }
+
+            else {
+                TravelCheckListItem checkListItem = new TravelCheckListItem() { Name = NewItem.Text, Amount = Convert.ToInt32(NewAmount.Text), Checked = (bool)NewCheck.IsChecked, Category = category.Name };
+                checkListItem = await ViewModel.SaveChecklistAsync(checkListItem);
+                ObservablecheckListItems.Add(checkListItem);
+                LoadProgress();
+            };
 
         }
 
