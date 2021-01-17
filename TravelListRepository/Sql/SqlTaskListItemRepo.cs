@@ -16,7 +16,7 @@ namespace TravelListRepository.Sql
             _context = context;
         }
 
-        public async Task CreateTaskListItemAsync(TravelTaskListItem taskListItem)
+        public async Task<TravelTaskListItem> CreateTaskListItemAsync(TravelTaskListItem taskListItem)
         {
             if (taskListItem == null)
             {
@@ -24,7 +24,8 @@ namespace TravelListRepository.Sql
             }
             _context.Tasks.Add(taskListItem);
             await _context.SaveChangesAsync();
-
+            return await _context.Tasks.AsNoTracking()
+              .FirstOrDefaultAsync(p => p.TravelTaskListItemID == taskListItem.TravelTaskListItemID);
         }
 
         public async Task DeleteTaskListItemAsync(TravelTaskListItem taskListItem)
