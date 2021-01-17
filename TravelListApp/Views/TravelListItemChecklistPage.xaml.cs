@@ -25,7 +25,7 @@ namespace TravelListApp.Views
         public TravelListItemViewModel ViewModel { get; set; }
         public CheckBox Checkbox;
         public ObservableCollection<string> ListOfCategories { get; set; }
-        private ObservableCollection<CheckListItem> ObservablecheckListItems;
+        private ObservableCollection<TravelCheckListItem> ObservablecheckListItems;
         private static readonly Regex _regex = new Regex("[^0-9.-]+");
 
         public TravelListItemChecklistPage()
@@ -72,14 +72,15 @@ namespace TravelListApp.Views
 
         private async void LoadItems()
         {
-            ObservablecheckListItems = new ObservableCollection<CheckListItem>();
-            List<TravelCheckListItem> Items = await ViewModel.GetTravelCheckListItems();           
+            ObservablecheckListItems = new ObservableCollection<TravelCheckListItem>();
+            List<TravelCheckListItem> Items = await ViewModel.GetTravelCheckListItems();
+
             foreach (TravelCheckListItem item in Items)
             {
-               
-                ObservablecheckListItems.Add(new CheckListItem() { Name = item.Name, Amount = item.Amount, Category = item.Category,
-                    Checked = item.Checked, TravelCheckListItemID = item.TravelCheckListItemID,TravelListItemID = item.TravelListItemID });
+                ObservablecheckListItems.Add(item);
             }
+
+            
             LoadProgress();
         }
 
@@ -120,16 +121,10 @@ namespace TravelListApp.Views
             if (NumberCheck(NewAmount.Text))
             {
 
-                CheckListItem checkListItem = new CheckListItem() { Name = NewItem.Text, Amount = Convert.ToInt32(NewAmount.Text), Checked = (bool)NewCheck.IsChecked, Category = category.Name };
-                checkListItem.IsNew = true;
-                try
-                {
-                    await ViewModel.SaveChecklistAsync(checkListItem);
-                }
-                catch { }
+                TravelCheckListItem checkListItem = new TravelCheckListItem() { Name = NewItem.Text, Amount = Convert.ToInt32(NewAmount.Text), Checked = (bool)NewCheck.IsChecked, Category = category.Name };
+                checkListItem = await ViewModel.SaveChecklistAsync(checkListItem);               
                 ObservablecheckListItems.Add(checkListItem);
-                LoadProgress();
-                checkListItem.IsNew = false;
+                LoadProgress();               
             }
 
             else { ErrorLabel.Text = "Only numbers are allowed in the amount field, please try again."; };
@@ -150,10 +145,9 @@ namespace TravelListApp.Views
         {
 
             Button btn = sender as Button;
-            CheckListItem itemToDelete = (CheckListItem)btn.DataContext;
-            itemToDelete.ToRemove = true;
+            TravelCheckListItem itemToDelete = (TravelCheckListItem)btn.DataContext;           
 
-            await ViewModel.SaveChecklistAsync(itemToDelete);
+            await ViewModel.DeleteChecklistAsync(itemToDelete);
             ObservablecheckListItems.Remove(itemToDelete);
             LoadProgress();
         }
@@ -165,11 +159,11 @@ namespace TravelListApp.Views
             if (this.CheckListTable.IsLoaded)
             {
                 CheckBox cbx = sender as CheckBox;
-                CheckListItem ItemToUpdate = (CheckListItem)cbx.DataContext;
+                TravelCheckListItem ItemToUpdate = (TravelCheckListItem)cbx.DataContext;
                 ItemToUpdate.Checked = (bool)cbx.IsChecked;
                 ObservablecheckListItems.Where(x => x.TravelCheckListItemID == ItemToUpdate.TravelCheckListItemID).ToList().ForEach(x => x.Checked = (bool)cbx.IsChecked);
                 LoadProgress();
-                await ViewModel.SaveChecklistAsync(ItemToUpdate);
+                await ViewModel.UpdateChecklistAsync(ItemToUpdate);
             }
         }
 

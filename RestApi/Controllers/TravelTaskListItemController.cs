@@ -23,11 +23,16 @@ namespace RestApi.Controllers
         }
 
         [HttpPost]
-        public async Task CreateTaskListItem([FromBody]TravelTaskListItemCreateDto taskListItemCreateDto)
+        public async Task<IActionResult> CreateTaskListItem([FromBody]TravelTaskListItemCreateDto taskListItemCreateDto)
         {
             var taskListItem = _mapper.Map<TravelTaskListItem>(taskListItemCreateDto);
             await _repo.CreateTaskListItemAsync(taskListItem);
             _repo.SaveChanges();
+
+            var tasklistReadDto = _mapper.Map<TravelTaskListItemReadDto>(taskListItem);
+
+
+            return CreatedAtRoute(nameof(GetTaskListItemById), new { Id = tasklistReadDto.TravelTaskListItemID }, tasklistReadDto);
 
 
         }
@@ -65,7 +70,7 @@ namespace RestApi.Controllers
         }
 
         [HttpGet("{id}", Name = "GetTaskListItemById")]
-        public async Task<IActionResult> GetTaskListItemtById(int id)
+        public async Task<IActionResult> GetTaskListItemById(int id)
         {
             var travelListItem = await _repo.GetTaskListItemById(id);
             if (travelListItem != null)

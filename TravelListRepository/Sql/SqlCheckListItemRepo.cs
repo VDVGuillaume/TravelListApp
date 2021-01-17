@@ -16,7 +16,7 @@ namespace TravelListRepository.Sql
             _context = context;
         }
 
-        public async Task CreateCheckListItemAsync(TravelCheckListItem checkListItem)
+        public async Task<TravelCheckListItem> CreateCheckListItemAsync(TravelCheckListItem checkListItem)
         {
             if (checkListItem == null)
             {
@@ -24,6 +24,8 @@ namespace TravelListRepository.Sql
             }
             _context.Items.Add(checkListItem);
             await _context.SaveChangesAsync();
+            return await _context.Items.AsNoTracking()
+                .FirstOrDefaultAsync(p => p.TravelCheckListItemID == checkListItem.TravelCheckListItemID);
 
         }
 

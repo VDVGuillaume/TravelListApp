@@ -21,7 +21,7 @@ namespace TravelListApp.Views
     {
 
         public TravelListItemViewModel ViewModel { get; set; }        
-        private ObservableCollection<TaskListItem> ObservableTaskListItems;
+        private ObservableCollection<TravelTaskListItem> ObservableTaskListItems;
 
         public TravelListItemTasklistPage()
         {
@@ -44,16 +44,11 @@ namespace TravelListApp.Views
 
         private async void LoadItems()
         {
-            ObservableTaskListItems = new ObservableCollection<TaskListItem>();
+            ObservableTaskListItems = new ObservableCollection<TravelTaskListItem>();
             List<TravelTaskListItem> Items = await ViewModel.GetTravelTaskListItems();            
             foreach (TravelTaskListItem item in Items)
-            {               
-                ObservableTaskListItems.Add(new TaskListItem()
-                {
-                    Name = item.Name,                   
-                    TravelTaskListItemID = item.TravelTaskListItemID,
-                    TravelListItemID = item.TravelListItemID
-                });
+            {
+                ObservableTaskListItems.Add(item);
             }
             LoadProgress();
         }
@@ -72,19 +67,10 @@ namespace TravelListApp.Views
         private async void AddItem(object sender, RoutedEventArgs e)
         {
 
-
-            TaskListItem taskListItem = new TaskListItem() { Name = NewItem.Text, Checked = (bool)NewCheck.IsChecked };
-            taskListItem.IsNew = true;
-            try
-            {
-                await ViewModel.SaveTasklistAsync(taskListItem);
-            }
-            catch { }
-
-
+            TravelTaskListItem taskListItem = new TravelTaskListItem() { Name = NewItem.Text, Checked = (bool)NewCheck.IsChecked };
+            taskListItem = await ViewModel.SaveTasklistAsync(taskListItem);                        
             ObservableTaskListItems.Add(taskListItem);
-            LoadProgress();
-            taskListItem.IsNew = false;
+            LoadProgress();           
 
         }
       
@@ -93,10 +79,9 @@ namespace TravelListApp.Views
         {
 
             Button btn = sender as Button;
-            TaskListItem itemToDelete = (TaskListItem)btn.DataContext;
-            itemToDelete.ToRemove = true;
-
-            await ViewModel.SaveTasklistAsync(itemToDelete);
+            TravelTaskListItem itemToDelete = (TravelTaskListItem)btn.DataContext;
+          
+            await ViewModel.DeleteTasklistAsync(itemToDelete);
             ObservableTaskListItems.Remove(itemToDelete);
             LoadProgress();
         }
@@ -108,11 +93,11 @@ namespace TravelListApp.Views
             if (this.TaskListTable.IsLoaded)
             {
                 CheckBox cbx = sender as CheckBox;
-                TaskListItem ItemToUpdate = (TaskListItem)cbx.DataContext;
+                TravelTaskListItem ItemToUpdate = (TravelTaskListItem)cbx.DataContext;
                 ItemToUpdate.Checked = (bool)cbx.IsChecked;
                 ObservableTaskListItems.Where(x => x.TravelTaskListItemID == ItemToUpdate.TravelTaskListItemID).ToList().ForEach(x => x.Checked = (bool)cbx.IsChecked);
                 LoadProgress();
-                await ViewModel.SaveTasklistAsync(ItemToUpdate);
+                await ViewModel.UpdateTasklistAsync(ItemToUpdate);
             }
         }
 

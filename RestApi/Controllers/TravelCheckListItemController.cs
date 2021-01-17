@@ -23,15 +23,19 @@ namespace RestApi.Controllers
         }
         
         [HttpPost]
-        public async Task CreateCheckListItem([FromBody]TravelCheckListItemCreateDto checkListItemCreateDto)
+        public async Task<IActionResult> CreateCheckListItem([FromBody]TravelCheckListItemCreateDto checkListItemCreateDto)
         {
             var checkListItem = _mapper.Map<TravelCheckListItem>(checkListItemCreateDto);
             await _repo.CreateCheckListItemAsync(checkListItem);
             _repo.SaveChanges();
 
+            var checklistReadDto = _mapper.Map<TravelCheckListItemReadDto>(checkListItem);
+
+
+            return CreatedAtRoute(nameof(GetCheckListItemById), new { Id = checklistReadDto.TravelCheckListItemID }, checklistReadDto);
 
         }
-        
+
         [HttpGet("GetChecklist")]
         public async Task<IActionResult> GetCheckList(int value)
         {
@@ -65,7 +69,7 @@ namespace RestApi.Controllers
         }
 
         [HttpGet("{id}", Name = "GetCheckListItemById")]
-        public async Task<IActionResult> GetCheckListItemtById(int id)
+        public async Task<IActionResult> GetCheckListItemById(int id)
         {
             var travelListItem = await _repo.GetCheckListItemById(id);
             if (travelListItem != null)

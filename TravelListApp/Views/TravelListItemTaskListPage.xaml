@@ -3,8 +3,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:x1="using:TravelListApp.Models"
     xmlns:local="using:TravelListApp.Views"
+    xmlns:x1="using:TravelListModels"
     x:Class="TravelListApp.Views.TravelListItemTasklistPage"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -132,7 +132,7 @@
                    >
 
             <GridView.ItemTemplate>
-                <DataTemplate x:DataType="x1:TaskListItem">
+                <DataTemplate x:DataType="x1:TravelTaskListItem">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="50"/>

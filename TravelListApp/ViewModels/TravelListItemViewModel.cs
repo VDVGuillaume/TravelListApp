@@ -501,22 +501,23 @@ namespace TravelListApp.ViewModels
         /// <summary>
         /// Saves travellist checklist data that has been edited.
         /// </summary>
-        public async Task SaveChecklistAsync(CheckListItem ci)
-        {           
-       
-                if (ci.IsNew)
-                {
-                    ci.TravelListItemID = _model.TravelListItemID;                    
-                    await App.Repository.CheckLists.CreateCheckListItemAsync(ci);
-                }
-                if (ci.ToRemove)
-                {
-                    await App.Repository.CheckLists.DeleteCheckListItemAsync(ci);
-                }
-                else
-                {
-                    await App.Repository.CheckLists.UpdateCheckListItemAsync(ci.TravelCheckListItemID, ci);
-                }
+        public async Task<TravelCheckListItem> SaveChecklistAsync(TravelCheckListItem ci)
+        {
+
+                ci.TravelListItemID = _model.TravelListItemID;
+                TravelCheckListItem item = await App.Repository.CheckLists.CreateCheckListItemAsync(ci);
+                return item;
+        }
+
+        public async Task DeleteChecklistAsync(TravelCheckListItem ci)
+        {
+            await App.Repository.CheckLists.DeleteCheckListItemAsync(ci);
+        }
+
+        public async Task UpdateChecklistAsync(TravelCheckListItem ci)
+        {
+            await App.Repository.CheckLists.UpdateCheckListItemAsync(ci.TravelCheckListItemID, ci);
+             
             
         }
 
@@ -529,23 +530,23 @@ namespace TravelListApp.ViewModels
         /// <summary>
         /// Saves travellist task data that has been edited.
         /// </summary>
-        public async Task SaveTasklistAsync(TaskListItem ci)
+        public async Task<TravelTaskListItem> SaveTasklistAsync(TravelTaskListItem ci)
         {
-
-            if (ci.IsNew)
-            {
+            
                 ci.TravelListItemID = _model.TravelListItemID;
-                await App.Repository.TaskLists.CreateTaskListItemAsync(ci);
-            }
-            if (ci.ToRemove)
-            {
-                await App.Repository.TaskLists.DeleteTaskListItemAsync(ci);
-            }
-            else
-            {
-                await App.Repository.TaskLists.UpdateTaskListItemAsync(ci.TravelTaskListItemID, ci);
-            }
+                TravelTaskListItem item = await App.Repository.TaskLists.CreateTaskListItemAsync(ci);
+                return item;
+        }
 
+
+        public async Task DeleteTasklistAsync(TravelTaskListItem ci)
+        {
+            await App.Repository.TaskLists.DeleteTaskListItemAsync(ci);
+        }
+        public async Task UpdateTasklistAsync(TravelTaskListItem ci)
+        {
+            await App.Repository.TaskLists.UpdateTaskListItemAsync(ci.TravelTaskListItemID, ci);
+       
         }
 
 

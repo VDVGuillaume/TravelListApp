@@ -121,9 +121,7 @@
     </Compile>
     <Compile Include="ViewModels\ThemeItem.cs" />
     <Compile Include="Models\CarouselImage.cs" />
-    <Compile Include="Models\CheckListItem.cs" />
     <Compile Include="Models\RoutesOfPointOfInterest.cs" />
-    <Compile Include="Models\TaskListItem.cs" />
     <Compile Include="Services\Converters\IconConverter.cs" />
     <Compile Include="Services\Icons\IconsTheme.xaml.cs">
       <DependentUpon>IconsTheme.xaml</DependentUpon>
