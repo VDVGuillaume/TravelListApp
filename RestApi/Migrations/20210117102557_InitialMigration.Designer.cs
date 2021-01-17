@@ -10,7 +10,7 @@ using TravelListRepository.Sql;
 namespace TravelList.Api.Migrations
 {
     [DbContext(typeof(TravelListContext))]
-    [Migration("20210117085138_InitialMigration")]
+    [Migration("20210117102557_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
