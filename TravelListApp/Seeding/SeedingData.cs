@@ -114,13 +114,6 @@ namespace TravelListApp.Seeding
             await App.Repository.Routes.CreateTravelRoute(travelRoute);
         }
 
-
-        
-
-
-
-
-
         /// <summary>
         /// Convert Image to byte[]
         /// </summary>
@@ -137,9 +130,5 @@ namespace TravelListApp.Seeding
             }
 
         }
-
-
-
-
     }
 }
