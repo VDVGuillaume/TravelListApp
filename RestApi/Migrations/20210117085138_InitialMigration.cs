@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TravelList.Api.Migrations
 {
-    public partial class initialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,14 +26,14 @@ namespace TravelList.Api.Migrations
                 name: "TravelLists",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: true),
                     TravelListItemID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
                     StartDate = table.Column<DateTime>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false),
-                    Country = table.Column<string>(nullable: true),
+                    Country = table.Column<string>(nullable: false),
                     Latitude = table.Column<decimal>(nullable: false),
                     Longitude = table.Column<decimal>(nullable: false)
                 },
@@ -71,7 +71,7 @@ namespace TravelList.Api.Migrations
                 {
                     TravelPointOfInterestID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
                     Latitude = table.Column<decimal>(nullable: false),
                     Longitude = table.Column<decimal>(nullable: false),
                     TravelListItemID = table.Column<int>(nullable: false)
@@ -88,14 +88,35 @@ namespace TravelList.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tasks",
+                columns: table => new
+                {
+                    TravelTaskListItemID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Checked = table.Column<bool>(nullable: false),
+                    TravelListItemID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tasks", x => x.TravelTaskListItemID);
+                    table.ForeignKey(
+                        name: "FK_Tasks_TravelLists_TravelListItemID",
+                        column: x => x.TravelListItemID,
+                        principalTable: "TravelLists",
+                        principalColumn: "TravelListItemID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TravelListImages",
                 columns: table => new
                 {
                     TravelListItemImageID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     TravelListItemID = table.Column<int>(nullable: false),
-                    ImageData = table.Column<byte[]>(nullable: true),
-                    ImageName = table.Column<string>(nullable: true)
+                    ImageData = table.Column<byte[]>(nullable: false),
+                    ImageName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -168,6 +189,11 @@ namespace TravelList.Api.Migrations
                 column: "TravelListItemID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Tasks_TravelListItemID",
+                table: "Tasks",
+                column: "TravelListItemID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TravelListImages_TravelListItemID",
                 table: "TravelListImages",
                 column: "TravelListItemID");
@@ -183,6 +209,9 @@ namespace TravelList.Api.Migrations
 
             migrationBuilder.DropTable(
                 name: "Routes");
+
+            migrationBuilder.DropTable(
+                name: "Tasks");
 
             migrationBuilder.DropTable(
                 name: "TravelListImages");

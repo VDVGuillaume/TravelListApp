@@ -58,7 +58,7 @@ namespace TravelListApp.Views
             }
             else
             {
-                ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
+                ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).FirstOrDefault();
                 foreach (var item in ViewModel.convertedImages)
                 {
                     cImages.Add(item);
@@ -70,10 +70,11 @@ namespace TravelListApp.Views
             }
             ViewModel.PropertyChanged += (obj, ev) => SaveCommandButton.IsEnabled = ViewModel.IsValid;
             ViewModel.Validate();
+            // Send page model to menu.
             Menu.SetModel(ViewModel);
+            // Send page type to menu.
             Menu.SetTab(GetType());
             base.OnNavigatedTo(e);
-            
         }
 
         protected async override void OnNavigatingFrom(NavigatingCancelEventArgs e)

@@ -134,6 +134,7 @@ namespace TravelListApp.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
+            // Send page model to menu.
             Menu.SetModel(ViewModel);
             // Send page type to menu.
             Menu.SetTab(GetType());

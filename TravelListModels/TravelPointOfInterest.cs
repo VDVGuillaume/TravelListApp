@@ -17,15 +17,17 @@ namespace TravelListModels
         }
         [Key]
         public int TravelPointOfInterestID { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public decimal Latitude { get; set; }
+        [Required]
         public decimal Longitude { get; set; }
+        [Required]
         public int TravelListItemID { get; set; }
         [ForeignKey("StartTravelPointOfInterestID")]
-        // [InverseProperty("Start")]
         public virtual ICollection<TravelRoute> ConnectedStartRoutes { get; set; }
         [ForeignKey("EndTravelPointOfInterestID")]
-        // [InverseProperty("Start")]
         public virtual ICollection<TravelRoute> ConnectedEndRoutes { get; set; }
     }
 }
