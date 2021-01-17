@@ -8,7 +8,7 @@ namespace TravelListRepository
     {
         bool SaveChanges();
         Task<IEnumerable<TravelCheckListItem>> GetCheckList(int travelListId);
-        Task CreateCheckListItemAsync(TravelCheckListItem checkListItem);
+        Task<TravelCheckListItem> CreateCheckListItemAsync(TravelCheckListItem checkListItem);
         Task<TravelCheckListItem> GetCheckListItemById(int id);
         Task DeleteCheckListItemAsync(TravelCheckListItem checkListItem);
         Task UpdateCheckListItemAsync(int id, TravelCheckListItem checkListItem);
