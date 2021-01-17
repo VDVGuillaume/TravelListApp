@@ -15,7 +15,9 @@ namespace TravelListApp.Services
         public static async Task<StorageFile> AsStorageFile(this byte[] byteArray, string fileName)
         {
             var storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            Windows.Storage.StorageFile sampleFile = await storageFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+            // System.Exception: 'Unable to remove the file to be replaced.' => CreationCollisionOption.ReplaceExisting
+            // System.Exception: 'Unable to remove the file to be replaced.' => CreationCollisionOption.OpenIfExists
+            Windows.Storage.StorageFile sampleFile = await storageFolder.CreateFileAsync(fileName, CreationCollisionOption.GenerateUniqueName);
             await Windows.Storage.FileIO.WriteBytesAsync(sampleFile, byteArray);
             return sampleFile;
         }

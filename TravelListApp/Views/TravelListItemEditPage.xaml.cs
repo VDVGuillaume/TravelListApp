@@ -58,7 +58,7 @@ namespace TravelListApp.Views
             }
             else
             {
-                ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).First();
+                ViewModel = App.ViewModel.TravelListItems.Where(travelList => travelList.Model.TravelListItemID == (int)e.Parameter).FirstOrDefault();
                 foreach (var item in ViewModel.convertedImages)
                 {
                     cImages.Add(item);
