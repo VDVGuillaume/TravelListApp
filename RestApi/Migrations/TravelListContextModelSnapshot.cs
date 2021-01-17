@@ -63,9 +63,11 @@ namespace TravelList.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Country");
+                    b.Property<string>("Country")
+                        .IsRequired();
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired();
 
                     b.Property<DateTime>("EndDate");
 
@@ -73,11 +75,13 @@ namespace TravelList.Api.Migrations
 
                     b.Property<decimal>("Longitude");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<DateTime>("StartDate");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .IsRequired();
 
                     b.HasKey("TravelListItemID");
 
@@ -90,9 +94,11 @@ namespace TravelList.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<byte[]>("ImageData");
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired();
 
-                    b.Property<string>("ImageName");
+                    b.Property<string>("ImageName")
+                        .IsRequired();
 
                     b.Property<int>("TravelListItemID");
 
@@ -113,7 +119,8 @@ namespace TravelList.Api.Migrations
 
                     b.Property<decimal>("Longitude");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<int>("TravelListItemID");
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,15 +17,23 @@ namespace TravelListModels
             this.Tasks = new List<TravelTaskListItem>();
             this.Routes = new List<TravelRoute>();
         }
-
-        public string UserId { get; set; }
+        [Key]
         public int TravelListItemID { get; set; }
+        [Required]
+        public string UserId { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string Description { get; set; }
+        [Required]
         public DateTime StartDate { get; set; }
+        [Required]
         public DateTime EndDate { get; set; }
+        [Required]
         public string Country { get; set; }
+        [Required]
         public decimal Latitude { get; set; }
+        [Required]
         public decimal Longitude { get; set; }
         public virtual ICollection<TravelCheckListItem> Items { get; set; }
         public virtual ICollection<TravelTaskListItem> Tasks { get; set; }
