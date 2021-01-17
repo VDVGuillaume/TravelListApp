@@ -65,7 +65,7 @@ namespace TravelListApp.Views
 
             LoadCategories();
             LoadItems();
-            LoadProgress();
+            
            
 
         }
@@ -80,6 +80,7 @@ namespace TravelListApp.Views
                 ObservablecheckListItems.Add(new CheckListItem() { Name = item.Name, Amount = item.Amount, Category = item.Category,
                     Checked = item.Checked, TravelCheckListItemID = item.TravelCheckListItemID,TravelListItemID = item.TravelListItemID });
             }
+            LoadProgress();
         }
 
 
