@@ -20,5 +20,6 @@ namespace RestApi.Dtos
         public virtual ICollection<TravelPointOfInterest> Points { get; set; }
         public virtual ICollection<TravelListItemImage> Images { get; set; }
         public virtual ICollection<TravelRoute> Routes { get; set; }
+        public virtual ICollection<TravelTaskListItem> Tasks { get; set; }
     }
 }
