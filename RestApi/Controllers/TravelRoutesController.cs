@@ -10,10 +10,8 @@ using TravelListModels;
 
 namespace RestApi.Controllers
 {
-    //api/travellists
+    //api/TravelRoutes
     [Route("api/[controller]")]
-    //[Route("api/travellists")]
-    //[ApiController]
     public class TravelRoutesController : ControllerBase
     {
         private readonly ITravelRouteRepo _repo;

@@ -79,7 +79,7 @@ namespace TravelListApp.ViewModels
         }
 
         /// <summary>
-        /// Gets or sets the customer's first name.
+        /// Gets or sets the travellist name.
         /// </summary>
         public string Name
         {
@@ -411,7 +411,6 @@ namespace TravelListApp.ViewModels
                 c.Properties[nameof(c.Country)].Errors.Add("Country is mandatory.");
             }
 
-            // Compare two properties.
             if (
                 (c.Images.Count == 0 && c.imageChanges.FindAll(image => image.IsNew).Count == 0) ||
                 ((c.Images.Count == c.imageChanges.FindAll(image => image.ToRemove).Count) && c.imageChanges.FindAll(image => image.IsNew).Count == 0)

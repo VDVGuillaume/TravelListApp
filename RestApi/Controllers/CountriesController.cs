@@ -10,10 +10,8 @@ using TravelListRepository;
 
 namespace RestApi.Controllers
 {
-    //api/travellists
+    //api/country
     [Route("api/[controller]")]
-    //[Route("api/travellists")]
-    //[ApiController]
     public class CountriesController : ControllerBase
     {
         private readonly ICountryRepo _repo;
@@ -25,7 +23,7 @@ namespace RestApi.Controllers
             _mapper = mapper;
         }
 
-        //api/travellists
+        //api/country
         [HttpGet]
         public async Task<IActionResult> GetAllCountries()
         {
