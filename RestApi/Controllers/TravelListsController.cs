@@ -12,8 +12,6 @@ namespace RestApi.Controllers
 {
     //api/travellists
     [Route("api/[controller]")]
-    //[Route("api/travellists")]
-    //[ApiController]
     public class TravelListsController : ControllerBase
     {
         private readonly ITravelListItemRepo _repo;

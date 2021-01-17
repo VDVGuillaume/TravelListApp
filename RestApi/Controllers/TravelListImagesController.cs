@@ -16,10 +16,8 @@ using System.Net;
 
 namespace RestApi.Controllers
 {
-    //api/travellists
+    //api/travellistimages
     [Route("api/[controller]")]
-    //[Route("api/travellists")]
-    //[ApiController]
     public class TravelListImagesController : ControllerBase
     {
         private readonly ITravelListItemImageRepo _repo;
@@ -30,27 +28,6 @@ namespace RestApi.Controllers
             _repo = repository;
             _mapper = mapper;
         }
-
-        ////api/travellists
-        //[HttpGet]
-        //public async Task<IActionResult> GetAllTravelListImages()
-        //{
-
-
-        //    var travelListImageItems = await _repo.GetAllTravelListImages();
-
-        //    return Ok(_mapper.Map<IEnumerable<TravelListImageReadDto>>(travelListImageItems));
-        //}
-
-        ////api/travellistimages/{id}/imagedata
-        //[HttpGet("{id}/imagedata", Name = "GetTravelListImageDataById")]
-        //[Produces("application/octet-stream")]
-        //public async Task<FileStreamResult> GetTravelListImageDataById(int id)
-        //{
-        //    byte[] imageData = await _repo.GetTravelListImageDataById(id);
-        //    return File(new MemoryStream(imageData), "application/octet-stream");
-
-        //}
 
         //api/travellistimages/{id}
         [HttpGet("{id}", Name = "GetTravelListImageById")]
@@ -82,26 +59,6 @@ namespace RestApi.Controllers
 
             return CreatedAtRoute(nameof(GetTravelListImageById), new { Id = travelListImageReadDto.TravelListItemImageID }, travelListImageReadDto);
         }
-
-        ////api/travellistimages/{id}
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> UpdateTravelListImage(int id, [FromBody]TravelListImageCreateDto travelListUpdateDto)
-        //{
-        //    var travelListItemImageModelFromRepo = await _repo.GetTravelListImageById(id);
-        //    if (travelListItemImageModelFromRepo == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _mapper.Map(travelListUpdateDto, travelListItemImageModelFromRepo);
-
-        //    await _repo.UpdateTravelListImage(id, travelListItemImageModelFromRepo);
-
-        //    _repo.SaveChanges();
-
-        //    return NoContent();
-
-        //}
 
         //DELETE api/travellistimages/{id}
         [HttpDelete("{id}")]

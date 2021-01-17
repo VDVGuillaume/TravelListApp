@@ -10,10 +10,8 @@ using TravelListModels;
 
 namespace RestApi.Controllers
 {
-    //api/travellists
+    //api/bing
     [Route("api/[controller]")]
-    //[Route("api/travellists")]
-    //[ApiController]
     public class BingController : ControllerBase
     {
         private readonly IBingRepo _repo;
@@ -25,7 +23,7 @@ namespace RestApi.Controllers
             _mapper = mapper;
         }
 
-        //api/travellists
+        //api/bing
         [HttpGet("{search}", Name = "GetLocationByQuery")]
         public async Task<IActionResult> GetLocationByQuery(string search)
         {
